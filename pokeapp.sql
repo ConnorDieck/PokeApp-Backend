@@ -5,6 +5,7 @@ DROP DATABASE pokeapp;
 CREATE DATABASE pokeapp;
 \connect pokeapp
 
+\i species-seed.sql
 \i pokeapp-schema.sql
 \i pokeapp-seed.sql
 

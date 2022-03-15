@@ -1,27 +1,29 @@
--- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
--- Link to schema: https://app.quickdatabasediagrams.com/#/d/HLxrLt
--- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
+/** Schema for PokeApp DB */
 
-
-CREATE TABLE pokemon (
+CREATE TABLE species (
     id SERIAL PRIMARY KEY,
-    pokemon_id INTEGER,
+    pokedex_no INTEGER,
     name TEXT,
-    gender BOOLEAN NOT NULL DEFAULT TRUE,
-    nature TEXT NOT NULL,
-    ability TEXT NOT NULL,
+    url TEXT,
     sprite TEXT,
     type1 TEXT NOT NULL,
-    type2 TEXT,
-    item TEXT,
-    move1 TEXT,
-    move2 TEXT,
-    move3 TEXT,
-    move4 TEXT
+    type2 TEXT
 );
 
 
-CREATE TABLE trainers (
+CREATE TABLE cards (
+    id SERIAL PRIMARY KEY,
+    nickname VARCHAR(15),
+    gender BOOLEAN NOT NULL DEFAULT TRUE,
+    nature INTEGER REFERENCES natures (id),
+    ability INTEGER REFERENCES abilities (id),
+    art TEXT,
+    species_id INTEGER REFERENCES species (id) NOT NULL,
+    item INTEGER REFERENCES items (id)
+);
+
+
+CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(15) NOT NULL UNIQUE,
     password TEXT NOT NULL,
@@ -31,57 +33,56 @@ CREATE TABLE trainers (
 
 CREATE TABLE teams (
     id SERIAL PRIMARY KEY NOT NULL,
-    name VARCHAR(15) NOT NULL,
-    pok1_id INTEGER,
-    pok2_id INTEGER,
-    pok3_id INTEGER,
-    pok4_id INTEGER,
-    pok5_id INTEGER,
-    pok6_id INTEGER,
-    trainer_id INTEGER NOT NULL 
+    name VARCHAR(15) NOT NULL
 );
 
 
--- CREATE TABLE "Move" (
---     "ID" INTEGER NOT NULL ,
---     "Name" TEXT NOT NULL ,
---     "Type" TEXT NOT NULL ,
---     "Power" INTEGER NOT NULL ,
---     "PP" INTEGER NOT NULL ,
---     CONSTRAINT "pk_Move" PRIMARY KEY (
---         "ID"
---     )
--- );
+CREATE TABLE moves (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    type TEXT,
+    URL TEXT
+)
 
 
--- CREATE TABLE "Item" (
---     "ID" INTEGER NOT NULL ,
---     "Name" TEXT NOT NULL ,
---     "Description" TEXT NOT NULL ,
---     "Sprite" TEXT NOT NULL ,
---     CONSTRAINT "pk_Item" PRIMARY KEY (
---         "ID"
---     )
--- );
+CREATE TABLE items (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    URL TEXT
+)
 
+CREATE TABLE abilities (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    URL TEXT
+)
 
--- CREATE TABLE "Nature" (
---     "ID" INTEGER NOT NULL ,
---     "Name" TEXT NOT NULL ,
---     "Dec_Stat" TEXT NOT NULL ,
---     "Inc_Stat" TEXT NOT NULL ,
---     CONSTRAINT "pk_Nature" PRIMARY KEY (
---         "ID"
---     )
--- )
+CREATE TABLE natures (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    URL TEXT
+)
 
+CREATE TABLE users_cards (
+    id SERIAL PRIMARY KEY,
+    card_id INTEGER REFERENCES cards (id),
+    user_id INTEGER REFERENCES users (id),
+);
 
--- CREATE TABLE "Ability" (
---     "ID" INTEGER NOT NULL ,
---     "Name" TEXT NOT NULL ,
---     "Description" TEXT NOT NULL ,
---     CONSTRAINT "pk_Ability" PRIMARY KEY (
---         "ID"
---     )
--- )
+CREATE TABLE teams_cards (
+    id SERIAL PRIMARY KEY,
+    card_id INTEGER REFERENCES cards (id),
+    team_id INTEGER REFERENCES teams (id),
+);
 
+CREATE TABLE users_teams (
+    id SERIAL PRIMARY KEY,
+    team_id INTEGER REFERENCES teams (id),
+    user_id INTEGER REFERENCES users (id),
+);
+
+CREATE TABLE cards_moves (
+    id SERIAL PRIMARY KEY,
+    move_id INTEGER REFERENCES moves (id),
+    card_id INTEGER REFERENCES cards (id),
+);
