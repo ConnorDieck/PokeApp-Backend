@@ -7,7 +7,7 @@ const { setPokemonBase } = require("../helpers/transform");
 
 /** Related functions for pokemon */
 
-class Pokemon {
+class Card {
 	constructor(id, pokemonId, name, gender, type1, type2) {
 		(this.id = id),
 			(this.pokemonId = pokemonId),
