@@ -1,17 +1,58 @@
 /** Schema for PokeApp DB */
 
-CREATE TABLE species (
+/** species table will be added in species-seed.sql */
+
+-- CREATE TABLE IF NOT EXISTS species (
+--     id SERIAL PRIMARY KEY,
+--     pokedex_no INTEGER,
+--     name TEXT,
+--     url TEXT,
+--     sprite TEXT,
+--     type1 TEXT NOT NULL,
+--     type2 TEXT
+-- );
+
+CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
-    pokedex_no INTEGER,
-    name TEXT,
-    url TEXT,
-    sprite TEXT,
-    type1 TEXT NOT NULL,
-    type2 TEXT
+    username VARCHAR(15) NOT NULL UNIQUE,
+    password TEXT NOT NULL,
+    favorite TEXT
 );
 
 
-CREATE TABLE cards (
+CREATE TABLE IF NOT EXISTS teams (
+    id SERIAL PRIMARY KEY NOT NULL,
+    name VARCHAR(15) NOT NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS moves (
+    id SERIAL PRIMARY KEY,
+    name TEXT UNIQUE,
+    type TEXT,
+    url TEXT UNIQUE
+);
+
+
+CREATE TABLE IF NOT EXISTS items (
+    id SERIAL PRIMARY KEY,
+    name TEXT UNIQUE,
+    url TEXT UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS abilities (
+    id SERIAL PRIMARY KEY,
+    name TEXT UNIQUE,
+    url TEXT UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS natures (
+    id SERIAL PRIMARY KEY,
+    name TEXT UNIQUE,
+    url TEXT UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS cards (
     id SERIAL PRIMARY KEY,
     nickname VARCHAR(15),
     gender BOOLEAN NOT NULL DEFAULT TRUE,
@@ -23,66 +64,26 @@ CREATE TABLE cards (
 );
 
 
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(15) NOT NULL UNIQUE,
-    password TEXT NOT NULL,
-    favorite TEXT
-);
-
-
-CREATE TABLE teams (
-    id SERIAL PRIMARY KEY NOT NULL,
-    name VARCHAR(15) NOT NULL
-);
-
-
-CREATE TABLE moves (
-    id SERIAL PRIMARY KEY,
-    name TEXT,
-    type TEXT,
-    URL TEXT
-)
-
-
-CREATE TABLE items (
-    id SERIAL PRIMARY KEY,
-    name TEXT,
-    URL TEXT
-)
-
-CREATE TABLE abilities (
-    id SERIAL PRIMARY KEY,
-    name TEXT,
-    URL TEXT
-)
-
-CREATE TABLE natures (
-    id SERIAL PRIMARY KEY,
-    name TEXT,
-    URL TEXT
-)
-
-CREATE TABLE users_cards (
+CREATE TABLE IF NOT EXISTS users_cards (
     id SERIAL PRIMARY KEY,
     card_id INTEGER REFERENCES cards (id),
-    user_id INTEGER REFERENCES users (id),
+    user_id INTEGER REFERENCES users (id)
 );
 
-CREATE TABLE teams_cards (
+CREATE TABLE IF NOT EXISTS teams_cards (
     id SERIAL PRIMARY KEY,
     card_id INTEGER REFERENCES cards (id),
-    team_id INTEGER REFERENCES teams (id),
+    team_id INTEGER REFERENCES teams (id)
 );
 
-CREATE TABLE users_teams (
+CREATE TABLE IF NOT EXISTS users_teams (
     id SERIAL PRIMARY KEY,
     team_id INTEGER REFERENCES teams (id),
-    user_id INTEGER REFERENCES users (id),
+    user_id INTEGER REFERENCES users (id)
 );
 
-CREATE TABLE cards_moves (
+CREATE TABLE IF NOT EXISTS cards_moves (
     id SERIAL PRIMARY KEY,
     move_id INTEGER REFERENCES moves (id),
-    card_id INTEGER REFERENCES cards (id),
+    card_id INTEGER REFERENCES cards (id)
 );
