@@ -4,16 +4,15 @@
 
 const express = require("express");
 const cors = require("cors");
+const logger = require("morgan");
 
 const { NotFoundError } = require("./expressError");
 
-const morgan = require("morgan");
+const app = express();
 
 app.use(cors());
-// Parse request bodies for JSON
 app.use(express.json());
-/** Logs the route requested, HTTP verb, and much more. */
-app.use(morgan("dev"));
+app.use(logger("dev"));
 
 /** Handle 404 errors -- this matches everything */
 app.use(function(req, res, next) {
