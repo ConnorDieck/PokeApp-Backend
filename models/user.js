@@ -21,7 +21,7 @@ class User {
 		const result = await db.query(
 			`SELECT username,
                     password,
-                    favorite
+                    favorite_id AS "favoriteID"
             FROM users
             WHERE username = $1`,
 			[ username ]
@@ -49,7 +49,7 @@ class User {
      * Throws BadRequestError on duplicates.
      */
 
-	static async register({ username, password }) {
+	static async register({ username, password, favoriteID }) {
 		const duplicateCheck = await db.query(
 			`SELECT username
             FROM users
@@ -65,10 +65,10 @@ class User {
 
 		const result = await db.query(
 			`INSERT INTO users
-            (username, password, favorite)
+            (username, password, favorite_id)
             VALUES ($1, $2, $3)
-            RETURNING username, favorite`,
-			[ username, password, favorite ]
+            RETURNING username, favorite_id AS "favoriteID"`,
+			[ username, password, favoriteID ]
 		);
 
 		const user = result.rows[0];
@@ -76,3 +76,5 @@ class User {
 		return user;
 	}
 }
+
+module.exports = User;

@@ -25,11 +25,11 @@ class Card {
 			`SELECT c.id,
 						c.nickname,
 						c.gender,
-						c.nature,
-						c.ability,
 						c.art,
+						c.nature_id AS "natureID",
+						c.ability_id AS "ability_ID",
 						c.species_id AS "speciesID",
-						c.item
+						c.item_id AS "itemID"
 				FROM cards c
 					LEFT JOIN users_cards AS uc ON c.id = uc.card_id
 					LEFT JOIN users AS u ON uc.user_id = u.id

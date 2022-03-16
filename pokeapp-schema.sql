@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(15) NOT NULL UNIQUE,
     password TEXT NOT NULL,
-    favorite TEXT
+    favorite_id INTEGER REFERENCES species (id) DEFAULT NULL
 );
 
 
@@ -56,11 +56,11 @@ CREATE TABLE IF NOT EXISTS cards (
     id SERIAL PRIMARY KEY,
     nickname VARCHAR(15),
     gender BOOLEAN NOT NULL DEFAULT TRUE,
-    nature INTEGER REFERENCES natures (id),
-    ability INTEGER REFERENCES abilities (id),
     art TEXT,
+    nature_id INTEGER REFERENCES natures (id),
+    ability_id INTEGER REFERENCES abilities (id),
     species_id INTEGER REFERENCES species (id) NOT NULL,
-    item INTEGER REFERENCES items (id)
+    item_id INTEGER REFERENCES items (id)
 );
 
 

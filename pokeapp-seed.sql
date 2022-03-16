@@ -1,4 +1,4 @@
-INSERT INTO users (username, password, favorite)
+INSERT INTO users (username, password, favorite_id)
 VALUES ('cooperdoon', 'letmein', 257),
        ('bigboynick', 'yum', 68),
        ('chadmaster', 'passwordle', 475);
