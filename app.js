@@ -8,11 +8,19 @@ const logger = require("morgan");
 
 const { NotFoundError } = require("./expressError");
 
+const { authenticateJWT } = require("./middleware/auth");
+const authRoutes = require("./routes/auth");
+const cardsRoutes = require("./routes/cards");
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(logger("dev"));
+app.use(authenticateJWT);
+
+app.use("/auth", authRoutes);
+app.use("/cards", cardsRoutes);
 
 /** Handle 404 errors -- this matches everything */
 app.use(function(req, res, next) {
