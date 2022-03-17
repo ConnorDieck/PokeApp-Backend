@@ -20,7 +20,7 @@ class Card {
 	// }
 
 	// Gets all cards built by given user
-	static async getAll(userId) {
+	static async getAll(username) {
 		const cardsRes = await db.query(
 			`SELECT c.id,
 						c.nickname,
@@ -32,9 +32,8 @@ class Card {
 						c.item_id AS "itemID"
 				FROM cards c
 					LEFT JOIN users_cards AS uc ON c.id = uc.card_id
-					LEFT JOIN users AS u ON uc.user_id = u.id
-				WHERE uc.id = $1`,
-			[ userId ]
+				WHERE uc.username = $1`,
+			[ username ]
 		);
 
 		if (!cardsRes.rows[0]) throw new NotFoundError("No Pokemon built yet");
@@ -43,13 +42,13 @@ class Card {
 	}
 
 	// Saves a new card to the database
-	static async save(cardData, userId) {
+	static async save(cardData, username) {
 		const duplicateCheck = await db.query(
 			`SELECT nickname
 			 FROM cards c
 			 	LEFT JOIN users_cards AS uc ON c.id = uc.card_id
-			 WHERE nickname = $1 AND uc.user_id = $2`,
-			[ cardData.nickname, userId ]
+			 WHERE nickname = $1 AND uc.username = $2`,
+			[ cardData.nickname, username ]
 		);
 
 		if (duplicateCheck.rows[0]) throw new BadRequestError(`Duplicate nickname: ${cardData.nickname}`);
@@ -73,9 +72,9 @@ class Card {
 
 		const userRes = await db.query(
 			`INSERT INTO users_cards
-			 (user_id, card_id)
+			 (username, card_id)
 			VALUES ($1, $2)`,
-			[ userId, card.id ]
+			[ username, card.id ]
 		);
 
 		const move1Res = await db.query(

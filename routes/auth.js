@@ -39,6 +39,7 @@ router.post("/register", async function(req, res, next) {
 	try {
 		const newUser = await User.register({ ...req.body, isAdmin: false });
 		const token = createToken(newUser);
+		// res.locals.user = jwt.verify(token, SECRET_KEY);
 		return res.status(201).json({ token });
 	} catch (e) {
 		return next(e);

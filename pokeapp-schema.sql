@@ -13,10 +13,10 @@
 -- );
 
 CREATE TABLE IF NOT EXISTS users (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(15) NOT NULL UNIQUE,
+    username VARCHAR(25) PRIMARY KEY,
     password TEXT NOT NULL,
-    favorite_id INTEGER REFERENCES species (id) DEFAULT NULL
+    favorite_id INTEGER 
+        REFERENCES species (id) DEFAULT NULL
 );
 
 
@@ -57,17 +57,21 @@ CREATE TABLE IF NOT EXISTS cards (
     nickname VARCHAR(15),
     gender BOOLEAN NOT NULL DEFAULT TRUE,
     art TEXT,
-    nature_id INTEGER REFERENCES natures (id),
-    ability_id INTEGER REFERENCES abilities (id),
-    species_id INTEGER REFERENCES species (id) NOT NULL,
-    item_id INTEGER REFERENCES items (id)
+    nature_id INTEGER 
+        REFERENCES natures (id),
+    ability_id INTEGER 
+        REFERENCES abilities (id),
+    species_id INTEGER 
+        REFERENCES species (id) NOT NULL,
+    item_id INTEGER 
+        REFERENCES items (id)
 );
 
 
 CREATE TABLE IF NOT EXISTS users_cards (
     id SERIAL PRIMARY KEY,
-    card_id INTEGER REFERENCES cards (id),
-    user_id INTEGER REFERENCES users (id)
+    username VARCHAR(25) REFERENCES users,
+    card_id INTEGER REFERENCES cards (id)
 );
 
 CREATE TABLE IF NOT EXISTS teams_cards (
@@ -78,12 +82,13 @@ CREATE TABLE IF NOT EXISTS teams_cards (
 
 CREATE TABLE IF NOT EXISTS users_teams (
     id SERIAL PRIMARY KEY,
-    team_id INTEGER REFERENCES teams (id),
-    user_id INTEGER REFERENCES users (id)
+    username VARCHAR(25) REFERENCES users,
+    team_id INTEGER REFERENCES teams (id)
 );
 
 CREATE TABLE IF NOT EXISTS cards_moves (
     id SERIAL PRIMARY KEY,
-    move_id INTEGER REFERENCES moves (id),
-    card_id INTEGER REFERENCES cards (id)
+    card_id INTEGER REFERENCES cards (id),
+    move_id INTEGER REFERENCES moves (id)
+    
 );
