@@ -45,7 +45,7 @@ router.post("/", ensureLoggedIn, async function(req, res, next) {
 });
 
 /** GET /:cardId =>
- *      { cards: [ id, nickname, gender, nature, ability, art, species, item]...}
+ *      {  id, nickname, gender, nature, ability, art, species, item }
  * 
  * Authorization required: logged in 
  * (a user can get a card they don't own, they simply can't edit it)
@@ -55,6 +55,24 @@ router.get("/:cardId", ensureLoggedIn, async function(req, res, next) {
 	try {
 		const cardId = req.params.cardId;
 		const result = await Card.get(cardId);
+		return res.json(result);
+	} catch (e) {
+		return next(e);
+	}
+});
+
+/** PATCH /:cardId =>
+ *      {  id, nickname, gender, nature, ability, art, species, item }
+ * 
+ * Authorization required: logged in 
+ * (will throw error if no card is found with matching username and cardId)
+ */
+
+router.patch("/:cardId/edit", ensureLoggedIn, async function(req, res, next) {
+	try {
+		const user = res.locals.user;
+		const data = req.body;
+		const result = await Card.edit(data, user.username);
 		return res.json(result);
 	} catch (e) {
 		return next(e);

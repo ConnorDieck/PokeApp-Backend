@@ -117,6 +117,19 @@ class Card {
 		const card = res.rows[0];
 		return card;
 	}
+
+	static async edit(cardData, username) {
+		const ownerCheck = await db.query(
+			`SELECT card_id
+			 FROM users_cards AS uc
+			 WHERE uc.card_id = $1 AND uc.username = $2`,
+			[ cardData.id, username ]
+		);
+
+		if (!ownerCheck.rows[0]) throw new NotFoundError("No card owned with given id");
+
+		return ownerCheck.rows[0];
+	}
 }
 
 module.exports = Card;
