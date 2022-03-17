@@ -37,7 +37,7 @@ router.get("/", ensureLoggedIn, async function(req, res, next) {
 router.post("/", ensureLoggedIn, async function(req, res, next) {
 	try {
 		const user = res.locals.user;
-		const newCard = await Card.save(req.body, user.username);
+		const newCard = await Card.create(req.body, user.username);
 		return res.status(201).json(newCard);
 	} catch (e) {
 		return next(e);

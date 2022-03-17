@@ -31,7 +31,7 @@ class Card {
 	}
 
 	// Saves a new card to the database
-	static async save(cardData, username) {
+	static async create(cardData, username) {
 		const duplicateCheck = await db.query(
 			`SELECT nickname
 			 FROM cards c
