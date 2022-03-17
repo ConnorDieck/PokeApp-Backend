@@ -3,10 +3,10 @@ VALUES ('cooperdoon', 'letmein', 257),
        ('bigboynick', 'yum', 68),
        ('chadmaster', 'passwordle', 475);
 
-INSERT INTO teams (name)
-VALUES ('cooperteam'),
-        ('nickteam'),
-        ('chadders');
+INSERT INTO teams (name, username)
+VALUES ('cooperteam', 'cooperdoon'),
+        ('nickteam', 'bigboynick'),
+        ('chadders', 'chadmaster');
 
 INSERT INTO moves (name, type, url)
 VALUES  ('swords-dance', 'Normal', 'https://pokeapi.co/api/v2/move/14/'),

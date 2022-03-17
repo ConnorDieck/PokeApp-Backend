@@ -22,7 +22,8 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS teams (
     id SERIAL PRIMARY KEY NOT NULL,
-    name VARCHAR(15) NOT NULL
+    name VARCHAR(15) NOT NULL,
+    username VARCHAR(25) REFERENCES users ON DELETE CASCADE
 );
 
 
@@ -57,22 +58,23 @@ CREATE TABLE IF NOT EXISTS cards (
     nickname VARCHAR(15),
     gender BOOLEAN NOT NULL DEFAULT TRUE,
     art TEXT,
+    username VARCHAR(25) REFERENCES users ON DELETE CASCADE,
     nature_id INTEGER 
-        REFERENCES natures (id),
+        REFERENCES natures (id) ON DELETE SET NULL,
     ability_id INTEGER 
-        REFERENCES abilities (id),
+        REFERENCES abilities (id) ON DELETE SET NULL,
     species_id INTEGER 
         REFERENCES species (id) NOT NULL,
     item_id INTEGER 
-        REFERENCES items (id)
+        REFERENCES items (id) ON DELETE SET NULL
 );
 
 
-CREATE TABLE IF NOT EXISTS users_cards (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(25) REFERENCES users,
-    card_id INTEGER REFERENCES cards (id)
-);
+-- CREATE TABLE IF NOT EXISTS users_cards (
+--     id SERIAL PRIMARY KEY,
+--     username VARCHAR(25) REFERENCES users,
+--     card_id INTEGER REFERENCES cards (id)
+-- );
 
 CREATE TABLE IF NOT EXISTS teams_cards (
     id SERIAL PRIMARY KEY,
@@ -80,11 +82,11 @@ CREATE TABLE IF NOT EXISTS teams_cards (
     team_id INTEGER REFERENCES teams (id)
 );
 
-CREATE TABLE IF NOT EXISTS users_teams (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(25) REFERENCES users,
-    team_id INTEGER REFERENCES teams (id)
-);
+-- CREATE TABLE IF NOT EXISTS users_teams (
+--     id SERIAL PRIMARY KEY,
+--     username VARCHAR(25) REFERENCES users,
+--     team_id INTEGER REFERENCES teams (id)
+-- );
 
 CREATE TABLE IF NOT EXISTS cards_moves (
     id SERIAL PRIMARY KEY,
