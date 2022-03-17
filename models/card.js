@@ -8,17 +8,6 @@ const { setPokemonBase } = require("../helpers/transform");
 /** Related functions for pokemon builds */
 
 class Card {
-	// constructor(id, nickname, gender, nature, ability, art, species, item) {
-	// 	(this.id = id),
-	// 		(this.nickname = nickname),
-	// 		(this.gender = gender),
-	// 		(this.nature = nature),
-	// 		(this.ability = ability),
-	// 		(this.art = art),
-	// 		(this.species = species),
-	// 		(this.item = item);
-	// }
-
 	// Gets all cards built by given user
 	static async getAll(username) {
 		const cardsRes = await db.query(
@@ -26,10 +15,10 @@ class Card {
 						c.nickname,
 						c.gender,
 						c.art,
-						c.nature_id AS "natureID",
-						c.ability_id AS "ability_ID",
-						c.species_id AS "speciesID",
-						c.item_id AS "itemID"
+						c.nature_id AS "natureId",
+						c.ability_id AS "ability_Id",
+						c.species_id AS "speciesId",
+						c.item_id AS "itemId"
 				FROM cards c
 					LEFT JOIN users_cards AS uc ON c.id = uc.card_id
 				WHERE uc.username = $1`,
@@ -57,15 +46,15 @@ class Card {
 			`INSERT INTO cards
 			 (nickname, gender, art, nature_id, ability_id, species_id, item_id)
 			 VALUES ($1, $2, $3, $4, $5, $6, $7)
-			 RETURNING id, nickname, gender, nature_id AS "natureID", ability_id AS "abilityID", art, species_id AS "speciesID", item_id AS "itemID"`,
+			 RETURNING id, nickname, gender, nature_id AS "natureId", ability_id AS "abilityId", art, species_id AS "speciesId", item_id AS "itemId"`,
 			[
 				cardData.nickname,
 				cardData.gender,
 				cardData.art,
-				cardData.natureID,
-				cardData.abilityID,
-				cardData.speciesID,
-				cardData.itemID
+				cardData.natureId,
+				cardData.abilityId,
+				cardData.speciesId,
+				cardData.itemId
 			]
 		);
 		const card = cardRes.rows[0];
@@ -81,38 +70,52 @@ class Card {
 			`INSERT INTO cards_moves
 			 (card_id, move_id)
 			 VALUES ($1, $2)`,
-			[ card.id, cardData.move1ID ]
+			[ card.id, cardData.move1Id ]
 		);
 		const move2Res = await db.query(
 			`INSERT INTO cards_moves
 			 (card_id, move_id)
 			 VALUES ($1, $2)`,
-			[ card.id, cardData.move2ID ]
+			[ card.id, cardData.move2Id ]
 		);
 		const move3Res = await db.query(
 			`INSERT INTO cards_moves
 			 (card_id, move_id)
 			 VALUES ($1, $2)`,
-			[ card.id, cardData.move3ID ]
+			[ card.id, cardData.move3Id ]
 		);
 		const move4Res = await db.query(
 			`INSERT INTO cards_moves
 			 (card_id, move_id)
 			 VALUES ($1, $2)`,
-			[ card.id, cardData.move4ID ]
+			[ card.id, cardData.move4Id ]
 		);
 
 		const newCard = {
 			...card,
-			move1ID : cardData.move1ID,
-			move2ID : cardData.move2ID,
-			move3ID : cardData.move3ID,
-			move4ID : cardData.move4ID
+			move1Id : cardData.move1Id,
+			move2Id : cardData.move2Id,
+			move3Id : cardData.move3Id,
+			move4Id : cardData.move4Id
 		};
 
 		console.log("new card:", newCard);
 
 		return newCard;
+	}
+
+	static async get(cardId) {
+		const res = await db.query(
+			`SELECT nickname, gender, art, nature_id, ability_id, species_id, item_id
+			 FROM cards
+			 WHERE id = $1`,
+			[ cardId ]
+		);
+
+		if (!res.rows[0]) throw new NotFoundError("No card with given id");
+
+		const card = res.rows[0];
+		return card;
 	}
 }
 

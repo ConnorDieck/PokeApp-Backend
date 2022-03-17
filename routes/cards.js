@@ -44,4 +44,21 @@ router.post("/", ensureLoggedIn, async function(req, res, next) {
 	}
 });
 
+/** GET /:cardId =>
+ *      { cards: [ id, nickname, gender, nature, ability, art, species, item]...}
+ * 
+ * Authorization required: logged in 
+ * (a user can get a card they don't own, they simply can't edit it)
+ */
+
+router.get("/:cardId", ensureLoggedIn, async function(req, res, next) {
+	try {
+		const cardId = req.params.cardId;
+		const result = await Card.get(cardId);
+		return res.json(result);
+	} catch (e) {
+		return next(e);
+	}
+});
+
 module.exports = router;
