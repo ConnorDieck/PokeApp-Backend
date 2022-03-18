@@ -71,8 +71,9 @@ router.get("/:cardId", ensureLoggedIn, async function(req, res, next) {
 router.patch("/:cardId/edit", ensureLoggedIn, async function(req, res, next) {
 	try {
 		const user = res.locals.user;
+		const cardId = req.params.cardId;
 		const data = req.body;
-		const result = await Card.edit(data, user.username);
+		const result = await Card.edit(cardId, user.username, data);
 		return res.json(result);
 	} catch (e) {
 		return next(e);

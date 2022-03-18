@@ -34,9 +34,8 @@ class Card {
 	static async create(cardData, username) {
 		const duplicateCheck = await db.query(
 			`SELECT nickname
-			 FROM cards c
-			 	LEFT JOIN users_cards AS uc ON c.id = uc.card_id
-			 WHERE nickname = $1 AND uc.username = $2`,
+			 FROM cards
+			 WHERE nickname = $1 AND username = $2`,
 			[ cardData.nickname, username ]
 		);
 
@@ -44,12 +43,13 @@ class Card {
 
 		const cardRes = await db.query(
 			`INSERT INTO cards
-			 (nickname, gender, art, nature_id, ability_id, species_id, item_id)
-			 VALUES ($1, $2, $3, $4, $5, $6, $7)
+			 (nickname, gender, username, art, nature_id, ability_id, species_id, item_id)
+			 VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 			 RETURNING id, nickname, gender, nature_id AS "natureId", ability_id AS "abilityId", art, species_id AS "speciesId", item_id AS "itemId"`,
 			[
 				cardData.nickname,
 				cardData.gender,
+				username,
 				cardData.art,
 				cardData.natureId,
 				cardData.abilityId,
@@ -58,13 +58,6 @@ class Card {
 			]
 		);
 		const card = cardRes.rows[0];
-
-		const userRes = await db.query(
-			`INSERT INTO users_cards
-			 (username, card_id)
-			VALUES ($1, $2)`,
-			[ username, card.id ]
-		);
 
 		const move1Res = await db.query(
 			`INSERT INTO cards_moves
@@ -106,7 +99,7 @@ class Card {
 
 	static async get(cardId) {
 		const res = await db.query(
-			`SELECT nickname, gender, art, nature_id, ability_id, species_id, item_id
+			`SELECT nickname, gender, username, art, nature_id, ability_id, species_id, item_id
 			 FROM cards
 			 WHERE id = $1`,
 			[ cardId ]
@@ -115,18 +108,36 @@ class Card {
 		if (!res.rows[0]) throw new NotFoundError("No card with given id");
 
 		const card = res.rows[0];
+		/** TO DO:
+		 *  
+		 *  Get associated moves and add to returned card object
+		 */
+
 		return card;
 	}
 
-	static async edit(cardData, username) {
+	static async edit(cardId, username, data) {
+		console.log(username, data);
 		const ownerCheck = await db.query(
 			`SELECT card_id
 			 FROM users_cards AS uc
 			 WHERE uc.card_id = $1 AND uc.username = $2`,
-			[ cardData.id, username ]
+			[ cardId, username ]
 		);
 
 		if (!ownerCheck.rows[0]) throw new NotFoundError("No card owned with given id");
+
+		const { nickname, gender, natureId, abilityId, speciesId, itemId, move1Id, move2Id, move3Id, move4Id } = data;
+
+		const { setCols, values } = sqlForPartialUpdate(data, {
+			natureId  : "nature_id",
+			abilityId : "ability_id",
+			itemId    : "item_id",
+			move1Id   : "move1_id",
+			move2Id   : "move2_id",
+			move3Id   : "move3_id",
+			move4Id   : "move4_id"
+		});
 
 		return ownerCheck.rows[0];
 	}

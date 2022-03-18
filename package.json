@@ -1,31 +1,30 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "- API: https://pokeapi.co/docs/v2",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ConnorDieck/PokeApp-Backend.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ConnorDieck/PokeApp-Backend/issues"
-  },
-  "homepage": "https://github.com/ConnorDieck/PokeApp-Backend#readme",
-  "dependencies": {
-    "axios": "^0.26.0",
-    "bcrypt": "^5.0.1",
-    "colors": "^1.4.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.0",
-    "express": "^4.17.3",
-    "jsonwebtoken": "^8.5.1",
-    "morgan": "^1.10.0",
-    "pg": "^8.7.3"
-  }
+	"name": "backend",
+	"version": "1.0.0",
+	"description": "- API: https://pokeapi.co/docs/v2",
+	"main": "index.js",
+	"scripts": {
+		"test": "jest -i"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ConnorDieck/PokeApp-Backend.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/ConnorDieck/PokeApp-Backend/issues"
+	},
+	"homepage": "https://github.com/ConnorDieck/PokeApp-Backend#readme",
+	"dependencies": {
+		"bcrypt": "^5.0.1",
+		"colors": "^1.4.0",
+		"cors": "^2.8.5",
+		"dotenv": "^16.0.0",
+		"express": "^4.17.3",
+		"jsonwebtoken": "^8.5.1",
+		"morgan": "^1.10.0",
+		"pg": "^8.7.3"
+	}
 }

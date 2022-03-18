@@ -60,6 +60,24 @@ function ensureCorrectUser(req, res, next) {
 	}
 }
 
+/** Middleware to use when they must provide a valid token & be user who owns
+ *  the card provided in route param.
+ *
+ *  If not, raises Unauthorized.
+ */
+
+//  function ensureOwner(req, res, next) {
+// 	try {
+// 		const user = res.locals.user;
+// 		if (!(user && user.username === req.params.username)) {
+// 			throw new UnauthorizedError();
+// 		}
+// 		return next();
+// 	} catch (err) {
+// 		return next(err);
+// 	}
+// }
+
 module.exports = {
 	authenticateJWT,
 	ensureLoggedIn,
