@@ -45,7 +45,7 @@ class Card {
 			`INSERT INTO cards
 			 (nickname, gender, username, art, nature_id, ability_id, species_id, item_id)
 			 VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-			 RETURNING id, nickname, gender, nature_id AS "natureId", ability_id AS "abilityId", art, species_id AS "speciesId", item_id AS "itemId"`,
+			 RETURNING id, nickname, art, username, gender, nature_id AS "natureId", ability_id AS "abilityId", art, species_id AS "speciesId", item_id AS "itemId"`,
 			[
 				cardData.nickname,
 				cardData.gender,
@@ -92,7 +92,7 @@ class Card {
 			move4Id : cardData.move4Id
 		};
 
-		console.log("new card:", newCard);
+		// console.log("new card:", newCard);
 
 		return newCard;
 	}
@@ -117,7 +117,6 @@ class Card {
 	}
 
 	static async edit(cardId, username, data) {
-		console.log(username, data);
 		const ownerCheck = await db.query(
 			`SELECT card_id
 			 FROM users_cards AS uc

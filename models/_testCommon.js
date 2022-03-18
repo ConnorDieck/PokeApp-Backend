@@ -7,6 +7,8 @@ const testTeamIds = [];
 const testMoveIds = [];
 const testAbilityIds = [];
 const testItemIds = [];
+const testNatureIds = [];
+const testUsernames = [];
 
 async function commonBeforeAll() {
 	// noinspection SqlWithoutWhere
@@ -28,30 +30,20 @@ async function commonBeforeAll() {
 	// noinspection SqlWithoutWhere
 	await db.query("DELETE FROM cards_moves");
 
-	await db.query(`
-    INSERT INTO species (
-        pokedex_no,
-        name,
-        url,
-        sprite,
-        type1,
-        type2
-    )
-    VALUES 
-        (82,'Machamp','https://pokeapi.co/api/v2/pokemon/82','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/82.png','Fighting',NULL),
-        (295,'Blaziken','https://pokeapi.co/api/v2/pokemon/295','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/183.png','Fire','Fighting'),
-        (527,'Gallade','https://pokeapi.co/api/v2/pokemon/527','https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/183.png','Psychic','Fighting')`);
-
-	await db.query(`
+	const resultsUsers = await db.query(
+		`
     INSERT INTO users (username, password, favorite_id)
-    VALUES ('user1', '$1', 257),
-           ('user2', '$2', 68),
-           ('user3', '$3', 475)`),
+    VALUES ('user1', $1, 257),
+           ('user2', $2, 68),
+           ('user3', $3, 475)
+	RETURNING username`,
 		[
 			await bcrypt.hash("upass1", BCRYPT_WORK_FACTOR),
 			await bcrypt.hash("upass2", BCRYPT_WORK_FACTOR),
 			await bcrypt.hash("upass3", BCRYPT_WORK_FACTOR)
-		];
+		]
+	);
+	testUsernames.splice(0, 0, ...resultsUsers.rows.map(r => r.username));
 
 	const resultsTeams = await db.query(`
     INSERT INTO teams (name, username)
@@ -76,20 +68,23 @@ async function commonBeforeAll() {
     INSERT INTO items (name, url)
     VALUES  ('soda-pop', 'https://pokeapi.co/api/v2/item/31/'),
             ('moomoo-milk', 'https://pokeapi.co/api/v2/item/33/'),
-            ('escape-rope', 'https://pokeapi.co/api/v2/item/78/')`);
+            ('escape-rope', 'https://pokeapi.co/api/v2/item/78/')
+	RETURNING id`);
 	testItemIds.splice(0, 0, ...resultsItems.rows.map(r => r.id));
 
 	const resultsAbilities = await db.query(`
     INSERT INTO abilities (name, url)
     VALUES  ('speed-boost', 'https://pokeapi.co/api/v2/ability/3/'),
             ('justified', 'https://pokeapi.co/api/v2/ability/154/'),
-            ('guts', 'https://pokeapi.co/api/v2/ability/62/')`);
-	testAbilityIds.splice(0, 0, ...resultsAbilitys.rows.map(r => r.id));
+            ('guts', 'https://pokeapi.co/api/v2/ability/62/')
+	RETURNING id`);
+	testAbilityIds.splice(0, 0, ...resultsAbilities.rows.map(r => r.id));
 
 	const resultsNatures = await db.query(`
     INSERT INTO natures (name, url)
     VALUES  ('adamant', 'https://pokeapi.co/api/v2/nature/11/'),
-            ('jolly', 'https://pokeapi.co/api/v2/nature/16/')`);
+            ('jolly', 'https://pokeapi.co/api/v2/nature/16/')
+	RETURNING id`);
 	testNatureIds.splice(0, 0, ...resultsNatures.rows.map(r => r.id));
 }
 
@@ -114,5 +109,6 @@ module.exports = {
 	testItemIds,
 	testMoveIds,
 	testTeamIds,
-	testNatureIds
+	testNatureIds,
+	testUsernames
 };
