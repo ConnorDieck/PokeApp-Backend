@@ -1,6 +1,7 @@
 "use strict";
 
 const db = require("../db");
+const Move = require("./move");
 const { BadRequestError, NotFoundError } = require("../expressError");
 const { sqlForPartialUpdate } = require("../helpers/sql");
 const { setPokemonBase } = require("../helpers/transform");
@@ -8,7 +9,7 @@ const { setPokemonBase } = require("../helpers/transform");
 /** Related functions for pokemon builds */
 
 class Card {
-	// Gets all cards built by given user
+	/** Gets all cards built by given user */
 	static async getAll(username) {
 		const cardsRes = await db.query(
 			`SELECT c.id,
@@ -30,7 +31,8 @@ class Card {
 		return cardsRes.rows;
 	}
 
-	// Saves a new card to the database
+	/** Saves a new card to the database */
+
 	static async create(cardData, username) {
 		const duplicateCheck = await db.query(
 			`SELECT nickname
@@ -59,30 +61,36 @@ class Card {
 		);
 		const card = cardRes.rows[0];
 
-		const move1Res = await db.query(
-			`INSERT INTO cards_moves
-			 (card_id, move_id)
-			 VALUES ($1, $2)`,
-			[ card.id, cardData.move1Id ]
-		);
-		const move2Res = await db.query(
-			`INSERT INTO cards_moves
-			 (card_id, move_id)
-			 VALUES ($1, $2)`,
-			[ card.id, cardData.move2Id ]
-		);
-		const move3Res = await db.query(
-			`INSERT INTO cards_moves
-			 (card_id, move_id)
-			 VALUES ($1, $2)`,
-			[ card.id, cardData.move3Id ]
-		);
-		const move4Res = await db.query(
-			`INSERT INTO cards_moves
-			 (card_id, move_id)
-			 VALUES ($1, $2)`,
-			[ card.id, cardData.move4Id ]
-		);
+		// TO DO: Update with Move.add() method
+		// const move1Res = await db.query(
+		// 	`INSERT INTO cards_moves
+		// 	 (card_id, move_id)
+		// 	 VALUES ($1, $2)`,
+		// 	[ card.id, cardData.move1Id ]
+		// );
+		// const move2Res = await db.query(
+		// 	`INSERT INTO cards_moves
+		// 	 (card_id, move_id)
+		// 	 VALUES ($1, $2)`,
+		// 	[ card.id, cardData.move2Id ]
+		// );
+		// const move3Res = await db.query(
+		// 	`INSERT INTO cards_moves
+		// 	 (card_id, move_id)
+		// 	 VALUES ($1, $2)`,
+		// 	[ card.id, cardData.move3Id ]
+		// );
+		// const move4Res = await db.query(
+		// 	`INSERT INTO cards_moves
+		// 	 (card_id, move_id)
+		// 	 VALUES ($1, $2)`,
+		// 	[ card.id, cardData.move4Id ]
+		// );
+
+		await Move.addToCard(card.id, cardData.move1Id);
+		await Move.addToCard(card.id, cardData.move2Id);
+		await Move.addToCard(card.id, cardData.move3Id);
+		await Move.addToCard(card.id, cardData.move4Id);
 
 		const newCard = {
 			...card,
@@ -97,25 +105,48 @@ class Card {
 		return newCard;
 	}
 
+	/** TO DO */
+	/** Returns details of one card given card's id */
 	static async get(cardId) {
 		const res = await db.query(
-			`SELECT nickname, gender, username, art, nature_id, ability_id, species_id, item_id
+			`SELECT id, nickname, art, username, gender, nature_id AS "natureId", ability_id AS "abilityId", art, species_id AS "speciesId", item_id AS "itemId"
 			 FROM cards
 			 WHERE id = $1`,
 			[ cardId ]
 		);
 
-		if (!res.rows[0]) throw new NotFoundError("No card with given id");
+		if (!res.rows[0]) throw new NotFoundError(`No card with given id: ${cardId}`);
 
-		const card = res.rows[0];
+		const cardRes = res.rows[0];
 		/** TO DO:
 		 *  
 		 *  Get associated moves and add to returned card object
 		 */
 
+		// const movesRes = await db.query(
+		// 	`SELECT move_id
+		// 	 FROM cards_moves
+		// 	 WHERE card_id = $1`,
+		// 	[ cardId ]
+		// );
+
+		// const moves = movesRes.rows;
+
+		const moves = await Move.getAllFromCard(cardId);
+
+		const card = {
+			...cardRes,
+			move1Id : moves[0],
+			move2Id : moves[1],
+			move3Id : moves[2],
+			move4Id : moves[3]
+		};
+
 		return card;
 	}
 
+	/** TO DO */
+	/** Given update data, card ID and user, updates card in database */
 	static async edit(cardId, username, data) {
 		const ownerCheck = await db.query(
 			`SELECT card_id

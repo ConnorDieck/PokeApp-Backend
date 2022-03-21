@@ -52,6 +52,21 @@ class Move {
 		return cardMove;
 	}
 
+	// Gets all moves associated to a card
+	static async getAllFromCard(cardId) {
+		const result = await db.query(
+			`SELECT move_id
+            FROM cards_moves
+            WHERE card_id = $1`,
+			[ cardId ]
+		);
+
+		if (!result.rows[0]) throw new NotFoundError(`No moves associated with given card: ${cardId}`);
+
+		const moveIds = result.rows.map(r => r.move_id);
+		return moveIds;
+	}
+
 	// Removes a move from a card
 	static async removeFromCard({ id, cardId }) {
 		const result = await db.query(
@@ -67,3 +82,5 @@ class Move {
 		return cardMove;
 	}
 }
+
+module.exports = Move;
