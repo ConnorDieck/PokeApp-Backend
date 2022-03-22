@@ -31,30 +31,7 @@ class Move {
 
 	/** Since adding a move to a card requires a SQL transaction, it will all be handled in one method */
 
-	// // Saves a move to a card
-	// static async addToCard({ id, cardId }) {
-	// 	const duplicateCheck = db.query(
-	// 		`SELECT id
-	//          FROM cards_moves
-	//          WHERE move_id = $1 AND card_id = $2`,
-	// 		[ id, cardId ]
-	// 	);
-
-	// 	if (duplicateCheck.rows[0]) throw new BadRequestError(`Move is already saved to card`);
-
-	// 	const result = await db.query(
-	// 		`INSERT INTO cards_moves
-	//          (move_id, card_id)
-	//          VALUES ($1, $2)
-	//          RETURNING move_id AS "moveId", card_id AS "cardId"`,
-	// 		[ id, cardId ]
-	// 	);
-
-	// 	const cardMove = result.rows[0];
-	// 	return cardMove;
-	// }
-
-	// Gets all moves associated to a card
+	/** Gets all moves associated to a card */
 	static async getAllFromCard(cardId) {
 		const result = await db.query(
 			`SELECT move_id
@@ -69,8 +46,8 @@ class Move {
 		return moveIds;
 	}
 
-	// Removes a move from a card
-	static async removeFromCard({ id, cardId }) {
+	/** Removes a move from a card */
+	static async removeFromCard(id, cardId) {
 		const result = await db.query(
 			`DELETE
              FROM cards_moves
