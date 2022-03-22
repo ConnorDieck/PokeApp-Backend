@@ -1,7 +1,10 @@
 INSERT INTO users (username, password, favorite_id)
-VALUES ('cooperdoon', 'letmein', 257),
-       ('bigboynick', 'yum', 68),
-       ('chadmaster', 'passwordle', 475);
+VALUES ('cooperdoon', '$2b$12$5glPdbzCW2QUV/bjgeXyfuG9lOttWWZth9h.pBU0MnmGjz83zMtU.', 257),
+       ('bigboynick', '$2b$12$23/HvzsxfpSZD5iK8RyC9uHOCbH0Yd5f.tqegE15HE3YipLVB8nby', 68),
+       ('chadmaster', '$2b$12$pR51w4evQVmFdoLCyABpFejcex7lxqQEB/54UYAqLVkMdKjBFdUku', 475);
+-- VALUES ('cooperdoon', 'letmein', 257),
+--        ('bigboynick', 'yum', 68),
+--        ('chadmaster', 'passwordle', 475);
 
 INSERT INTO teams (name, username)
 VALUES ('cooperteam', 'cooperdoon'),

@@ -68,13 +68,30 @@ router.get("/:cardId", ensureLoggedIn, async function(req, res, next) {
  * (will throw error if no card is found with matching username and cardId)
  */
 
-router.patch("/:cardId/edit", ensureLoggedIn, async function(req, res, next) {
+router.patch("/:cardId", ensureLoggedIn, async function(req, res, next) {
 	try {
 		const user = res.locals.user;
 		const cardId = req.params.cardId;
 		const data = req.body;
 		const result = await Card.edit(cardId, user.username, data);
 		return res.json(result);
+	} catch (e) {
+		return next(e);
+	}
+});
+
+/** DELETE /:cardId =>
+ *      {  id }
+ * 
+ * Authorization required: logged in 
+ * (will throw error if no card is found with matching username and cardId)
+ */
+
+router.delete("/:cardId", ensureLoggedIn, async function(req, res, next) {
+	try {
+		const cardId = req.params.cardId;
+		const result = await Card.delete(cardId);
+		return res.json({ deleted: +cardId });
 	} catch (e) {
 		return next(e);
 	}

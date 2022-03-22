@@ -94,6 +94,10 @@ async function commonBeforeEach() {
 
 async function commonAfterEach() {
 	await db.query("ROLLBACK");
+
+	// Since creating a card requires committing a transaction, we'll need to manually delete those tables after testing
+	await db.query("DELETE FROM cards");
+	await db.query("DELETE FROM cards_moves");
 }
 
 async function commonAfterAll() {

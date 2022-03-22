@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS teams (
     id SERIAL PRIMARY KEY NOT NULL,
     name VARCHAR(15) NOT NULL,
-    username VARCHAR(25) REFERENCES users ON DELETE CASCADE
+    username VARCHAR(25) REFERENCES users
 );
 
 
@@ -78,8 +78,8 @@ CREATE TABLE IF NOT EXISTS cards (
 
 CREATE TABLE IF NOT EXISTS teams_cards (
     id SERIAL PRIMARY KEY,
-    card_id INTEGER REFERENCES cards (id),
-    team_id INTEGER REFERENCES teams (id)
+    card_id INTEGER REFERENCES cards (id) ON DELETE CASCADE,
+    team_id INTEGER REFERENCES teams (id) ON DELETE CASCADE
 );
 
 -- CREATE TABLE IF NOT EXISTS users_teams (
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS teams_cards (
 
 CREATE TABLE IF NOT EXISTS cards_moves (
     id SERIAL PRIMARY KEY,
-    card_id INTEGER REFERENCES cards (id),
-    move_id INTEGER REFERENCES moves (id)
+    card_id INTEGER REFERENCES cards (id) ON DELETE CASCADE,
+    move_id INTEGER REFERENCES moves (id) ON DELETE CASCADE
     
 );

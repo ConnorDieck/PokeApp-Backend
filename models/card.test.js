@@ -21,6 +21,65 @@ beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
+/************************************** getAll */
+
+describe("getAll", function() {
+	test("works", async function() {
+		const testCard1 = {
+			nickname  : "Spicy",
+			gender    : true,
+			art       :
+				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
+			natureId  : testNatureIds[0],
+			abilityId : testAbilityIds[0],
+			speciesId : 257,
+			itemId    : testItemIds[0],
+			moveIds   : testMoveIds.slice(0, 4)
+		};
+
+		const testCard2 = {
+			nickname  : "Zap",
+			gender    : false,
+			art       :
+				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+			natureId  : testNatureIds[0],
+			abilityId : testAbilityIds[0],
+			speciesId : 25,
+			itemId    : testItemIds[0],
+			moveIds   : testMoveIds.slice(0, 4)
+		};
+
+		await Card.create(testCard1, testUsernames[0]);
+		await Card.create(testCard2, testUsernames[0]);
+
+		// Card.getAll() does not return move ids
+		delete testCard1.moveIds;
+		delete testCard2.moveIds;
+
+		const cards = await Card.getAll(testUsernames[0]);
+
+		expect(cards).toEqual([
+			{
+				...testCard1,
+				id : expect.any(Number)
+			},
+			{
+				...testCard2,
+				id : expect.any(Number)
+			}
+		]);
+	});
+
+	test("Not found error with non-existent username", async function() {
+		try {
+			await Card.getAll("notAUser");
+			fail();
+		} catch (err) {
+			expect(err instanceof NotFoundError).toBeTruthy();
+		}
+	});
+});
+
 /************************************** create */
 
 describe("create", function() {
@@ -29,15 +88,12 @@ describe("create", function() {
 			nickname  : "Spicy",
 			gender    : true,
 			art       :
-				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
 			natureId  : testNatureIds[0],
 			abilityId : testAbilityIds[0],
 			speciesId : 257,
 			itemId    : testItemIds[0],
-			move1Id   : testMoveIds[0],
-			move2Id   : testMoveIds[1],
-			move3Id   : testMoveIds[2],
-			move4Id   : testMoveIds[3]
+			moveIds   : testMoveIds.slice(0, 4)
 		};
 
 		let card = await Card.create(testCard, testUsernames[0]);
@@ -59,7 +115,7 @@ describe("create", function() {
 				gender    : true,
 				username  : "user1",
 				art       :
-					"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+					"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
 				natureId  : testNatureIds[0],
 				abilityId : testAbilityIds[0],
 				speciesId : 257,
@@ -82,15 +138,12 @@ describe("create", function() {
 			nickname  : "Spicy",
 			gender    : true,
 			art       :
-				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
 			natureId  : testNatureIds[0],
 			abilityId : testAbilityIds[0],
 			speciesId : 257,
 			itemId    : testItemIds[0],
-			move1Id   : testMoveIds[0],
-			move2Id   : testMoveIds[1],
-			move3Id   : testMoveIds[2],
-			move4Id   : testMoveIds[3]
+			moveIds   : testMoveIds.slice(0, 4)
 		};
 		try {
 			await Card.create(testCard, testUsernames[0]);
@@ -115,15 +168,10 @@ describe("get", function() {
 			abilityId : testAbilityIds[0],
 			speciesId : 257,
 			itemId    : testItemIds[0],
-			move1Id   : testMoveIds[0],
-			move2Id   : testMoveIds[1],
-			move3Id   : testMoveIds[2],
-			move4Id   : testMoveIds[3]
+			moveIds   : testMoveIds.slice(0, 4)
 		};
 
 		const newCard = await Card.create(testCard, testUsernames[0]);
-
-		console.log("get cardId:", newCard.id);
 
 		const card = await Card.get(newCard.id);
 
@@ -132,22 +180,142 @@ describe("get", function() {
 			id       : expect.any(Number),
 			username : testUsernames[0]
 		});
-
-		// const moveResult = await db.query(
-		// 	`SELECT move_id
-		//      FROM cards_moves
-		//      WHERE card_id = $1`,
-		// 	[ card.id ]
-		// );
-
-		// console.log(moveResult.rows);
-
-		// expect(moveResult.rows.map(r => r.move_id)).toEqual(testMoveIds.slice(0, 4));
 	});
 
 	test("Not found error with non-existent id", async function() {
 		try {
 			await Card.get(9999);
+			fail();
+		} catch (err) {
+			expect(err instanceof NotFoundError).toBeTruthy();
+		}
+	});
+});
+
+/************************************** edit */
+
+describe("edit", function() {
+	test("works", async function() {
+		const testCard = {
+			nickname  : "Spicy",
+			gender    : true,
+			art       :
+				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+			natureId  : testNatureIds[0],
+			abilityId : testAbilityIds[0],
+			speciesId : 257,
+			itemId    : testItemIds[0],
+			moveIds   : testMoveIds.slice(0, 4)
+		};
+
+		const newCard = await Card.create(testCard, testUsernames[0]);
+
+		const newData = {
+			nickname  : "New hotness",
+			gender    : false,
+			art       :
+				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
+			natureId  : testNatureIds[1],
+			abilityId : testAbilityIds[1],
+			speciesId : 257,
+			itemId    : testItemIds[1],
+			moveIds   : testMoveIds.slice(1, 5)
+		};
+
+		const card = await Card.edit(newCard.id, testUsernames[0], newData);
+
+		expect(card).not.toEqual({
+			...testCard,
+			id       : expect.any(Number),
+			username : testUsernames[0]
+		});
+
+		const result = await db.query(
+			`SELECT nickname, art, username, gender, nature_id AS "natureId", ability_id AS "abilityId", art, species_id AS "speciesId", item_id AS "itemId"
+             FROM cards
+             WHERE nickname = 'New hotness'`
+		);
+
+		expect(result.rows[0]).toEqual({
+			nickname  : "New hotness",
+			gender    : false,
+			art       :
+				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
+			natureId  : testNatureIds[1],
+			abilityId : testAbilityIds[1],
+			speciesId : 257,
+			itemId    : testItemIds[1],
+			username  : testUsernames[0]
+		});
+
+		const moveResults = await db.query(
+			`SELECT move_id
+             FROM cards_moves
+             WHERE card_id = $1`,
+			[ card.id ]
+		);
+
+		const newMoveIds = moveResults.rows.map(r => r.move_id);
+
+		expect(newMoveIds).toEqual(newData.moveIds);
+	});
+
+	test("Bad request error with no data", async function() {
+		const testCard = {
+			nickname  : "Spicy",
+			gender    : true,
+			art       :
+				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+			natureId  : testNatureIds[0],
+			abilityId : testAbilityIds[0],
+			speciesId : 257,
+			itemId    : testItemIds[0],
+			moveIds   : testMoveIds.slice(0, 4)
+		};
+
+		const newCard = await Card.create(testCard, testUsernames[0]);
+		try {
+			await Card.edit(newCard.id, testUsernames[0], {});
+			fail();
+		} catch (err) {
+			expect(err instanceof BadRequestError).toBeTruthy();
+		}
+	});
+});
+
+/************************************** delete */
+
+describe("delete", function() {
+	test("works", async function() {
+		const testCard = {
+			nickname  : "Spicy",
+			gender    : true,
+			art       :
+				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+			natureId  : testNatureIds[0],
+			abilityId : testAbilityIds[0],
+			speciesId : 257,
+			itemId    : testItemIds[0],
+			moveIds   : testMoveIds.slice(0, 4)
+		};
+
+		const card = await Card.create(testCard, testUsernames[0]);
+
+		await Card.delete(card.id);
+
+		const results = await db.query(
+			`SELECT nickname, gender, art
+                FROM cards
+                WHERE id = $1`,
+			[ card.id ]
+		);
+
+		expect(results.rows.length).toEqual(0);
+	});
+
+	test("returns not found error if bad id", async function() {
+		try {
+			await Card.delete(9999);
 			fail();
 		} catch (err) {
 			expect(err instanceof NotFoundError).toBeTruthy();
