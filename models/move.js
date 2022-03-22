@@ -8,7 +8,7 @@ const { BadRequestError, NotFoundError } = require("../expressError");
 class Move {
 	// Saves a move to the database
 	static async addToDb({ name, type, url }) {
-		const duplicateCheck = db.query(
+		const duplicateCheck = await db.query(
 			`SELECT name
              FROM moves
              WHERE name = $1`,

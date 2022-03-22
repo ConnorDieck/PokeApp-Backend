@@ -12,9 +12,13 @@ const testUsernames = [];
 
 async function commonBeforeAll() {
 	// noinspection SqlWithoutWhere
-	await db.query("DELETE FROM users");
+	await db.query("DELETE FROM teams_cards");
+	// noinspection SqlWithoutWhere
+	await db.query("DELETE FROM cards_moves");
 	// noinspection SqlWithoutWhere
 	await db.query("DELETE FROM teams");
+	// noinspection SqlWithoutWhere
+	await db.query("DELETE FROM users");
 	// noinspection SqlWithoutWhere
 	await db.query("DELETE FROM moves");
 	// noinspection SqlWithoutWhere
@@ -25,10 +29,6 @@ async function commonBeforeAll() {
 	await db.query("DELETE FROM natures");
 	// noinspection SqlWithoutWhere
 	await db.query("DELETE FROM cards");
-	// noinspection SqlWithoutWhere
-	await db.query("DELETE FROM teams_cards");
-	// noinspection SqlWithoutWhere
-	await db.query("DELETE FROM cards_moves");
 
 	const resultsUsers = await db.query(
 		`
