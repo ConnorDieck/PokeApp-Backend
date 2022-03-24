@@ -9,6 +9,7 @@ const testAbilityIds = [];
 const testItemIds = [];
 const testNatureIds = [];
 const testUsernames = [];
+const testCardIds = [];
 
 async function commonBeforeAll() {
 	// noinspection SqlWithoutWhere
@@ -86,6 +87,33 @@ async function commonBeforeAll() {
             ('jolly', 'https://pokeapi.co/api/v2/nature/16/')
 	RETURNING id`);
 	testNatureIds.splice(0, 0, ...resultsNatures.rows.map(r => r.id));
+
+	/** To discuss: this code doesn't work in testing because cards are only added to the table in development (when COMMIT can be run) */
+
+	// const resultsCards = await db.query(
+	// 	`
+	// INSERT INTO cards (nickname, gender, art, username, nature_id, ability_id, species_id, item_id)
+	// VALUES ('c1', true, 'art1', $1, $2, $3, 1, $4),
+	// 	   ('c2', false, 'art2', $5, $6, $7, 2, $8),
+	// 	   ('c3', false, 'art3', $9, $10, $11, 2, $12)
+	// RETURNING id`,
+	// 	[
+	// 		testUsernames[0],
+	// 		testNatureIds[0],
+	// 		testAbilityIds[0],
+	// 		testItemIds[0],
+	// 		testUsernames[1],
+	// 		testNatureIds[1],
+	// 		testAbilityIds[1],
+	// 		testItemIds[1],
+	// 		testUsernames[1],
+	// 		testNatureIds[1],
+	// 		testAbilityIds[1],
+	// 		testItemIds[1]
+	// 	]
+	// );
+	// console.log("_testCommon card tables", resultsCards.rows);
+	// testCardIds.splice(0, 0, ...resultsCards.rows.map(r => r.id));
 }
 
 async function commonBeforeEach() {
@@ -114,5 +142,6 @@ module.exports = {
 	testMoveIds,
 	testTeamIds,
 	testNatureIds,
-	testUsernames
+	testUsernames,
+	testCardIds
 };
