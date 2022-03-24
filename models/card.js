@@ -4,7 +4,6 @@ const db = require("../db");
 const Move = require("./move");
 const { BadRequestError, NotFoundError } = require("../expressError");
 const { sqlForPartialUpdate } = require("../helpers/sql");
-const { setPokemonBase } = require("../helpers/transform");
 
 /** Related functions for pokemon builds */
 

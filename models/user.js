@@ -21,7 +21,7 @@ class User {
 		const result = await db.query(
 			`SELECT username,
                     password,
-                    favorite_id AS "favoriteID"
+                    favorite_id AS "favoriteId"
             FROM users
             WHERE username = $1`,
 			[ username ]
@@ -49,7 +49,7 @@ class User {
      * Throws BadRequestError on duplicates.
      */
 
-	static async register({ username, password, favoriteID }) {
+	static async register({ username, password, favoriteId }) {
 		const duplicateCheck = await db.query(
 			`SELECT username
             FROM users
@@ -67,13 +67,72 @@ class User {
 			`INSERT INTO users
             (username, password, favorite_id)
             VALUES ($1, $2, $3)
-            RETURNING username, favorite_id AS "favoriteID"`,
-			[ username, password, favoriteID ]
+            RETURNING username, favorite_id AS "favoriteId"`,
+			[ username, hashedPassword, favoriteId ]
 		);
 
 		const user = result.rows[0];
 
 		return user;
+	}
+
+	/** Find all users.
+   *
+   * Returns [{ username, favoriteId }, ...]
+   **/
+
+	static async findAll() {
+		const result = await db.query(
+			`SELECT username,
+					  favorite_id AS "favoriteId"
+			   FROM users
+			   ORDER BY username`
+		);
+
+		return result.rows;
+	}
+
+	/** Given a username, return data about user.
+   *
+   * Returns { username, favorite }
+   *   where favorite is { id, pokedexNo, name, url, sprite, type1, type2 }
+   *
+   * Throws NotFoundError if user not found.
+   **/
+	static async get(username) {
+		const userRes = await db.query(
+			`SELECT username,
+					favorite_id AS "favoriteId"
+			FROM users
+			WHERE username = $1`,
+			[ username ]
+		);
+		const user = userRes.rows[0];
+
+		if (!user) throw new NotFoundError(`No user: ${username}`);
+
+		const userFavorite = await db.query(
+			`SELECT id, pokedex_no AS "pokedexNo", name, url, sprite, type1, type2
+			FROM species
+			WHERE pokedex_no = $1`,
+			[ user.favoriteId ]
+		);
+		user.favorite = userFavorite.rows[0];
+		return user;
+	}
+
+	/** Delete given user from database; returns undefined. */
+	static async remove(username) {
+		let result = await db.query(
+			`DELETE
+			   FROM users
+			   WHERE username = $1
+			   RETURNING username`,
+			[ username ]
+		);
+		const user = result.rows[0];
+
+		if (!user) throw new NotFoundError(`No user: ${username}`);
 	}
 }
 
