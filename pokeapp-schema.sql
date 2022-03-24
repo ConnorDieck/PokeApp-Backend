@@ -15,8 +15,8 @@
 CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(25) PRIMARY KEY,
     password TEXT NOT NULL,
-    favorite_id INTEGER 
-        REFERENCES species (id) DEFAULT NULL
+    favorite_id INT 
+        REFERENCES species DEFAULT NULL
 );
 
 
