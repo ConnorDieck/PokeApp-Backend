@@ -10,7 +10,7 @@ const { sqlForPartialUpdate } = require("../helpers/sql");
 class Card {
 	/** Gets all cards built by given user 
 	 * 
-	 * Does not pull associated moves
+	 *  Does not pull associated moves
 	 */
 	static async getAll(username) {
 		const cardsRes = await db.query(
