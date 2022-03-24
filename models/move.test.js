@@ -159,3 +159,29 @@ describe("removeFromCard", function() {
 		}
 	});
 });
+
+/************************************** removeFromDb */
+
+describe("removeFromDb", function() {
+	test("works", async function() {
+		await Move.removeFromDb(testMoveIds[0]);
+
+		const result = await db.query(
+			`SELECT id
+			 FROM moves
+			 WHERE id = $1`,
+			[ testMoveIds[0] ]
+		);
+
+		expect(result.rows.length).toEqual(0);
+	});
+
+	test("throws not found error if move does not exist", async function() {
+		try {
+			await Move.removeFromDb(9999);
+			fail();
+		} catch (err) {
+			expect(err instanceof NotFoundError).toBeTruthy();
+		}
+	});
+});

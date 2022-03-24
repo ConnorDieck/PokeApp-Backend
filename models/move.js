@@ -29,7 +29,7 @@ class Move {
 		return move;
 	}
 
-	/** Since adding a move to a card requires a SQL transaction, it will all be handled in one method */
+	/** Since adding a move to a card requires a SQL transaction, it will all be handled in one method on the Card model */
 
 	/** Gets all moves associated to a card */
 	static async getAllFromCard(cardId) {
@@ -59,6 +59,21 @@ class Move {
 		const cardMove = result.rows[0];
 		if (!cardMove) throw new NotFoundError(`No such move found on card`);
 		return cardMove;
+	}
+
+	/** Removes a move from the db */
+	static async removeFromDb(id) {
+		const result = await db.query(
+			`DELETE
+				FROM moves
+				WHERE id = $1
+				RETURNING id`,
+			[ id ]
+		);
+
+		const move = result.rows[0];
+		if (!move) throw new NotFoundError(`No such move: ${id}`);
+		return move;
 	}
 }
 
