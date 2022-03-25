@@ -131,8 +131,8 @@ class Team {
 		const result = await db.query(
 			`DELETE
              FROM teams
-             WHERE team_id = $1 AND username = $2
-             RETURNING team_id`,
+             WHERE id = $1 AND username = $2
+             RETURNING id`,
 			[ teamId, username ]
 		);
 

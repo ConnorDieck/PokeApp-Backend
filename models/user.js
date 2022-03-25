@@ -94,7 +94,7 @@ class User {
 
 	/** Given a username, return data about user.
    *
-   * Returns { username, favorite }
+   * Returns { username, favoriteId, favorite }
    *   where favorite is { id, pokedexNo, name, url, sprite, type1, type2 }
    *
    * Throws NotFoundError if user not found.
@@ -115,6 +115,36 @@ class User {
 			`SELECT id, pokedex_no AS "pokedexNo", name, url, sprite, type1, type2
 			FROM species
 			WHERE pokedex_no = $1`,
+			[ user.favoriteId ]
+		);
+		user.favorite = userFavorite.rows[0];
+		return user;
+	}
+
+	/** Given a username and favoriteId, update favoriteId in server
+	 *
+	 * Returns { username, favoriteId, favorite }
+	 *   where favorite is { id, pokedexNo, name, url, sprite, type1, type2 }
+	 *
+	 * Throws NotFoundError if user not found.
+	 **/
+	static async updateFavorite(username, newfavoriteId) {
+		const userRes = await db.query(
+			`UPDATE users
+				 SET favorite_id = $1 
+				 WHERE username = $2
+				 RETURNING username, favorite_id AS "favoriteId"`,
+			[ newfavoriteId, username ]
+		);
+
+		const user = userRes.rows[0];
+
+		if (!user) throw new NotFoundError(`No user: ${username}`);
+
+		const userFavorite = await db.query(
+			`SELECT id, pokedex_no AS "pokedexNo", name, url, sprite, type1, type2
+				FROM species
+				WHERE pokedex_no = $1`,
 			[ user.favoriteId ]
 		);
 		user.favorite = userFavorite.rows[0];

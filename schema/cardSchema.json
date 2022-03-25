@@ -1,0 +1,105 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema",
+	"$id": "http://example.com/example.json",
+	"type": "object",
+	"title": "The root schema",
+	"description": "The root schema comprises the entire JSON document.",
+	"default": {},
+	"examples": [
+		{
+			"nickname": "Spicy",
+			"gender": true,
+			"art": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+			"natureId": 1,
+			"abilityId": 1,
+			"speciesId": 257,
+			"itemId": 2,
+			"moveIds": [ 1, 2, 3, 4 ]
+		}
+	],
+	"required": [ "nickname", "gender", "art", "natureId", "abilityId", "speciesId", "itemId", "moveIds" ],
+	"properties": {
+		"nickname": {
+			"$id": "#/properties/nickname",
+			"type": "string",
+			"title": "The nickname schema",
+			"description": "An explanation about the purpose of this instance.",
+			"default": "",
+			"examples": [ "Spicy" ]
+		},
+		"gender": {
+			"$id": "#/properties/gender",
+			"type": "boolean",
+			"title": "The gender schema",
+			"description": "An explanation about the purpose of this instance.",
+			"default": false,
+			"examples": [ true ]
+		},
+		"art": {
+			"$id": "#/properties/art",
+			"type": "string",
+			"title": "The art schema",
+			"description": "An explanation about the purpose of this instance.",
+			"default": "",
+			"examples": [
+				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png"
+			]
+		},
+		"natureId": {
+			"$id": "#/properties/natureId",
+			"type": "integer",
+			"title": "The natureId schema",
+			"description": "An explanation about the purpose of this instance.",
+			"default": 0,
+			"examples": [ 1 ]
+		},
+		"abilityId": {
+			"$id": "#/properties/abilityId",
+			"type": "integer",
+			"title": "The abilityId schema",
+			"description": "An explanation about the purpose of this instance.",
+			"default": 0,
+			"examples": [ 1 ]
+		},
+		"speciesId": {
+			"$id": "#/properties/speciesId",
+			"type": "integer",
+			"title": "The speciesId schema",
+			"description": "An explanation about the purpose of this instance.",
+			"default": 0,
+			"examples": [ 257 ]
+		},
+		"itemId": {
+			"$id": "#/properties/itemId",
+			"type": "integer",
+			"title": "The itemId schema",
+			"description": "An explanation about the purpose of this instance.",
+			"default": 0,
+			"examples": [ 2 ]
+		},
+		"moveIds": {
+			"$id": "#/properties/moveIds",
+			"default": [],
+			"description": "An explanation about the purpose of this instance.",
+			"examples": [ [ 1, 2 ] ],
+			"title": "The moveIds schema",
+			"maxItems": 4,
+			"type": "array",
+			"additionalItems": true,
+			"items": {
+				"$id": "#/properties/moveIds/items",
+				"anyOf": [
+					{
+						"$id": "#/properties/moveIds/items/anyOf/0",
+						"type": "integer",
+						"title": "The first anyOf schema",
+						"description": "An explanation about the purpose of this instance.",
+						"default": 0,
+						"examples": [ 1, 2 ]
+					}
+				]
+			}
+		}
+	},
+	"additionalProperties": false
+}

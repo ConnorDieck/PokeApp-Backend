@@ -180,3 +180,114 @@ describe("addCard", function() {
 		}
 	});
 });
+
+/************************************** removeCard */
+
+describe("removeCard", function() {
+	test("works", async function() {
+		const testCard = {
+			nickname  : "Spicy",
+			gender    : true,
+			art       :
+				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
+			natureId  : testNatureIds[0],
+			abilityId : testAbilityIds[0],
+			speciesId : 257,
+			itemId    : testItemIds[0],
+			moveIds   : testMoveIds.slice(0, 4)
+		};
+		const card = await Card.create(testCard, testUsernames[0]);
+
+		const result = await db.query(
+			`INSERT INTO teams_cards
+             (team_id, card_id)
+             VALUES ($1, $2)
+             RETURNING team_id, card_id`,
+			[ testTeamIds[0], card.id ]
+		);
+
+		expect(result.rows.length).not.toEqual(0);
+
+		await Team.removeCard(testTeamIds[0], card.id, testUsernames[0]);
+
+		const deleted = await db.query(
+			`SELECT team_id
+             FROM teams_cards
+             WHERE team_id = $1 AND card_id = $2`,
+			[ testTeamIds[0], card.id ]
+		);
+
+		expect(deleted.rows.length).toEqual(0);
+	});
+
+	test("returns not found error if no teams exist with given username", async function() {
+		try {
+			await Team.removeCard(testTeamIds[0], 99999, testUsernames[0]);
+			fail();
+		} catch (err) {
+			expect(err instanceof NotFoundError).toBeTruthy();
+		}
+	});
+});
+
+/************************************** remove */
+
+describe("remove", function() {
+	test("works", async function() {
+		await Team.remove(testTeamIds[0], testUsernames[0]);
+
+		const deleted = await db.query(
+			`SELECT id
+             FROM teams
+             WHERE id = $1`,
+			[ testTeamIds[0] ]
+		);
+
+		expect(deleted.rows.length).toEqual(0);
+	});
+
+	test("deletes associated cards from team", async function() {
+		const testCard = {
+			nickname  : "Spicy",
+			gender    : true,
+			art       :
+				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
+			natureId  : testNatureIds[0],
+			abilityId : testAbilityIds[0],
+			speciesId : 257,
+			itemId    : testItemIds[0],
+			moveIds   : testMoveIds.slice(0, 4)
+		};
+		const card = await Card.create(testCard, testUsernames[0]);
+
+		const result = await db.query(
+			`INSERT INTO teams_cards
+             (team_id, card_id)
+             VALUES ($1, $2)
+             RETURNING team_id, card_id`,
+			[ testTeamIds[0], card.id ]
+		);
+
+		expect(result.rows.length).not.toEqual(0);
+
+		await Team.remove(testTeamIds[0], testUsernames[0]);
+
+		const deleted = await db.query(
+			`SELECT team_id
+             FROM teams_cards
+             WHERE team_id = $1 AND card_id = $2`,
+			[ testTeamIds[0], card.id ]
+		);
+
+		expect(deleted.rows.length).toEqual(0);
+	});
+
+	test("returns not found error if no teams exist with given username", async function() {
+		try {
+			await Team.remove(testTeamIds[0], "noteams");
+			fail();
+		} catch (err) {
+			expect(err instanceof NotFoundError).toBeTruthy();
+		}
+	});
+});

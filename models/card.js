@@ -2,7 +2,7 @@
 
 const db = require("../db");
 const Move = require("./move");
-const { BadRequestError, NotFoundError } = require("../expressError");
+const { BadRequestError, NotFoundError, UnauthorizedError } = require("../expressError");
 const { sqlForPartialUpdate } = require("../helpers/sql");
 
 /** Related functions for pokemon builds */
@@ -32,6 +32,7 @@ class Card {
 	/** Saves a new card to the database */
 
 	static async create(cardData, username) {
+		// console.log(cardData.nickname);
 		const duplicateCheck = await db.query(
 			`SELECT nickname
 			 FROM cards
@@ -77,7 +78,9 @@ class Card {
 			}
 
 			// When testing, we don't want to commit our changes to the db so we can rollback with afterEach()
-			if (process.env.NODE_ENV !== "test") await db.query("COMMIT");
+			// if (process.env.NODE_ENV !== "test") await db.query("COMMIT");
+
+			await db.query("COMMIT");
 
 			const newCard = {
 				...card,
@@ -119,8 +122,6 @@ class Card {
 
 	/** Given update data, card ID and user, updates card in database */
 	static async edit(cardId, username, data) {
-		if (Object.keys(data).length < 1) throw new BadRequestError(`No data provided to update`);
-
 		const ownerCheck = await db.query(
 			`SELECT id
 			 FROM cards
@@ -128,7 +129,7 @@ class Card {
 			[ cardId, username ]
 		);
 
-		if (!ownerCheck.rows[0]) throw new NotFoundError("No card owned with given id");
+		if (!ownerCheck.rows[0]) throw new UnauthorizedError("No card owned with given id");
 
 		const { nickname, gender, art, natureId, abilityId, speciesId, itemId, moveIds } = data;
 
@@ -192,9 +193,18 @@ class Card {
 		}
 	}
 
-	static async delete(cardId) {
+	static async delete(cardId, username) {
 		try {
 			await db.query(`BEGIN`);
+
+			const ownerCheck = await db.query(
+				`SELECT id
+				 FROM cards
+				 WHERE id = $1 AND username = $2`,
+				[ cardId, username ]
+			);
+
+			if (!ownerCheck.rows[0]) throw new UnauthorizedError("No card owned with given id");
 
 			await db.query(
 				`DELETE
