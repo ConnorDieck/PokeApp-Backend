@@ -7,6 +7,8 @@ const express = require("express");
 const { BadRequestError } = require("../expressError");
 const { ensureLoggedIn } = require("../middleware/auth");
 const Card = require("../models/card");
+const jsonschema = require("jsonschema");
+const cardSchema = require("../schema/cardSchema.json");
 
 const router = new express.Router();
 
@@ -36,6 +38,13 @@ router.get("/", ensureLoggedIn, async function(req, res, next) {
 
 router.post("/", ensureLoggedIn, async function(req, res, next) {
 	try {
+		const validator = jsonschema.validate(req.body, cardSchema);
+
+		if (!validator.valid) {
+			let listOfErrors = validator.errors.map(e => e.stack);
+			let error = new BadRequestError(listOfErrors, 400);
+			return next(error);
+		}
 		const user = res.locals.user;
 		const newCard = await Card.create(req.body, user.username);
 		return res.status(201).json(newCard);
@@ -70,6 +79,13 @@ router.get("/:cardId", ensureLoggedIn, async function(req, res, next) {
 
 router.patch("/:cardId", ensureLoggedIn, async function(req, res, next) {
 	try {
+		const validator = jsonschema.validate(req.body, cardSchema);
+
+		if (!validator.valid) {
+			let listOfErrors = validator.errors.map(e => e.stack);
+			let error = new BadRequestError(listOfErrors, 400);
+			return next(error);
+		}
 		const user = res.locals.user;
 		const cardId = req.params.cardId;
 		const data = req.body;
@@ -90,7 +106,8 @@ router.patch("/:cardId", ensureLoggedIn, async function(req, res, next) {
 router.delete("/:cardId", ensureLoggedIn, async function(req, res, next) {
 	try {
 		const cardId = req.params.cardId;
-		const result = await Card.delete(cardId);
+		const user = res.locals.user;
+		await Card.delete(cardId, user.username);
 		return res.json({ deleted: +cardId });
 	} catch (e) {
 		return next(e);
