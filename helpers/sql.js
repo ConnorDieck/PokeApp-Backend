@@ -1,4 +1,8 @@
 const { BadRequestError } = require("../expressError");
+const fs = require("fs");
+const Batch = require("batch");
+
+const batch = new Batch();
 
 /**
  * Helper for making selective update queries.
@@ -30,4 +34,45 @@ function sqlForPartialUpdate(dataToUpdate, jsToSql) {
 	};
 }
 
-module.exports = { sqlForPartialUpdate };
+// Code pulled from here: https://www.thiscodeworks.com/javascript-import-sql-file-in-node-js-and-execute-against-postgresql-stack-overflow-sql-nodejs/5fc1488a5fb6ba00144ecb60
+function processSQLFile(fileName) {
+	// Extract SQL queries from files. Assumes no ';' in the fileNames
+	var queries = fs
+		.readFileSync(fileName)
+		.toString()
+		.replace(/(\r\n|\n|\r)/gm, " ") // remove newlines
+		.replace(/\s+/g, " ") // excess white space
+		.split(";") // split into all statements
+		.map(Function.prototype.call, String.prototype.trim)
+		.filter(function(el) {
+			return el.length != 0;
+		}); // remove any empty ones
+
+	// Execute each SQL query sequentially
+	queries.forEach(function(query) {
+		batch.push(function(done) {
+			if (query.indexOf("COPY") === 0) {
+				// COPY - needs special treatment
+				var regexp = /COPY\ (.*)\ FROM\ (.*)\ DELIMITERS/gim;
+				var matches = regexp.exec(query);
+				var table = matches[1];
+				var fileName = matches[2];
+				var copyString = "COPY " + table + " FROM STDIN DELIMITERS ',' CSV HEADER";
+				var stream = client.copyFrom(copyString);
+				stream.on("close", function() {
+					done();
+				});
+				var csvFile = __dirname + "/" + fileName;
+				var str = fs.readFileSync(csvFile);
+				stream.write(str);
+				stream.end();
+			} else {
+				// Other queries don't need special treatment
+				client.query(query, function(result) {
+					done();
+				});
+			}
+		});
+	});
+}
+module.exports = { sqlForPartialUpdate, processSQLFile };
