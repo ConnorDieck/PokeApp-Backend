@@ -1,0 +1,35 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema",
+	"$id": "http://example.com/example.json",
+	"type": "object",
+	"title": "The root schema",
+	"description": "The root schema comprises the entire JSON document.",
+	"default": {},
+	"examples": [
+		{
+			"name": "team1",
+			"username": "user1"
+		}
+	],
+	"required": [ "name", "username" ],
+	"properties": {
+		"name": {
+			"$id": "#/properties/name",
+			"default": "",
+			"description": "An explanation about the purpose of this instance.",
+			"examples": [ "team1" ],
+			"title": "The name schema",
+			"maxLength": 15,
+			"type": "string"
+		},
+		"username": {
+			"$id": "#/properties/username",
+			"type": "string",
+			"title": "The username schema",
+			"description": "An explanation about the purpose of this instance.",
+			"default": "",
+			"examples": [ "user1" ]
+		}
+	},
+	"additionalProperties": false
+}

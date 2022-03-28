@@ -12,6 +12,7 @@ const { authenticateJWT } = require("./middleware/auth");
 const authRoutes = require("./routes/auth");
 const cardsRoutes = require("./routes/cards");
 const usersRoutes = require("./routes/users");
+const teamsRoutes = require("./routes/teams");
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(authenticateJWT);
 app.use("/auth", authRoutes);
 app.use("/cards", cardsRoutes);
 app.use("/users", usersRoutes);
+app.use("/teams", teamsRoutes);
 
 /** Handle 404 errors -- this matches everything */
 app.use(function(req, res, next) {
