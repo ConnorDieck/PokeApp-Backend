@@ -7,11 +7,10 @@
 	"default": {},
 	"examples": [
 		{
-			"name": "team1",
-			"username": "user1"
+			"name": "team1"
 		}
 	],
-	"required": [ "name", "username" ],
+	"required": [ "name" ],
 	"properties": {
 		"name": {
 			"$id": "#/properties/name",
@@ -21,14 +20,6 @@
 			"title": "The name schema",
 			"maxLength": 15,
 			"type": "string"
-		},
-		"username": {
-			"$id": "#/properties/username",
-			"type": "string",
-			"title": "The username schema",
-			"description": "An explanation about the purpose of this instance.",
-			"default": "",
-			"examples": [ "user1" ]
 		}
 	},
 	"additionalProperties": false

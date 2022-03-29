@@ -37,7 +37,7 @@ class Team {
 
 		/** Get associated card ids, nicknames, and art to load into return object */
 		const result = await db.query(
-			`SELECT tc.card_id AS "cardId", c.nickname, c.art
+			`SELECT tc.card_id AS "id", c.nickname, c.art
              FROM teams_cards tc
                 LEFT JOIN cards c ON tc.card_id = c.id
              WHERE tc.team_id = $1`,
@@ -48,7 +48,7 @@ class Team {
 
 		const build = {
 			...team,
-			teamCards
+			cards : teamCards
 		};
 
 		return build;
@@ -75,6 +75,30 @@ class Team {
 		const newTeam = result.rows[0];
 
 		return newTeam;
+	}
+
+	/** Edits an existing team on the db */
+	static async edit(teamId, newName, username) {
+		const duplicateCheck = await db.query(
+			`SELECT name
+				FROM teams
+				WHERE name = $1 AND username = $2`,
+			[ newName, username ]
+		);
+
+		if (duplicateCheck.rows[0]) throw new BadRequestError(`Team name already exists: ${newName}`);
+
+		const result = await db.query(
+			`UPDATE teams
+			 SET name = $1
+			 WHERE id = $2 AND username = $3
+			 RETURNING id, name, username`,
+			[ newName, teamId, username ]
+		);
+
+		const updated = result.rows[0];
+
+		return updated;
 	}
 
 	/** Adds an existing card to an existing team */
