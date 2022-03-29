@@ -30,8 +30,7 @@ afterAll(commonAfterAll);
 describe("POST /teams", function() {
 	test("works", async function() {
 		const testTeam = {
-			name     : "testTeam",
-			username : "u1"
+			name : "testTeam"
 		};
 
 		const resp = await request(app).post(`/teams`).send(testTeam).set("authorization", `Bearer ${u1Token}`);
@@ -39,7 +38,8 @@ describe("POST /teams", function() {
 		expect(resp.statusCode).toEqual(201);
 		expect(resp.body).toEqual({
 			...testTeam,
-			id : expect.any(Number)
+			username : "u1",
+			id       : expect.any(Number)
 		});
 	});
 
@@ -52,5 +52,175 @@ describe("POST /teams", function() {
 		const resp = await request(app).post(`/teams`).send(testTeam);
 
 		expect(resp.statusCode).toEqual(401);
+	});
+});
+
+/************************************** GET /teams */
+
+describe("GET /teams", function() {
+	test("works if logged in", async function() {
+		const resp = await request(app).get(`/teams`).set("authorization", `Bearer ${u1Token}`);
+
+		expect(resp.statusCode).toEqual(200);
+		expect(resp.body).toEqual([
+			{
+				name     : "team1",
+				username : "u1",
+				id       : testTeamIds[0]
+			},
+			{
+				name     : "team4",
+				username : "u1",
+				id       : testTeamIds[3]
+			}
+		]);
+	});
+});
+
+/************************************** GET /teams/:teamId */
+
+describe("GET /teams/:teamId", function() {
+	test("works", async function() {
+		const resp = await request(app).get(`/teams/${testTeamIds[3]}`).set("authorization", `Bearer ${u1Token}`);
+
+		expect(resp.statusCode).toEqual(200);
+		expect(resp.body).toEqual({
+			name     : "team4",
+			username : "u1",
+			id       : testTeamIds[3],
+			cards    : [
+				{
+					nickname : "c1",
+					id       : testCardIds[0],
+					art      : "www.test.org"
+				},
+				{
+					nickname : "c2",
+					id       : testCardIds[1],
+					art      : "www.test.org"
+				},
+				{
+					nickname : "c3",
+					id       : testCardIds[2],
+					art      : "www.test.org"
+				}
+			]
+		});
+	});
+
+	test("not found if bad id", async function() {
+		const resp = await request(app).get(`/teams/9999999`);
+
+		expect(resp.statusCode).toEqual(404);
+	});
+});
+
+/************************************** PATCH /teams/:teamId */
+
+describe("PATCH /teams/:teamId", function() {
+	test("works if logged in", async function() {
+		const testTeam = {
+			name : "testTeam"
+		};
+		const resp = await request(app)
+			.patch(`/teams/${testTeamIds[0]}`)
+			.send(testTeam)
+			.set("authorization", `Bearer ${u1Token}`);
+
+		expect(resp.statusCode).toEqual(200);
+		expect(resp.body).toEqual({
+			name     : "testTeam",
+			username : "u1",
+			id       : testTeamIds[0]
+		});
+	});
+
+	test("unauthorized if user isn't logged in", async function() {
+		const testTeam = {
+			name : "testTeam"
+		};
+		const resp = await request(app).patch(`/teams/${testTeamIds[0]}`).send(testTeam);
+
+		expect(resp.statusCode).toEqual(401);
+	});
+});
+
+/************************************** POST /teams/:teamId/:cardId */
+
+describe("POST /teams/:teamId/:cardId", function() {
+	test("works", async function() {
+		const resp = await request(app)
+			.post(`/teams/${testTeamIds[0]}/${testCardIds[1]}`)
+			.set("authorization", `Bearer ${u1Token}`);
+
+		expect(resp.statusCode).toEqual(201);
+		expect(resp.body).toEqual({
+			cardId : testCardIds[1],
+			teamId : testTeamIds[0]
+		});
+	});
+
+	test("unauthorized if user isn't logged in", async function() {
+		const testTeam = {
+			name     : "testTeam",
+			username : "u1"
+		};
+
+		const resp = await request(app).post(`/teams`).send(testTeam);
+
+		expect(resp.statusCode).toEqual(401);
+	});
+});
+
+/************************************** DELETE /teams/:teamId/:cardId */
+
+describe("DELETE /teams/:teamId/:cardId", function() {
+	test("works", async function() {
+		const resp = await request(app)
+			.delete(`/teams/${testTeamIds[0]}/${testCardIds[0]}`)
+			.set("authorization", `Bearer ${u1Token}`);
+
+		expect(resp.body).toEqual({
+			deleted : testCardIds[0],
+			from    : testTeamIds[0]
+		});
+	});
+
+	test("unauthorized if user isn't logged in", async function() {
+		const resp = await request(app).delete(`/teams/${testTeamIds[0]}/${testCardIds[0]}`);
+
+		expect(resp.statusCode).toEqual(401);
+	});
+
+	test("not found if card isn't on team", async function() {
+		const resp = await request(app)
+			.delete(`/teams/${testTeamIds[0]}/${testCardIds[1]}`)
+			.set("authorization", `Bearer ${u1Token}`);
+
+		expect(resp.statusCode).toEqual(404);
+	});
+});
+
+/************************************** DELETE /teams/:teamId */
+
+describe("DELETE /teams/:teamId", function() {
+	test("works", async function() {
+		const resp = await request(app).delete(`/teams/${testTeamIds[0]}`).set("authorization", `Bearer ${u1Token}`);
+
+		expect(resp.body).toEqual({
+			deleted : testTeamIds[0]
+		});
+	});
+
+	test("unauthorized if user isn't logged in", async function() {
+		const resp = await request(app).delete(`/teams/${testTeamIds[0]}/${testCardIds[0]}`);
+
+		expect(resp.statusCode).toEqual(401);
+	});
+
+	test("not found if user doesn't own team", async function() {
+		const resp = await request(app).delete(`/teams/${testTeamIds[1]}`).set("authorization", `Bearer ${u1Token}`);
+
+		expect(resp.statusCode).toEqual(404);
 	});
 });

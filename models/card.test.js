@@ -1,7 +1,7 @@
 "use strict";
 
 const db = require("../db.js");
-const { BadRequestError, NotFoundError } = require("../expressError");
+const { BadRequestError, NotFoundError, UnauthorizedError } = require("../expressError");
 const Card = require("./card.js");
 const {
 	commonBeforeAll,
@@ -301,7 +301,7 @@ describe("delete", function() {
 
 		const card = await Card.create(testCard, testUsernames[0]);
 
-		await Card.delete(card.id);
+		await Card.delete(card.id, testUsernames[0]);
 
 		const results = await db.query(
 			`SELECT nickname, gender, art
@@ -313,12 +313,39 @@ describe("delete", function() {
 		expect(results.rows.length).toEqual(0);
 	});
 
-	test("returns not found error if bad id", async function() {
+	test("deletes associated moves", async function() {
+		const testCard = {
+			nickname  : "Spicy",
+			gender    : true,
+			art       :
+				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+			natureId  : testNatureIds[0],
+			abilityId : testAbilityIds[0],
+			speciesId : 257,
+			itemId    : testItemIds[0],
+			moveIds   : testMoveIds.slice(0, 4)
+		};
+
+		const card = await Card.create(testCard, testUsernames[0]);
+
+		await Card.delete(card.id, testUsernames[0]);
+
+		const results = await db.query(
+			`SELECT move_id
+                FROM cards_moves
+                WHERE card_id = $1`,
+			[ card.id ]
+		);
+
+		expect(results.rows.length).toEqual(0);
+	});
+
+	test("returns unauthorized if user doesn't own card with given id", async function() {
 		try {
-			await Card.delete(9999);
+			await Card.delete(9999, testUsernames[0]);
 			fail();
 		} catch (err) {
-			expect(err instanceof NotFoundError).toBeTruthy();
+			expect(err instanceof UnauthorizedError).toBeTruthy();
 		}
 	});
 });

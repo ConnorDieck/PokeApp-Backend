@@ -122,6 +122,8 @@ class Card {
 
 	/** Given update data, card ID and user, updates card in database */
 	static async edit(cardId, username, data) {
+		if (Object.values(data).length === 0) throw new BadRequestError(`No update data provided`);
+
 		const ownerCheck = await db.query(
 			`SELECT id
 			 FROM cards
@@ -179,7 +181,9 @@ class Card {
 			}
 
 			// When testing, we don't want to commit our changes to the db so we can rollback with afterEach()
-			if (process.env.NODE_ENV !== "test") await db.query("COMMIT");
+			// if (process.env.NODE_ENV !== "test") await db.query("COMMIT");
+
+			await db.query("COMMIT");
 
 			const newCard = {
 				...card,
@@ -194,42 +198,22 @@ class Card {
 	}
 
 	static async delete(cardId, username) {
-		try {
-			await db.query(`BEGIN`);
-
-			const ownerCheck = await db.query(
-				`SELECT id
-				 FROM cards
-				 WHERE id = $1 AND username = $2`,
-				[ cardId, username ]
-			);
-
-			if (!ownerCheck.rows[0]) throw new UnauthorizedError("No card owned with given id");
-
-			await db.query(
-				`DELETE
-				 FROM cards_moves
-				 WHERE card_id = $1`,
-				[ cardId ]
-			);
-
-			const result = await db.query(
-				`DELETE
+		const ownerCheck = await db.query(
+			`SELECT id
 				FROM cards
-				WHERE id = $1
-				RETURNING id`,
-				[ cardId ]
-			);
-			const deletedId = result.rows[0];
+				WHERE id = $1 AND username = $2`,
+			[ cardId, username ]
+		);
 
-			if (!deletedId) throw new NotFoundError(`No card: ${cardId}`);
+		if (!ownerCheck.rows[0]) throw new UnauthorizedError("No card owned with given id");
 
-			// When testing, we don't want to commit our changes to the db so we can rollback with afterEach()
-			if (process.env.NODE_ENV !== "test") await db.query("COMMIT");
-		} catch (e) {
-			await db.query(`ROLLBACK`);
-			throw e;
-		}
+		await db.query(
+			`DELETE
+			FROM cards
+			WHERE id = $1
+			RETURNING id`,
+			[ cardId ]
+		);
 	}
 }
 
