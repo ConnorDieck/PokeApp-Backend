@@ -55,10 +55,10 @@ describe("get", function() {
 		const team = await Team.get(testTeamIds[0], testUsernames[0]);
 
 		expect(team).toEqual({
-			id        : expect.any(Number),
-			name      : "u1team",
-			username  : testUsernames[0],
-			teamCards : []
+			id       : expect.any(Number),
+			name     : "u1team",
+			username : testUsernames[0],
+			cards    : []
 		});
 	});
 
@@ -87,12 +87,12 @@ describe("get", function() {
 		const team = await Team.get(testTeamIds[0], testUsernames[0]);
 
 		expect(team).toEqual({
-			id        : expect.any(Number),
-			name      : "u1team",
-			username  : testUsernames[0],
-			teamCards : [
+			id       : expect.any(Number),
+			name     : "u1team",
+			username : testUsernames[0],
+			cards    : [
 				{
-					cardId   : expect.any(Number),
+					id       : expect.any(Number),
 					nickname : "Spicy",
 					art      :
 						"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png"

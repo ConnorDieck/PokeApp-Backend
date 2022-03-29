@@ -15,8 +15,6 @@ class Ability {
 			[ name ]
 		);
 
-		console.log("duplicate check length", duplicateCheck.rows.length);
-
 		if (duplicateCheck.rows.length > 0) throw new BadRequestError(`Duplicate ability: ${name}`);
 
 		const result = await db.query(

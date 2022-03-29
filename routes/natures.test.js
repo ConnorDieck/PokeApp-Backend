@@ -12,7 +12,6 @@ const {
 	commonAfterEach,
 	commonAfterAll,
 	testCardIds,
-	testItemIds,
 	testMoveIds,
 	testNatureIds,
 	testTeamIds,
@@ -26,76 +25,78 @@ beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
-/************************************** POST /items */
+/************************************** POST /natures */
 
-describe("POST /items", function() {
+describe("POST /natures", function() {
 	test("works", async function() {
-		const testItem = {
-			name : "testItem",
+		const testNature = {
+			name : "testNature",
 			url  : "www.test.com"
 		};
 
-		const resp = await request(app).post(`/items`).send(testItem).set("authorization", `Bearer ${u1Token}`);
+		const resp = await request(app).post(`/natures`).send(testNature).set("authorization", `Bearer ${u1Token}`);
 
 		expect(resp.statusCode).toEqual(201);
 		expect(resp.body).toEqual({
-			...testItem,
+			...testNature,
 			id : expect.any(Number)
 		});
 	});
 
 	test("unauthorized if user isn't logged in", async function() {
-		const testItem = {
-			name : "testItem",
+		const testNature = {
+			name : "testNature",
 			url  : "www.test.com"
 		};
 
-		const resp = await request(app).post(`/items`).send(testItem);
+		const resp = await request(app).post(`/natures`).send(testNature);
 
 		expect(resp.statusCode).toEqual(401);
 	});
 
 	test("bad request if duplicate", async function() {
-		const testItem = {
-			name : "item",
+		const testNature = {
+			name : "nature",
 			url  : "www.test.com"
 		};
 
-		const resp = await request(app).post(`/items`).send(testItem).set("authorization", `Bearer ${u1Token}`);
+		const resp = await request(app).post(`/natures`).send(testNature).set("authorization", `Bearer ${u1Token}`);
 
 		expect(resp.statusCode).toEqual(400);
 	});
 
 	test("bad request if invalid data", async function() {
-		const testItem = {
-			name  : "testItem",
+		const testNature = {
+			name  : "testNature",
 			url   : 41,
 			other : "this is not allowed"
 		};
 
-		const resp = await request(app).post(`/items`).send(testItem).set("authorization", `Bearer ${u1Token}`);
+		const resp = await request(app).post(`/natures`).send(testNature).set("authorization", `Bearer ${u1Token}`);
 
 		expect(resp.statusCode).toEqual(400);
 	});
 });
 
-/************************************** DELETE /items/:itemId */
+/************************************** DELETE /natures/:natureId */
 
-describe("DELETE /:itemId", function() {
-	test("successfully deletes items on the server", async function() {
-		const resp = await request(app).delete(`/items/${testItemIds[0]}`).set("authorization", `Bearer ${u1Token}`);
+describe("DELETE /:natureId", function() {
+	test("successfully deletes natures on the server", async function() {
+		const resp = await request(app)
+			.delete(`/natures/${testNatureIds[0]}`)
+			.set("authorization", `Bearer ${u1Token}`);
 		expect(resp.body).toEqual({
-			deleted : testItemIds[0]
+			deleted : testNatureIds[0]
 		});
 	});
 
 	test("unauthorized if not logged in", async function() {
-		const resp = await request(app).delete(`/cards/${testItemIds[0]}`);
+		const resp = await request(app).delete(`/cards/${testNatureIds[0]}`);
 		expect(resp.statusCode).toEqual(401);
 	});
 
 	test("unauthorized if wrong user", async function() {
-		const resp = await request(app).delete(`/cards/${testItemIds[0]}`).set("authorization", `Bearer ${u2Token}`);
+		const resp = await request(app).delete(`/cards/${testNatureIds[0]}`).set("authorization", `Bearer ${u2Token}`);
 		expect(resp.statusCode).toEqual(401);
 	});
 });

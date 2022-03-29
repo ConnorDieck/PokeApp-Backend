@@ -50,8 +50,7 @@ router.patch("/:username", ensureCorrectUser, async function(req, res, next) {
 	try {
 		const username = req.params.username;
 		const result = await User.updateFavorite(username, req.body.id);
-		console.log(result);
-		return res.json({ result });
+		return res.json(result);
 	} catch (e) {
 		return next(e);
 	}
