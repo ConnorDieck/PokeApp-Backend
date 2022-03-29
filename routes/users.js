@@ -40,4 +40,21 @@ router.delete("/:username", ensureCorrectUser, async function(req, res, next) {
 	}
 });
 
+/** PATCH /:username =>
+ *      { username, favoriteId, favorite }
+ * 
+ * Authorization required: same user
+ */
+
+router.patch("/:username", ensureCorrectUser, async function(req, res, next) {
+	try {
+		const username = req.params.username;
+		const result = await User.updateFavorite(username, req.body.id);
+		console.log(result);
+		return res.json({ result });
+	} catch (e) {
+		return next(e);
+	}
+});
+
 module.exports = router;
