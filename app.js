@@ -16,6 +16,7 @@ const teamsRoutes = require("./routes/teams");
 const abilitiesRoutes = require("./routes/abilities");
 const itemsRoutes = require("./routes/items");
 const naturesRoutes = require("./routes/natures");
+const speciesRoutes = require("./routes/species");
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use("/teams", teamsRoutes);
 app.use("/abilities", abilitiesRoutes);
 app.use("/items", itemsRoutes);
 app.use("/natures", naturesRoutes);
+app.use("/species", speciesRoutes);
 
 /** Handle 404 errors -- this matches everything */
 app.use(function(req, res, next) {
