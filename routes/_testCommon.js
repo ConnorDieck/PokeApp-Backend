@@ -9,7 +9,7 @@ const Ability = require("../models/ability");
 const Nature = require("../models/nature");
 const Move = require("../models/move.js");
 const { createToken } = require("../helpers/tokens");
-const { processSQLFile } = require("../helpers/sql");
+const { processSQLFile, sqlForPartialUpdate } = require("../helpers/sql");
 
 const testTeamIds = [];
 const testMoveIds = [];
@@ -136,6 +136,7 @@ async function commonBeforeAll() {
 }
 
 async function commonBeforeEach() {
+	// TODO: Optimize tests
 	processSQLFile("pokeapp.sql");
 	// noinspection SqlWithoutWhere
 	await db.query("DELETE FROM teams_cards");
