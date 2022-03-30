@@ -6,6 +6,8 @@ CREATE DATABASE pokeapp;
 \connect pokeapp
 
 \i species-seed.sql
+\i items-seed.sql
+\i natures-seed.sql
 \i pokeapp-schema.sql
 \i pokeapp-seed.sql
 
@@ -17,4 +19,6 @@ CREATE DATABASE pokeapp_test;
 \connect pokeapp_test
 
 \i species-seed.sql
+\i items-seed.sql
+\i natures-seed.sql
 \i pokeapp-schema.sql

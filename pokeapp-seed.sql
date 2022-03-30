@@ -19,10 +19,10 @@ VALUES  ('swords-dance', 'Normal', 'https://pokeapi.co/api/v2/move/14/'),
         ('seismic-toss', 'Fighting', 'https://pokeapi.co/api/v2/move/69/'),
         ('body-slam', 'Normal', 'https://pokeapi.co/api/v2/move/34/');
 
-INSERT INTO items (name, url)
-VALUES  ('soda-pop', 'https://pokeapi.co/api/v2/item/31/'),
-        ('moomoo-milk', 'https://pokeapi.co/api/v2/item/33/'),
-        ('escape-rope', 'https://pokeapi.co/api/v2/item/78/');
+-- INSERT INTO items (name, url)
+-- VALUES  ('soda-pop', 'https://pokeapi.co/api/v2/item/31/'),
+--         ('moomoo-milk', 'https://pokeapi.co/api/v2/item/33/'),
+--         ('escape-rope', 'https://pokeapi.co/api/v2/item/78/');
 
 INSERT INTO abilities (name, url)
 VALUES  ('speed-boost', 'https://pokeapi.co/api/v2/ability/3/'),

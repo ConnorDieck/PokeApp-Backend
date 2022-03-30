@@ -35,11 +35,11 @@ CREATE TABLE IF NOT EXISTS moves (
 );
 
 
-CREATE TABLE IF NOT EXISTS items (
-    id SERIAL PRIMARY KEY,
-    name TEXT UNIQUE,
-    url TEXT UNIQUE
-);
+-- CREATE TABLE IF NOT EXISTS items (
+--     id SERIAL PRIMARY KEY,
+--     name TEXT UNIQUE,
+--     url TEXT UNIQUE
+-- );
 
 CREATE TABLE IF NOT EXISTS abilities (
     id SERIAL PRIMARY KEY,
@@ -47,11 +47,11 @@ CREATE TABLE IF NOT EXISTS abilities (
     url TEXT UNIQUE
 );
 
-CREATE TABLE IF NOT EXISTS natures (
-    id SERIAL PRIMARY KEY,
-    name TEXT UNIQUE,
-    url TEXT UNIQUE
-);
+-- CREATE TABLE IF NOT EXISTS natures (
+--     id SERIAL PRIMARY KEY,
+--     name TEXT UNIQUE,
+--     url TEXT UNIQUE
+-- );
 
 CREATE TABLE IF NOT EXISTS cards (
     id SERIAL PRIMARY KEY,
