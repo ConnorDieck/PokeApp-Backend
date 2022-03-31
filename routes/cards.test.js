@@ -95,7 +95,7 @@ describe("GET /cards", function() {
 		const resp = await request(app).get("/cards").set("authorization", `Bearer ${u1Token}`);
 
 		expect(resp.statusCode).toEqual(200);
-		expect(resp.body).toEqual([
+		expect(resp.body.cards).toEqual([
 			{
 				id        : testCardIds[0],
 				nickname  : "c1",

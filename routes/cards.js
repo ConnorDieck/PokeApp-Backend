@@ -21,8 +21,8 @@ const router = new express.Router();
 router.get("/", ensureLoggedIn, async function(req, res, next) {
 	try {
 		const user = res.locals.user;
-		const result = await Card.getAll(user.username);
-		return res.json(result);
+		const cards = await Card.getAll(user.username);
+		return res.json({ cards });
 	} catch (e) {
 		return next(e);
 	}

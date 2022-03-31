@@ -14,7 +14,7 @@ const cardSchema = require("../schema/cardSchema.json");
 const router = new express.Router();
 
 /** GET / =>
- *      { [ {name, username, id }, ...] }
+ *      { teams: [ {name, username, id }, ...] }
  * 
  * Authorization required: none
  */
@@ -22,8 +22,8 @@ const router = new express.Router();
 router.get("/", async function(req, res, next) {
 	try {
 		const user = res.locals.user;
-		const result = await Team.getAll(user.username);
-		return res.json(result);
+		const teams = await Team.getAll(user.username);
+		return res.json({ teams });
 	} catch (e) {
 		return next(e);
 	}

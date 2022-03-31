@@ -62,7 +62,7 @@ describe("GET /teams", function() {
 		const resp = await request(app).get(`/teams`).set("authorization", `Bearer ${u1Token}`);
 
 		expect(resp.statusCode).toEqual(200);
-		expect(resp.body).toEqual([
+		expect(resp.body.teams).toEqual([
 			{
 				name     : "team1",
 				username : "u1",
