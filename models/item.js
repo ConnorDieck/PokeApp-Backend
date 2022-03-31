@@ -1,47 +1,45 @@
 "use strict";
 
 const db = require("../db");
-const { BadRequestError, NotFoundError } = require("../expressError");
 
 /** Related functions for pokemon items */
 
 class Item {
-	/** Saves new item to db */
-	static async addToDb({ name, url }) {
-		const duplicateCheck = await db.query(
-			`SELECT name
-             FROM items
-             WHERE name = $1`,
-			[ name ]
-		);
+	/** Gets all items from db (optional filter on searchFilters).
+	 * 
+	 * searchFilters (all optional)
+	 *  – name (will find case-insensitive, partial matches)
+	 * 
+	 *  Returns { [{ id, name, url }, ...]
+	 */
+	static async getAll(searchFilters = {}) {
+		let query = `SELECT id,
+						name,
+						url
+				FROM items`;
+		let whereExpressions = [];
+		let queryValues = [];
 
-		if (duplicateCheck.rows[0]) throw new BadRequestError(`Duplicate item: ${name}`);
+		const { name } = searchFilters;
 
-		const result = await db.query(
-			`INSERT INTO items
-            (name, url)
-            VALUES ($1, $2)
-            RETURNING id, name, url`,
-			[ name, url ]
-		);
+		// For each possible search term, add to whereExpressions and queryValues so
+		// we can generate the right SQL
 
-		const item = result.rows[0];
-		return item;
-	}
+		if (name) {
+			queryValues.push(`%${name}%`);
+			whereExpressions.push(`name ILIKE $${queryValues.length}`);
+		}
 
-	/** Removes an item from the db */
-	static async remove(id) {
-		const result = await db.query(
-			`DELETE
-             FROM items
-             WHERE id = $1
-             RETURNING name`,
-			[ id ]
-		);
+		if (whereExpressions.length > 0) {
+			query += " WHERE " + whereExpressions.join(" AND ");
+		}
 
-		const item = result.rows[0];
-		if (!item) throw new NotFoundError(`No such item: ${item}`);
-		return item;
+		// Finalize query and return results
+
+		query += " ORDER BY name";
+
+		const result = await db.query(query, queryValues);
+		return result.rows;
 	}
 }
 
