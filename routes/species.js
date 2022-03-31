@@ -1,11 +1,10 @@
 "use strict";
 
-/** Routes for cards. */
+/** Routes for species. */
 
 const express = require("express");
 
 const { BadRequestError } = require("../expressError");
-const { ensureLoggedIn } = require("../middleware/auth");
 const Species = require("../models/species");
 
 const router = new express.Router();
@@ -44,8 +43,11 @@ const router = new express.Router();
  */
 
 router.get("/", async function(req, res, next) {
+	const q = req.query;
+	console.log("req query:", q);
+
 	try {
-		const result = await Species.getAll();
+		const result = await Species.getAll(q);
 		return res.json(result);
 	} catch (e) {
 		return next(e);
