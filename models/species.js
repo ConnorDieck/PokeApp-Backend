@@ -1,7 +1,6 @@
 "use strict";
 
 const db = require("../db");
-const { NotFoundError } = require("../expressError");
 
 /** Related functions for pokemon builds */
 
@@ -37,7 +36,6 @@ class Species {
 		}
 
 		if (name) {
-			console.log("APPENDING NAME WHETHER YOU LIKE IT OR NOT LOL");
 			queryValues.push(`%${name}%`);
 			whereExpressions.push(`name ILIKE $${queryValues.length}`);
 		}
