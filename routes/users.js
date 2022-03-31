@@ -18,8 +18,8 @@ const router = new express.Router();
 
 router.get("/:username", ensureLoggedIn, async function(req, res, next) {
 	try {
-		const result = await User.get(req.params.username);
-		return res.json(result);
+		const user = await User.get(req.params.username);
+		return res.json({ user });
 	} catch (e) {
 		return next(e);
 	}

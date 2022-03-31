@@ -30,7 +30,7 @@ afterAll(commonAfterAll);
 describe("GET /users/:username", function() {
 	test("works for same user", async function() {
 		const resp = await request(app).get(`/users/u1`).set("authorization", `Bearer ${u1Token}`);
-		expect(resp.body).toEqual({
+		expect(resp.body.user).toEqual({
 			username   : "u1",
 			favoriteId : 1,
 			favorite   : {
