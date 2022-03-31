@@ -44,11 +44,10 @@ const router = new express.Router();
 
 router.get("/", async function(req, res, next) {
 	const q = req.query;
-	console.log("req query:", q);
 
 	try {
-		const result = await Species.getAll(q);
-		return res.json(result);
+		const species = await Species.getAll(q);
+		return res.json({ species });
 	} catch (e) {
 		return next(e);
 	}

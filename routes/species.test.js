@@ -18,6 +18,6 @@ describe("GET /species", function() {
 		const resp = await request(app).get("/species");
 
 		expect(resp.statusCode).toEqual(200);
-		expect(resp.body.length).toEqual(950);
+		expect(resp.body.species.length).toEqual(950);
 	});
 });
