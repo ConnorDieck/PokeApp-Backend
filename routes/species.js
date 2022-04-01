@@ -6,6 +6,8 @@ const express = require("express");
 
 const { BadRequestError } = require("../expressError");
 const Species = require("../models/species");
+const jsonschema = require("jsonschema");
+const speciesSearchSchema = require("../schema/speciesSearchSchema.json");
 
 const router = new express.Router();
 
@@ -44,6 +46,12 @@ const router = new express.Router();
 
 router.get("/", async function(req, res, next) {
 	const q = req.query;
+	const validator = jsonschema.validate(q, speciesSearchSchema);
+	if (!validator.valid) {
+		let listOfErrors = validator.errors.map(e => e.stack);
+		let error = new BadRequestError(listOfErrors, 400);
+		return next(error);
+	}
 
 	try {
 		const species = await Species.getAll(q);

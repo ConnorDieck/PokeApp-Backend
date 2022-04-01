@@ -12,41 +12,18 @@ const ianSchema = require("../schema/ianSchema.json");
 
 const router = new express.Router();
 
-/** POST / =>
- *      { id, name, url }
+/** GET / =>
+ *      { items: [ { id, name, url }, { id, name, url }, ...] }
+
  * 
- * Route to save an nature.
- * 
- * Authorization required: logged in
+ * Authorization required: none
  */
 
-router.post("/", ensureLoggedIn, async function(req, res, next) {
+router.get("/", async function(req, res, next) {
 	try {
-		const validator = jsonschema.validate(req.body, ianSchema);
+		const natures = await Nature.getAll();
 
-		if (!validator.valid) {
-			let listOfErrors = validator.errors.map(e => e.stack);
-			let error = new BadRequestError(listOfErrors, 400);
-			return next(error);
-		}
-		const response = await Nature.addToDb(req.body);
-		return res.status(201).json(response);
-	} catch (e) {
-		return next(e);
-	}
-});
-
-/** DELETE / =>
- *      { deleted: id }
- * 
- * Authorization required: logged in
- */
-
-router.delete("/:id", ensureLoggedIn, async function(req, res, next) {
-	try {
-		const natureId = req.params.id;
-		await Nature.remove(natureId);
-		return res.json({ deleted: +natureId });
+		return res.json({ natures });
 	} catch (e) {
 		return next(e);
 	}

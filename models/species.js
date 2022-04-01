@@ -30,9 +30,10 @@ class Species {
 		// For each possible search term, add to whereExpressions and queryValues so
 		// we can generate the right SQL
 
+		/** If passing in type through a selected option, this will work. If need user to type name of type, convert to query a la name */
 		if (type !== undefined) {
 			queryValues.push(type);
-			whereExpressions.push(`type1 = $${queryValues.length} OR type2 = $${queryValues.length}`);
+			whereExpressions.push(`(type1 = $${queryValues.length} OR type2 = $${queryValues.length})`);
 		}
 
 		if (name) {
@@ -47,6 +48,9 @@ class Species {
 		// Finalize query and return results
 
 		query += " ORDER BY id";
+
+		console.log("query:", query);
+		console.log("query values:", queryValues);
 
 		const result = await db.query(query, queryValues);
 		return result.rows;

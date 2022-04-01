@@ -4,49 +4,31 @@
 
 const express = require("express");
 
-const { BadRequestError } = require("../expressError");
-const { ensureLoggedIn } = require("../middleware/auth");
 const Item = require("../models/item");
 const jsonschema = require("jsonschema");
-const ianSchema = require("../schema/ianSchema.json");
+const itemSearchSchema = require("../schema/itemSearchSchema.json");
 
 const router = new express.Router();
 
-/** POST / =>
- *      { id, name, url }
+/** GET / =>
+ *      { items: [ { id, name, url }, { id, name, url }, ...] }
+
  * 
- * Route to save an item.
- * 
- * Authorization required: logged in
+ * Authorization required: none
  */
 
-router.post("/", ensureLoggedIn, async function(req, res, next) {
-	try {
-		const validator = jsonschema.validate(req.body, ianSchema);
-
-		if (!validator.valid) {
-			let listOfErrors = validator.errors.map(e => e.stack);
-			let error = new BadRequestError(listOfErrors, 400);
-			return next(error);
-		}
-		const response = await Item.addToDb(req.body);
-		return res.status(201).json(response);
-	} catch (e) {
-		return next(e);
+router.get("/", async function(req, res, next) {
+	const q = req.query;
+	const validator = jsonschema.validate(q, itemSearchSchema);
+	if (!validator.valid) {
+		let listOfErrors = validator.errors.map(e => e.stack);
+		let error = new BadRequestError(listOfErrors, 400);
+		return next(error);
 	}
-});
-
-/** DELETE / =>
- *      { deleted: id }
- * 
- * Authorization required: logged in
- */
-
-router.delete("/:id", ensureLoggedIn, async function(req, res, next) {
 	try {
-		const itemId = req.params.id;
-		await Item.remove(itemId);
-		return res.json({ deleted: +itemId });
+		const items = await Item.getAll(q);
+
+		return res.json({ items });
 	} catch (e) {
 		return next(e);
 	}
