@@ -49,9 +49,6 @@ class Species {
 
 		query += " ORDER BY id";
 
-		console.log("query:", query);
-		console.log("query values:", queryValues);
-
 		const result = await db.query(query, queryValues);
 		return result.rows;
 	}
