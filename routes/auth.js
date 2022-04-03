@@ -3,6 +3,7 @@
 /** Routes for authentication and registration. */
 
 const User = require("../models/user");
+const jwt = require("jsonwebtoken");
 const jsonschema = require("jsonschema");
 const userSchema = require("../schema/userSchema.json");
 const express = require("express");
@@ -29,7 +30,9 @@ router.post("/token", async function(req, res, next) {
 
 		const { username, password } = req.body;
 		const user = await User.authenticate(username, password);
+		console.log("user from authenticate", user);
 		const token = createToken(user);
+		console.log("token decoded", jwt.decode(token));
 		return res.json({ token });
 	} catch (e) {
 		return next(e);
@@ -55,7 +58,7 @@ router.post("/register", async function(req, res, next) {
 			return next(error);
 		}
 
-		const newUser = await User.register({ ...req.body, isAdmin: false });
+		const newUser = await User.register({ ...req.body });
 		const token = createToken(newUser);
 		return res.status(201).json({ token });
 	} catch (e) {

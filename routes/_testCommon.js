@@ -178,20 +178,22 @@ async function commonBeforeEach() {
 	testTeamIds[2] = (await Team.create("team3", "u3")).id;
 	testTeamIds[3] = (await Team.create("team4", "u1")).id;
 
-	testItemIds[0] = (await Item.addToDb({
-		name : "item",
-		url  : "www.test.org"
-	})).id;
+	testItemIds[0] = (await db.query(
+		`SELECT id
+		 FROM items
+		 WHERE id=1`
+	)).id;
 
 	testAbilityIds[0] = (await Ability.addToDb({
 		name : "ability",
 		url  : "www.test.org"
 	})).id;
 
-	testNatureIds[0] = (await Nature.addToDb({
-		name : "nature",
-		url  : "www.test.org"
-	})).id;
+	testNatureIds[0] = (await db.query(
+		`SELECT id
+		 FROM natures
+		 WHERE id=1`
+	)).id;
 
 	testMoveIds[0] = (await Move.addToDb({
 		name : "move1",

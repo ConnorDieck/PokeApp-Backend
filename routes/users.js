@@ -33,7 +33,7 @@ router.get("/:username", ensureLoggedIn, async function(req, res, next) {
 
 router.delete("/:username", ensureCorrectUser, async function(req, res, next) {
 	try {
-		const result = await User.remove(req.params.username);
+		await User.remove(req.params.username);
 		return res.json({ deleted: req.params.username });
 	} catch (e) {
 		return next(e);
