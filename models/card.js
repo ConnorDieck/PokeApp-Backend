@@ -14,7 +14,7 @@ class Card {
 	 */
 	static async getAll(username) {
 		const cardsRes = await db.query(
-			`SELECT id, nickname, gender, art,
+			`SELECT id, name, gender, art,
 					nature_id AS "natureId",
 					ability_id AS "abilityId",
 					species_id AS "speciesId",
@@ -32,15 +32,15 @@ class Card {
 	/** Saves a new card to the database */
 
 	static async create(cardData, username) {
-		// console.log(cardData.nickname);
+		// console.log(cardData.name);
 		const duplicateCheck = await db.query(
-			`SELECT nickname
+			`SELECT name
 			 FROM cards
-			 WHERE nickname = $1 AND username = $2`,
-			[ cardData.nickname, username ]
+			 WHERE name = $1 AND username = $2`,
+			[ cardData.name, username ]
 		);
 
-		if (duplicateCheck.rows[0]) throw new BadRequestError(`Duplicate nickname: ${cardData.nickname}`);
+		if (duplicateCheck.rows[0]) throw new BadRequestError(`Duplicate name: ${cardData.name}`);
 
 		/** Updating card updates both card and card_moves tables in database.
 		 * 
@@ -48,12 +48,12 @@ class Card {
 		 */
 
 		const cardQuery = `
-			INSERT INTO cards (nickname, gender, username, art, nature_id, ability_id, species_id, item_id)
+			INSERT INTO cards (name, gender, username, art, nature_id, ability_id, species_id, item_id)
 			VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-			RETURNING id, nickname, art, username, gender, nature_id AS "natureId", ability_id AS "abilityId", art, species_id AS "speciesId", item_id AS "itemId"`;
+			RETURNING id, name, art, username, gender, nature_id AS "natureId", ability_id AS "abilityId", art, species_id AS "speciesId", item_id AS "itemId"`;
 
 		const cardValues = [
-			cardData.nickname,
+			cardData.name,
 			cardData.gender,
 			username,
 			cardData.art,
@@ -99,7 +99,7 @@ class Card {
 	/** Returns details of one card given card's id */
 	static async get(cardId) {
 		const res = await db.query(
-			`SELECT id, nickname, art, username, gender, nature_id AS "natureId", ability_id AS "abilityId", art, species_id AS "speciesId", item_id AS "itemId"
+			`SELECT id, name, art, username, gender, nature_id AS "natureId", ability_id AS "abilityId", art, species_id AS "speciesId", item_id AS "itemId"
 			 FROM cards
 			 WHERE id = $1`,
 			[ cardId ]
@@ -133,10 +133,10 @@ class Card {
 
 		if (!ownerCheck.rows[0]) throw new UnauthorizedError("No card owned with given id");
 
-		const { nickname, gender, art, natureId, abilityId, speciesId, itemId, moveIds } = data;
+		const { name, gender, art, natureId, abilityId, speciesId, itemId, moveIds } = data;
 
 		const { setCols, values } = sqlForPartialUpdate(
-			{ nickname, gender, art, natureId, abilityId, speciesId, itemId },
+			{ name, gender, art, natureId, abilityId, speciesId, itemId },
 			{
 				art       : "art",
 				natureId  : "nature_id",
@@ -153,7 +153,7 @@ class Card {
 		const cardQuery = `UPDATE cards
 			 SET ${setCols}
 			 WHERE id = ${cardIdIdx}
-			 RETURNING id, nickname, art, username, gender, nature_id AS "natureId", ability_id AS "abilityId", art, species_id AS "speciesId", item_id AS "itemId"`;
+			 RETURNING id, name, art, username, gender, nature_id AS "natureId", ability_id AS "abilityId", art, species_id AS "speciesId", item_id AS "itemId"`;
 
 		const cardValues = [ ...values, cardId ];
 

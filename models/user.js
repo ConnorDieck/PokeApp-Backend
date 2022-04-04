@@ -114,7 +114,7 @@ class User {
 		const userFavorite = await db.query(
 			`SELECT id, pokedex_no AS "pokedexNo", name, url, sprite, type1, type2
 			FROM species
-			WHERE pokedex_no = $1`,
+			WHERE id = $1`,
 			[ user.favoriteId ]
 		);
 		user.favorite = userFavorite.rows[0];

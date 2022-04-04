@@ -33,7 +33,7 @@ INSERT INTO natures (name, url)
 VALUES  ('adamant', 'https://pokeapi.co/api/v2/nature/11/'),
         ('jolly', 'https://pokeapi.co/api/v2/nature/16/');
 
-INSERT INTO cards (nickname, gender, art, username, nature_id, ability_id, species_id, item_id)
+INSERT INTO cards (name, gender, art, username, nature_id, ability_id, species_id, item_id)
 VALUES ('c1', TRUE, 'art1', 'cooperdoon', 1, 1, 1, 1),
 	('c2', FALSE, 'art2', 'cooperdoon', 1, 1, 2, 1),
 	('c3', FALSE, 'art3', 'bigboynick', 2, 1, 3, 1)

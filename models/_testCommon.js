@@ -6,8 +6,8 @@ const { BCRYPT_WORK_FACTOR } = require("../config");
 const testTeamIds = [];
 const testMoveIds = [];
 const testAbilityIds = [];
-const testItemIds = [];
-const testNatureIds = [];
+const testItemIds = [ 1, 2, 3 ];
+const testNatureIds = [ 1, 2, 3 ];
 const testUsernames = [];
 const testCardIds = [];
 
@@ -121,11 +121,7 @@ async function commonBeforeEach() {
 	// noinspection SqlWithoutWhere
 	await db.query("DELETE FROM moves");
 	// noinspection SqlWithoutWhere
-	await db.query("DELETE FROM items");
-	// noinspection SqlWithoutWhere
 	await db.query("DELETE FROM abilities");
-	// noinspection SqlWithoutWhere
-	await db.query("DELETE FROM natures");
 	// noinspection SqlWithoutWhere
 	await db.query("DELETE FROM cards");
 
@@ -163,14 +159,6 @@ async function commonBeforeEach() {
     RETURNING id`);
 	testMoveIds.splice(0, 0, ...resultsMoves.rows.map(r => r.id));
 
-	const resultsItems = await db.query(`
-    INSERT INTO items (name, url)
-    VALUES  ('soda-pop', 'https://pokeapi.co/api/v2/item/31/'),
-            ('moomoo-milk', 'https://pokeapi.co/api/v2/item/33/'),
-            ('escape-rope', 'https://pokeapi.co/api/v2/item/78/')
-	RETURNING id`);
-	testItemIds.splice(0, 0, ...resultsItems.rows.map(r => r.id));
-
 	const resultsAbilities = await db.query(`
     INSERT INTO abilities (name, url)
     VALUES  ('speed-boost', 'https://pokeapi.co/api/v2/ability/3/'),
@@ -178,13 +166,6 @@ async function commonBeforeEach() {
             ('guts', 'https://pokeapi.co/api/v2/ability/62/')
 	RETURNING id`);
 	testAbilityIds.splice(0, 0, ...resultsAbilities.rows.map(r => r.id));
-
-	const resultsNatures = await db.query(`
-    INSERT INTO natures (name, url)
-    VALUES  ('adamant', 'https://pokeapi.co/api/v2/nature/11/'),
-            ('jolly', 'https://pokeapi.co/api/v2/nature/16/')
-	RETURNING id`);
-	testNatureIds.splice(0, 0, ...resultsNatures.rows.map(r => r.id));
 
 	await db.query("BEGIN");
 }

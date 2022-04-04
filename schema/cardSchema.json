@@ -7,7 +7,7 @@
 	"default": {},
 	"examples": [
 		{
-			"nickname": "Spicy",
+			"name": "Spicy",
 			"gender": true,
 			"art": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
 			"natureId": 1,
@@ -17,12 +17,12 @@
 			"moveIds": [ 1, 2, 3, 4 ]
 		}
 	],
-	"required": [ "nickname", "gender", "art", "natureId", "abilityId", "speciesId", "itemId", "moveIds" ],
+	"required": [ "name", "gender", "art", "natureId", "abilityId", "speciesId", "itemId", "moveIds" ],
 	"properties": {
-		"nickname": {
-			"$id": "#/properties/nickname",
+		"name": {
+			"$id": "#/properties/name",
 			"type": "string",
-			"title": "The nickname schema",
+			"title": "The name schema",
 			"description": "An explanation about the purpose of this instance.",
 			"default": "",
 			"examples": [ "Spicy" ]

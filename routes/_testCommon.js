@@ -14,8 +14,8 @@ const { processSQLFile, sqlForPartialUpdate } = require("../helpers/sql");
 const testTeamIds = [];
 const testMoveIds = [];
 const testAbilityIds = [];
-const testItemIds = [];
-const testNatureIds = [];
+let testItemIds = [];
+let testNatureIds = [];
 const testCardIds = [];
 
 async function commonBeforeAll() {
@@ -90,7 +90,7 @@ async function commonBeforeAll() {
 	// })).id;
 	// testCardIds[0] = (await Card.create(
 	// 	{
-	// 		nickname  : "c1",
+	// 		name  : "c1",
 	// 		gender    : true,
 	// 		art       : "www.test.org",
 	// 		natureId  : testNatureIds[0],
@@ -103,7 +103,7 @@ async function commonBeforeAll() {
 	// )).id;
 	// testCardIds[1] = (await Card.create(
 	// 	{
-	// 		nickname  : "c2",
+	// 		name  : "c2",
 	// 		gender    : false,
 	// 		art       : "www.test.org",
 	// 		natureId  : testNatureIds[0],
@@ -116,7 +116,7 @@ async function commonBeforeAll() {
 	// )).id;
 	// testCardIds[2] = (await Card.create(
 	// 	{
-	// 		nickname  : "c3",
+	// 		name  : "c3",
 	// 		gender    : false,
 	// 		art       : "www.test.org",
 	// 		natureId  : testNatureIds[0],
@@ -149,11 +149,7 @@ async function commonBeforeEach() {
 	// noinspection SqlWithoutWhere
 	await db.query("DELETE FROM moves");
 	// noinspection SqlWithoutWhere
-	await db.query("DELETE FROM items");
-	// noinspection SqlWithoutWhere
 	await db.query("DELETE FROM abilities");
-	// noinspection SqlWithoutWhere
-	await db.query("DELETE FROM natures");
 	// noinspection SqlWithoutWhere
 	await db.query("DELETE FROM cards");
 
@@ -178,22 +174,10 @@ async function commonBeforeEach() {
 	testTeamIds[2] = (await Team.create("team3", "u3")).id;
 	testTeamIds[3] = (await Team.create("team4", "u1")).id;
 
-	testItemIds[0] = (await db.query(
-		`SELECT id
-		 FROM items
-		 WHERE id=1`
-	)).id;
-
 	testAbilityIds[0] = (await Ability.addToDb({
 		name : "ability",
 		url  : "www.test.org"
 	})).id;
-
-	testNatureIds[0] = (await db.query(
-		`SELECT id
-		 FROM natures
-		 WHERE id=1`
-	)).id;
 
 	testMoveIds[0] = (await Move.addToDb({
 		name : "move1",
@@ -218,39 +202,39 @@ async function commonBeforeEach() {
 
 	testCardIds[0] = (await Card.create(
 		{
-			nickname  : "c1",
+			name      : "c1",
 			gender    : true,
 			art       : "www.test.org",
-			natureId  : testNatureIds[0],
+			natureId  : 1,
 			abilityId : testAbilityIds[0],
 			speciesId : 1,
-			itemId    : testItemIds[0],
+			itemId    : 1,
 			moveIds   : testMoveIds
 		},
 		"u1"
 	)).id;
 	testCardIds[1] = (await Card.create(
 		{
-			nickname  : "c2",
+			name      : "c2",
 			gender    : false,
 			art       : "www.test.org",
-			natureId  : testNatureIds[0],
+			natureId  : 2,
 			abilityId : testAbilityIds[0],
 			speciesId : 2,
-			itemId    : testItemIds[0],
+			itemId    : 2,
 			moveIds   : testMoveIds
 		},
 		"u2"
 	)).id;
 	testCardIds[2] = (await Card.create(
 		{
-			nickname  : "c3",
+			name      : "c3",
 			gender    : false,
 			art       : "www.test.org",
-			natureId  : testNatureIds[0],
+			natureId  : 3,
 			abilityId : testAbilityIds[0],
 			speciesId : 3,
-			itemId    : testItemIds[0],
+			itemId    : 3,
 			moveIds   : testMoveIds
 		},
 		"u3"

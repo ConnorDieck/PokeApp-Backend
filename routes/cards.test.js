@@ -11,13 +11,9 @@ const {
 	commonAfterAll,
 	testAbilityIds,
 	testCardIds,
-	testItemIds,
 	testMoveIds,
-	testNatureIds,
-	testTeamIds,
 	u1Token,
-	u2Token,
-	u3Token
+	u2Token
 } = require("./_testCommon");
 
 beforeAll(commonBeforeAll);
@@ -30,14 +26,14 @@ afterAll(commonAfterAll);
 describe("POST /cards", function() {
 	test("successfully sends a card to the server", async function() {
 		const testCard = {
-			nickname  : "Spicy",
+			name      : "Spicy",
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
-			natureId  : testNatureIds[0],
+			natureId  : 1,
 			abilityId : testAbilityIds[0],
 			speciesId : 257,
-			itemId    : testItemIds[0],
+			itemId    : 1,
 			moveIds   : testMoveIds
 		};
 
@@ -53,14 +49,14 @@ describe("POST /cards", function() {
 
 	test("bad request with invalid data", async function() {
 		const testCard = {
-			nickname  : "Spicy",
+			name      : "Spicy",
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
-			natureId  : testNatureIds[0],
+			natureId  : 1,
 			abilityId : testAbilityIds[0],
 			speciesId : 257,
-			itemId    : testItemIds[0],
+			itemId    : 1,
 			moveIds   : [ 0, 1, 2, 3, 4 ]
 		};
 
@@ -71,14 +67,14 @@ describe("POST /cards", function() {
 
 	test("unauthorized if not logged in", async function() {
 		const testCard = {
-			nickname  : "Spicy",
+			name      : "Spicy",
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
-			natureId  : testNatureIds[0],
+			natureId  : 1,
 			abilityId : testAbilityIds[0],
 			speciesId : 257,
-			itemId    : testItemIds[0],
+			itemId    : 1,
 			moveIds   : testMoveIds
 		};
 
@@ -98,13 +94,13 @@ describe("GET /cards", function() {
 		expect(resp.body.cards).toEqual([
 			{
 				id        : testCardIds[0],
-				nickname  : "c1",
+				name      : "c1",
 				gender    : true,
 				art       : "www.test.org",
-				natureId  : testNatureIds[0],
+				natureId  : 1,
 				abilityId : testAbilityIds[0],
 				speciesId : 1,
-				itemId    : testItemIds[0]
+				itemId    : 1
 			}
 		]);
 	});
@@ -125,13 +121,13 @@ describe("GET /cards/:cardId", function() {
 		expect(resp.body).toEqual({
 			id        : testCardIds[0],
 			username  : "u1",
-			nickname  : "c1",
+			name      : "c1",
 			gender    : true,
 			art       : "www.test.org",
-			natureId  : testNatureIds[0],
+			natureId  : 1,
 			abilityId : testAbilityIds[0],
 			speciesId : 1,
-			itemId    : testItemIds[0],
+			itemId    : 1,
 			moveIds   : testMoveIds
 		});
 	});
@@ -147,14 +143,14 @@ describe("GET /cards/:cardId", function() {
 describe("PATCH /cards/:cardId", function() {
 	test("successfully updates cards on the server", async function() {
 		const testCard = {
-			nickname  : "Spicy",
+			name      : "Spicy",
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
-			natureId  : testNatureIds[0],
+			natureId  : 1,
 			abilityId : testAbilityIds[0],
 			speciesId : 257,
-			itemId    : testItemIds[0],
+			itemId    : 1,
 			moveIds   : testMoveIds
 		};
 
@@ -173,13 +169,13 @@ describe("PATCH /cards/:cardId", function() {
 
 	test("bad request with invalid data", async function() {
 		const testCard = {
-			nickname  : 3,
+			name      : 3,
 			gender    : true,
 			art       : "lol",
-			natureId  : testNatureIds[0],
+			natureId  : 1,
 			abilityId : testAbilityIds[0],
 			speciesId : "string",
-			itemId    : testItemIds[0],
+			itemId    : 1,
 			moveIds   : [ 0, 1, 2, 3, 4 ]
 		};
 
@@ -198,14 +194,14 @@ describe("PATCH /cards/:cardId", function() {
 
 	test("unauthorized if wrong user", async function() {
 		const testCard = {
-			nickname  : "Spicy",
+			name      : "Spicy",
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
-			natureId  : testNatureIds[0],
+			natureId  : 1,
 			abilityId : testAbilityIds[0],
 			speciesId : 257,
-			itemId    : testItemIds[0],
+			itemId    : 1,
 			moveIds   : testMoveIds
 		};
 		const resp = await request(app)

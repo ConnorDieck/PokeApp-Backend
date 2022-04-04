@@ -26,7 +26,7 @@ afterAll(commonAfterAll);
 describe("getAll", function() {
 	test("works", async function() {
 		const testCard1 = {
-			nickname  : "Spicy",
+			name      : "Spicy",
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
@@ -38,7 +38,7 @@ describe("getAll", function() {
 		};
 
 		const testCard2 = {
-			nickname  : "Zap",
+			name      : "Zap",
 			gender    : false,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
@@ -85,7 +85,7 @@ describe("getAll", function() {
 describe("create", function() {
 	test("works", async function() {
 		const testCard = {
-			nickname  : "Spicy",
+			name      : "Spicy",
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
@@ -104,14 +104,14 @@ describe("create", function() {
 		});
 
 		const result = await db.query(
-			`SELECT nickname, art, username, gender, nature_id AS "natureId", ability_id AS "abilityId", art, species_id AS "speciesId", item_id AS "itemId"
+			`SELECT name, art, username, gender, nature_id AS "natureId", ability_id AS "abilityId", art, species_id AS "speciesId", item_id AS "itemId"
              FROM cards
-             WHERE nickname = 'Spicy'`
+             WHERE name = 'Spicy'`
 		);
 
 		expect(result.rows).toEqual([
 			{
-				nickname  : "Spicy",
+				name      : "Spicy",
 				gender    : true,
 				username  : "user1",
 				art       :
@@ -135,7 +135,7 @@ describe("create", function() {
 
 	test("bad request with dupe for same user", async function() {
 		const testCard = {
-			nickname  : "Spicy",
+			name      : "Spicy",
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
@@ -160,7 +160,7 @@ describe("create", function() {
 describe("get", function() {
 	test("works", async function() {
 		const testCard = {
-			nickname  : "Spicy",
+			name      : "Spicy",
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
@@ -197,7 +197,7 @@ describe("get", function() {
 describe("edit", function() {
 	test("works", async function() {
 		const testCard = {
-			nickname  : "Spicy",
+			name      : "Spicy",
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
@@ -211,7 +211,7 @@ describe("edit", function() {
 		const newCard = await Card.create(testCard, testUsernames[0]);
 
 		const newData = {
-			nickname  : "New hotness",
+			name      : "New hotness",
 			gender    : false,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
@@ -231,13 +231,13 @@ describe("edit", function() {
 		});
 
 		const result = await db.query(
-			`SELECT nickname, art, username, gender, nature_id AS "natureId", ability_id AS "abilityId", art, species_id AS "speciesId", item_id AS "itemId"
+			`SELECT name, art, username, gender, nature_id AS "natureId", ability_id AS "abilityId", art, species_id AS "speciesId", item_id AS "itemId"
              FROM cards
-             WHERE nickname = 'New hotness'`
+             WHERE name = 'New hotness'`
 		);
 
 		expect(result.rows[0]).toEqual({
-			nickname  : "New hotness",
+			name      : "New hotness",
 			gender    : false,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
@@ -262,7 +262,7 @@ describe("edit", function() {
 
 	test("Bad request error with no data", async function() {
 		const testCard = {
-			nickname  : "Spicy",
+			name      : "Spicy",
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
@@ -288,7 +288,7 @@ describe("edit", function() {
 describe("delete", function() {
 	test("works", async function() {
 		const testCard = {
-			nickname  : "Spicy",
+			name      : "Spicy",
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
@@ -304,7 +304,7 @@ describe("delete", function() {
 		await Card.delete(card.id, testUsernames[0]);
 
 		const results = await db.query(
-			`SELECT nickname, gender, art
+			`SELECT name, gender, art
                 FROM cards
                 WHERE id = $1`,
 			[ card.id ]
@@ -315,7 +315,7 @@ describe("delete", function() {
 
 	test("deletes associated moves", async function() {
 		const testCard = {
-			nickname  : "Spicy",
+			name      : "Spicy",
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",

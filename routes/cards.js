@@ -13,7 +13,7 @@ const cardSchema = require("../schema/cardSchema.json");
 const router = new express.Router();
 
 /** GET / =>
- *      { cards: [ id, nickname, gender, nature, ability, art, species, item]...}
+ *      { cards: [ id, name, gender, nature, ability, art, species, item]...}
  * 
  * Authorization required: logged in
  */
@@ -29,7 +29,7 @@ router.get("/", ensureLoggedIn, async function(req, res, next) {
 });
 
 /** POST / =>
- *      { cards: [ id, nickname, gender, nature, ability, art, species, item]...}
+ *      { cards: [ id, name, gender, nature, ability, art, species, item]...}
  * 
  * Route to save a card.
  * 
@@ -54,7 +54,7 @@ router.post("/", ensureLoggedIn, async function(req, res, next) {
 });
 
 /** GET /:cardId =>
- *      {  id, nickname, gender, nature, ability, art, species, item }
+ *      {  id, name, gender, nature, ability, art, species, item }
  * 
  * Authorization required: logged in 
  * (a user can get a card they don't own, they simply can't edit it)
@@ -71,7 +71,7 @@ router.get("/:cardId", ensureLoggedIn, async function(req, res, next) {
 });
 
 /** PATCH /:cardId =>
- *      {  id, nickname, gender, nature, ability, art, species, item }
+ *      {  id, name, gender, nature, ability, art, species, item }
  * 
  * Authorization required: logged in 
  * (will throw error if no card is found with matching username and cardId)
