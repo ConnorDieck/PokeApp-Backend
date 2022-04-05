@@ -33,6 +33,6 @@ describe("GET /items", function() {
 		const resp = await request(app).get("/items");
 
 		expect(resp.statusCode).toEqual(200);
-		expect(resp.body.body.length).toEqual(203);
+		expect(resp.body.items.length).toEqual(203);
 	});
 });

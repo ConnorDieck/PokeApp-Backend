@@ -9,9 +9,11 @@ const {
 	commonBeforeEach,
 	commonAfterEach,
 	commonAfterAll,
-	testAbilityIds,
+	testAbilities,
 	testCardIds,
-	testMoveIds,
+	testNatures,
+	testItems,
+	testMoves,
 	u1Token,
 	u2Token
 } = require("./_testCommon");
@@ -25,16 +27,17 @@ afterAll(commonAfterAll);
 
 describe("POST /cards", function() {
 	test("successfully sends a card to the server", async function() {
+		console.log("testAbilities", testAbilities);
 		const testCard = {
 			name      : "Spicy",
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
-			natureId  : 1,
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 257,
-			itemId    : 1,
-			moveIds   : testMoveIds
+			item      : testItems[0],
+			moves     : testMoves.slice(0, 4)
 		};
 
 		const resp = await request(app).post("/cards").send(testCard).set("authorization", `Bearer ${u1Token}`);
@@ -53,11 +56,11 @@ describe("POST /cards", function() {
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
-			natureId  : 1,
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 257,
-			itemId    : 1,
-			moveIds   : [ 0, 1, 2, 3, 4 ]
+			item      : 1,
+			moves     : [ 0, 1, 2, 3, 4 ]
 		};
 
 		const resp = await request(app).post("/cards").send(testCard).set("authorization", `Bearer ${u1Token}`);
@@ -71,11 +74,11 @@ describe("POST /cards", function() {
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
-			natureId  : 1,
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 257,
-			itemId    : 1,
-			moveIds   : testMoveIds
+			item      : testItems[0],
+			moves     : testMoves.slice(0, 4)
 		};
 
 		const resp = await request(app).post("/cards").send(testCard);
@@ -97,10 +100,10 @@ describe("GET /cards", function() {
 				name      : "c1",
 				gender    : true,
 				art       : "www.test.org",
-				natureId  : 1,
-				abilityId : testAbilityIds[0],
+				nature    : testNatures[0],
+				ability   : testAbilities[0],
 				speciesId : 1,
-				itemId    : 1
+				item      : testItems[0]
 			}
 		]);
 	});
@@ -124,11 +127,11 @@ describe("GET /cards/:cardId", function() {
 			name      : "c1",
 			gender    : true,
 			art       : "www.test.org",
-			natureId  : 1,
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 1,
-			itemId    : 1,
-			moveIds   : testMoveIds
+			item      : testItems[0],
+			moves     : testMoves.slice(0, 4)
 		});
 	});
 
@@ -147,11 +150,11 @@ describe("PATCH /cards/:cardId", function() {
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
-			natureId  : 1,
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 257,
-			itemId    : 1,
-			moveIds   : testMoveIds
+			item      : testItems[0],
+			moves     : testMoves.slice(0, 4)
 		};
 
 		const resp = await request(app)
@@ -172,11 +175,11 @@ describe("PATCH /cards/:cardId", function() {
 			name      : 3,
 			gender    : true,
 			art       : "lol",
-			natureId  : 1,
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : "string",
-			itemId    : 1,
-			moveIds   : [ 0, 1, 2, 3, 4 ]
+			item      : testItems[0],
+			moves     : [ 0, 1, 2, 3, 4 ]
 		};
 
 		const resp = await request(app)
@@ -198,11 +201,11 @@ describe("PATCH /cards/:cardId", function() {
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
-			natureId  : 1,
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 257,
-			itemId    : 1,
-			moveIds   : testMoveIds
+			item      : testItems[0],
+			moves     : testMoves.slice(0, 4)
 		};
 		const resp = await request(app)
 			.patch(`/cards/${testCardIds[0]}`)

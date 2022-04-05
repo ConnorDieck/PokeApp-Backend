@@ -32,6 +32,6 @@ describe("GET /natures", function() {
 		const resp = await request(app).get("/natures");
 
 		expect(resp.statusCode).toEqual(200);
-		expect(resp.body.body.length).toEqual(27);
+		expect(resp.body.natures.length).toEqual(25);
 	});
 });

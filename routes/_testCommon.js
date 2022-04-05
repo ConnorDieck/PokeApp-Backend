@@ -6,8 +6,10 @@ const Card = require("../models/card");
 const Team = require("../models/team");
 const Ability = require("../models/ability");
 const Move = require("../models/move.js");
+const Nature = require("../models/nature.js");
 const { createToken } = require("../helpers/tokens");
 const { processSQLFile, sqlForPartialUpdate } = require("../helpers/sql");
+const Item = require("../models/item.js");
 
 const testTeamIds = [];
 const testMoves = [];
@@ -59,6 +61,12 @@ async function commonBeforeEach() {
 	testTeamIds[2] = (await Team.create("team3", "u3")).id;
 	testTeamIds[3] = (await Team.create("team4", "u1")).id;
 
+	itemRes = await Item.getAll();
+	testItems.splice(0, 0, ...itemRes.map(r => r.name));
+
+	natureRes = await Nature.getAll();
+	testNatures.splice(0, 0, ...natureRes.map(r => r.name));
+
 	testAbilities[0] = (await Ability.addToDb({
 		name : "ability",
 		url  : "www.test.org"
@@ -90,10 +98,10 @@ async function commonBeforeEach() {
 			name      : "c1",
 			gender    : true,
 			art       : "www.test.org",
-			nature    : "bold",
+			nature    : testNatures[0],
 			ability   : testAbilities[0],
 			speciesId : 1,
-			item      : "terrain-extender",
+			item      : testItems[0],
 			moves     : testMoves
 		},
 		"u1"
@@ -103,10 +111,10 @@ async function commonBeforeEach() {
 			name      : "c2",
 			gender    : false,
 			art       : "www.test.org",
-			nature    : "bold",
+			nature    : testNatures[0],
 			ability   : testAbilities[0],
 			speciesId : 2,
-			item      : "terrain-extender",
+			item      : testItems[0],
 			moves     : testMoves
 		},
 		"u2"
@@ -116,10 +124,10 @@ async function commonBeforeEach() {
 			name      : "c3",
 			gender    : false,
 			art       : "www.test.org",
-			nature    : "bold",
+			nature    : testNatures[0],
 			ability   : testAbilities[0],
 			speciesId : 3,
-			item      : "terrain-extender",
+			item      : testItems[0],
 			moves     : testMoves
 		},
 		"u3"
