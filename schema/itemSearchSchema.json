@@ -7,7 +7,8 @@
 	"default": {},
 	"examples": [
 		{
-			"name": "Life Orb"
+			"name": "Life Orb",
+			"category": "held-items"
 		}
 	],
 	"required": [],
@@ -19,6 +20,14 @@
 			"description": "An explanation about the purpose of this instance.",
 			"default": "",
 			"examples": [ "Life Orb" ]
+		},
+		"category": {
+			"$id": "#/properties/category",
+			"type": "string",
+			"title": "The category schema",
+			"description": "An explanation about the purpose of this instance.",
+			"default": "",
+			"examples": [ "held-items" ]
 		}
 	},
 	"additionalProperties": false

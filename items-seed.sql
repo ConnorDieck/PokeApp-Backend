@@ -1,6 +1,5 @@
 CREATE TABLE IF NOT EXISTS items (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(19),
+    name TEXT PRIMARY KEY,
     url VARCHAR(36),
     category VARCHAR(16)
 );

@@ -3,77 +3,19 @@
 const db = require("../db.js");
 const { BadRequestError, NotFoundError } = require("../expressError");
 const Nature = require("./nature.js");
-const { commonBeforeAll, commonBeforeEach, commonAfterEach, commonAfterAll, testNatureIds } = require("./_testCommon");
+const { commonBeforeAll, commonBeforeEach, commonAfterEach, commonAfterAll, testNatures } = require("./_testCommon");
 
 beforeAll(commonBeforeAll);
 beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
-/************************************** addtoDb */
+/************************************** getAll */
 
-describe("addToDb", function() {
-	test("works", async function() {
-		const testNature = {
-			name : "Bold",
-			url  : "testurl"
-		};
+describe("getAll", function() {
+	test("works without filters", async function() {
+		const natures = await Nature.getAll();
 
-		const nature = await Nature.addToDb(testNature);
-
-		expect(nature).toEqual({
-			...testNature,
-			id : expect.any(Number)
-		});
-
-		const result = await db.query(
-			`SELECT id
-             FROM natures
-             WHERE id = $1`,
-			[ nature.id ]
-		);
-
-		expect(result.rows[0].length).not.toEqual(0);
-	});
-
-	test("returns bad request error upon duplicate input", async function() {
-		const testNature = {
-			name : "Bold",
-			url  : "testurl"
-		};
-
-		try {
-			await Nature.addToDb(testNature);
-			await Nature.addToDb(testNature);
-			fail();
-		} catch (err) {
-			expect(err instanceof BadRequestError).toBeTruthy();
-		}
-	});
-});
-
-/************************************** remove */
-
-describe("remove", function() {
-	test("works", async function() {
-		await Nature.remove(testNatureIds[0]);
-
-		const result = await db.query(
-			`SELECT id
-			 FROM natures
-			 WHERE id = $1`,
-			[ testNatureIds[0] ]
-		);
-
-		expect(result.rows.length).toEqual(0);
-	});
-
-	test("throws not found error if move does not exist", async function() {
-		try {
-			await Nature.remove(9999);
-			fail();
-		} catch (err) {
-			expect(err instanceof NotFoundError).toBeTruthy();
-		}
+		expect(natures.length).toEqual(25);
 	});
 });

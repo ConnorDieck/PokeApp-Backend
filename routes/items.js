@@ -7,6 +7,7 @@ const express = require("express");
 const Item = require("../models/item");
 const jsonschema = require("jsonschema");
 const itemSearchSchema = require("../schema/itemSearchSchema.json");
+const { BadRequestError } = require("../expressError");
 
 const router = new express.Router();
 

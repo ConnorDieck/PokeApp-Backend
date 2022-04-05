@@ -35,9 +35,9 @@ class Team {
 
 		const team = teamRes.rows[0];
 
-		/** Get associated card ids, nicknames, and art to load into return object */
+		/** Get associated card ids, names, and art to load into return object */
 		const result = await db.query(
-			`SELECT tc.card_id AS "id", c.nickname, c.art
+			`SELECT tc.card_id AS "id", c.name, c.art
              FROM teams_cards tc
                 LEFT JOIN cards c ON tc.card_id = c.id
              WHERE tc.team_id = $1`,

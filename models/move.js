@@ -21,7 +21,7 @@ class Move {
 			`INSERT INTO moves
              (name, type, url)
              VALUES ($1, $2, $3)
-             RETURNING id, name, type, url`,
+             RETURNING name, type, url`,
 			[ name, type, url ]
 		);
 
@@ -34,7 +34,7 @@ class Move {
 	/** Gets all moves associated to a card */
 	static async getAllFromCard(cardId) {
 		const result = await db.query(
-			`SELECT move_id
+			`SELECT move
             FROM cards_moves
             WHERE card_id = $1`,
 			[ cardId ]
@@ -42,18 +42,18 @@ class Move {
 
 		if (!result.rows[0]) throw new NotFoundError(`No moves associated with given card: ${cardId}`);
 
-		const moveIds = result.rows.map(r => r.move_id);
-		return moveIds;
+		const moves = result.rows.map(r => r.move);
+		return moves;
 	}
 
 	/** Removes a move from a card */
-	static async removeFromCard(id, cardId) {
+	static async removeFromCard(move, cardId) {
 		const result = await db.query(
 			`DELETE
              FROM cards_moves
-             WHERE move_id = $1 AND card_id = $2
-             RETURNING move_id AS "moveId", card_id AS "cardId"`,
-			[ id, cardId ]
+             WHERE move = $1 AND card_id = $2
+             RETURNING move, card_id AS "cardId"`,
+			[ move, cardId ]
 		);
 
 		const cardMove = result.rows[0];
@@ -62,17 +62,17 @@ class Move {
 	}
 
 	/** Removes a move from the db */
-	static async removeFromDb(id) {
+	static async removeFromDb(name) {
 		const result = await db.query(
 			`DELETE
 				FROM moves
-				WHERE id = $1
-				RETURNING id`,
-			[ id ]
+				WHERE name = $1
+				RETURNING name`,
+			[ name ]
 		);
 
 		const move = result.rows[0];
-		if (!move) throw new NotFoundError(`No such move: ${id}`);
+		if (!move) throw new NotFoundError(`No such move: ${name}`);
 		return move;
 	}
 }

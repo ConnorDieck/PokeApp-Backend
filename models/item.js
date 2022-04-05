@@ -10,17 +10,17 @@ class Item {
 	 * searchFilters (all optional)
 	 *  – name (will find case-insensitive, partial matches)
 	 * 
-	 *  Returns { [{ id, name, url }, ...]
+	 *  Returns { [{ name, url }, ...]
 	 */
 	static async getAll(searchFilters = {}) {
-		let query = `SELECT id,
+		let query = `SELECT 
 						name,
 						url
 				FROM items`;
 		let whereExpressions = [];
 		let queryValues = [];
 
-		const { name } = searchFilters;
+		const { name, category } = searchFilters;
 
 		// For each possible search term, add to whereExpressions and queryValues so
 		// we can generate the right SQL
@@ -28,6 +28,11 @@ class Item {
 		if (name) {
 			queryValues.push(`%${name}%`);
 			whereExpressions.push(`name ILIKE $${queryValues.length}`);
+		}
+
+		if (category !== undefined) {
+			queryValues.push(category);
+			whereExpressions.push(`(category = $${queryValues.length})`);
 		}
 
 		if (whereExpressions.length > 0) {

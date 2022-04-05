@@ -9,10 +9,10 @@ const {
 	commonBeforeEach,
 	commonAfterEach,
 	commonAfterAll,
-	testAbilityIds,
-	testItemIds,
-	testMoveIds,
-	testNatureIds,
+	testAbilities,
+	testItems,
+	testMoves,
+	testNatures,
 	testTeamIds,
 	testUsernames
 } = require("./_testCommon");
@@ -29,7 +29,7 @@ describe("authenticate", function() {
 		const user = await User.authenticate("user1", "upass1");
 		expect(user).toEqual({
 			username   : "user1",
-			favoriteId : 257
+			favoriteId : 288
 		});
 	});
 
@@ -96,7 +96,7 @@ describe("findAll", function() {
 		expect(users).toEqual([
 			{
 				username   : "user1",
-				favoriteId : 257
+				favoriteId : 288
 			},
 			{
 				username   : "user2",
@@ -117,7 +117,7 @@ describe("get", function() {
 		let user = await User.get("user1");
 		expect(user).toEqual({
 			username   : "user1",
-			favoriteId : 257,
+			favoriteId : 288,
 			favorite   : {
 				id        : expect.any(Number),
 				pokedexNo : 257,
@@ -155,11 +155,11 @@ describe("remove", function() {
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
-			natureId  : testNatureIds[0],
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 257,
-			itemId    : testItemIds[0],
-			moveIds   : testMoveIds.slice(0, 4)
+			item      : testItems[0],
+			moves     : testMoves.slice(0, 4)
 		};
 		const card = await Card.create(testCard, testUsernames[0]);
 
@@ -207,19 +207,11 @@ describe("remove", function() {
 
 describe("updateFavorite", function() {
 	test("works", async function() {
-		// MQ: Why is the earlier delete test not rolled back? user1 is gone for the remainder of the test suite
-
-		// const check = await db.query(
-		// 	`SELECT *
-		// 	 FROM users`
-		// );
-
-		// console.log(check.rows);
-		const result = await User.updateFavorite("user2", 257);
+		const result = await User.updateFavorite("user2", 288);
 
 		expect(result).toEqual({
 			username   : "user2",
-			favoriteId : 257,
+			favoriteId : 288,
 			favorite   : {
 				id        : expect.any(Number),
 				pokedexNo : 257,

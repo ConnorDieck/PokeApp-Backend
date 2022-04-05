@@ -7,8 +7,6 @@ const express = require("express");
 const { BadRequestError } = require("../expressError");
 const { ensureLoggedIn } = require("../middleware/auth");
 const Nature = require("../models/nature");
-const jsonschema = require("jsonschema");
-const ianSchema = require("../schema/ianSchema.json");
 
 const router = new express.Router();
 

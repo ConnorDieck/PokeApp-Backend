@@ -83,7 +83,7 @@ const fireTypes = [
 	{
 		id        : 129,
 		pokedexNo : 105,
-		name      : "Marowak",
+		name      : "Alolan Marowak",
 		url       : "https://pokeapi.co/api/v2/pokemon/10115/",
 		sprite    : "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10115.png",
 		type1     : "Fire",
@@ -299,7 +299,7 @@ const fireTypes = [
 	{
 		id        : 515,
 		pokedexNo : 479,
-		name      : "Rotom",
+		name      : "Rotom Heat",
 		url       : "https://pokeapi.co/api/v2/pokemon/10008",
 		sprite    : "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10008.png",
 		type1     : "Electric",
@@ -513,7 +513,7 @@ const fireTypes = [
 		type2     : "Normal"
 	},
 	{
-		id        : 768,
+		id        : 769,
 		pokedexNo : 721,
 		name      : "Volcanion",
 		url       : "https://pokeapi.co/api/v2/pokemon/721",
@@ -522,7 +522,7 @@ const fireTypes = [
 		type2     : "Water"
 	},
 	{
-		id        : 772,
+		id        : 773,
 		pokedexNo : 725,
 		name      : "Litten",
 		url       : "https://pokeapi.co/api/v2/pokemon/725",
@@ -531,7 +531,7 @@ const fireTypes = [
 		type2     : null
 	},
 	{
-		id        : 773,
+		id        : 774,
 		pokedexNo : 726,
 		name      : "Torracat",
 		url       : "https://pokeapi.co/api/v2/pokemon/726",
@@ -540,7 +540,7 @@ const fireTypes = [
 		type2     : null
 	},
 	{
-		id        : 774,
+		id        : 775,
 		pokedexNo : 727,
 		name      : "Incineroar",
 		url       : "https://pokeapi.co/api/v2/pokemon/727",
@@ -549,7 +549,7 @@ const fireTypes = [
 		type2     : "Dark"
 	},
 	{
-		id        : 788,
+		id        : 789,
 		pokedexNo : 741,
 		name      : "Oricorio",
 		url       : "https://pokeapi.co/api/v2/pokemon/741",
@@ -558,7 +558,7 @@ const fireTypes = [
 		type2     : "Flying"
 	},
 	{
-		id        : 807,
+		id        : 805,
 		pokedexNo : 757,
 		name      : "Salandit",
 		url       : "https://pokeapi.co/api/v2/pokemon/757",
@@ -567,7 +567,7 @@ const fireTypes = [
 		type2     : "Fire"
 	},
 	{
-		id        : 808,
+		id        : 806,
 		pokedexNo : 758,
 		name      : "Salazzle",
 		url       : "https://pokeapi.co/api/v2/pokemon/758",
@@ -576,7 +576,7 @@ const fireTypes = [
 		type2     : "Fire"
 	},
 	{
-		id        : 826,
+		id        : 824,
 		pokedexNo : 776,
 		name      : "Turtonator",
 		url       : "https://pokeapi.co/api/v2/pokemon/776",
@@ -585,7 +585,7 @@ const fireTypes = [
 		type2     : "Dragon"
 	},
 	{
-		id        : 856,
+		id        : 854,
 		pokedexNo : 806,
 		name      : "Blacephalon",
 		url       : "https://pokeapi.co/api/v2/pokemon/806",
@@ -594,7 +594,7 @@ const fireTypes = [
 		type2     : "Ghost"
 	},
 	{
-		id        : 863,
+		id        : 861,
 		pokedexNo : 813,
 		name      : "Scorbunny",
 		url       : "https://pokeapi.co/api/v2/pokemon/813",
@@ -603,7 +603,7 @@ const fireTypes = [
 		type2     : null
 	},
 	{
-		id        : 864,
+		id        : 862,
 		pokedexNo : 814,
 		name      : "Raboot",
 		url       : "https://pokeapi.co/api/v2/pokemon/814",
@@ -612,7 +612,7 @@ const fireTypes = [
 		type2     : null
 	},
 	{
-		id        : 865,
+		id        : 863,
 		pokedexNo : 815,
 		name      : "Cinderace",
 		url       : "https://pokeapi.co/api/v2/pokemon/815",
@@ -621,7 +621,7 @@ const fireTypes = [
 		type2     : null
 	},
 	{
-		id        : 888,
+		id        : 886,
 		pokedexNo : 838,
 		name      : "Carkol",
 		url       : "https://pokeapi.co/api/v2/pokemon/838",
@@ -630,7 +630,7 @@ const fireTypes = [
 		type2     : "Fire"
 	},
 	{
-		id        : 889,
+		id        : 887,
 		pokedexNo : 839,
 		name      : "Coalossal",
 		url       : "https://pokeapi.co/api/v2/pokemon/839",
@@ -639,7 +639,7 @@ const fireTypes = [
 		type2     : "Fire"
 	},
 	{
-		id        : 900,
+		id        : 898,
 		pokedexNo : 850,
 		name      : "Sizzlipede",
 		url       : "https://pokeapi.co/api/v2/pokemon/850",
@@ -648,7 +648,7 @@ const fireTypes = [
 		type2     : "Bug"
 	},
 	{
-		id        : 901,
+		id        : 899,
 		pokedexNo : 851,
 		name      : "Centiskorch",
 		url       : "https://pokeapi.co/api/v2/pokemon/851",

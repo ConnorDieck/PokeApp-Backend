@@ -9,12 +9,10 @@ const {
 	commonBeforeEach,
 	commonAfterEach,
 	commonAfterAll,
-	testAbilityIds,
-	testItemIds,
-	testMoveIds,
-	testNatureIds,
-	testTeamIds,
-	testUsernames
+	testAbilities,
+	testItems,
+	testMoves,
+	testNatures
 } = require("./_testCommon");
 
 beforeAll(commonBeforeAll);
@@ -35,15 +33,14 @@ describe("addToDb", function() {
 		const move = await Move.addToDb(testMove);
 
 		expect(move).toEqual({
-			...testMove,
-			id : expect.any(Number)
+			...testMove
 		});
 
 		const result = await db.query(
-			`SELECT id
+			`SELECT name
              FROM moves
-             WHERE id = $1`,
-			[ move.id ]
+             WHERE name = $1`,
+			[ move.name ]
 		);
 
 		expect(result.rows[0].length).not.toEqual(0);
@@ -75,18 +72,18 @@ describe("getAllFromCard", function() {
 			gender    : false,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-			natureId  : testNatureIds[0],
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 25,
-			itemId    : testItemIds[0],
-			moveIds   : testMoveIds.slice(0, 4)
+			item      : testItems[0],
+			moves     : testMoves.slice(0, 4)
 		};
 
 		const card = await Card.create(testCard);
 
 		const moves = await Move.getAllFromCard(card.id);
 
-		expect(moves).toEqual(testCard.moveIds);
+		expect(moves).toEqual(testCard.moves);
 	});
 
 	test("throws not found error if card has no moves", async function() {
@@ -95,11 +92,11 @@ describe("getAllFromCard", function() {
 			gender    : false,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-			natureId  : testNatureIds[0],
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 25,
-			itemId    : testItemIds[0],
-			moveIds   : []
+			item      : testItems[0],
+			moves     : []
 		};
 
 		const card = await Card.create(testCard);
@@ -122,18 +119,18 @@ describe("removeFromCard", function() {
 			gender    : false,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-			natureId  : testNatureIds[0],
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 25,
-			itemId    : testItemIds[0],
-			moveIds   : testMoveIds.slice(0, 4)
+			item      : testItems[0],
+			moves     : testMoves.slice(0, 4)
 		};
 
 		const card = await Card.create(testCard);
-		await Move.removeFromCard(testMoveIds[0], card.id);
+		await Move.removeFromCard(testMoves[0], card.id);
 		const moves = await Move.getAllFromCard(card.id);
 
-		expect(moves).toEqual(testCard.moveIds.slice(1, 4));
+		expect(moves).toEqual(testCard.moves.slice(1, 4));
 	});
 
 	test("throws not found error if card has no moves", async function() {
@@ -142,17 +139,17 @@ describe("removeFromCard", function() {
 			gender    : false,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-			natureId  : testNatureIds[0],
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 25,
-			itemId    : testItemIds[0],
-			moveIds   : []
+			item      : testItems[0],
+			moves     : []
 		};
 
 		const card = await Card.create(testCard);
 
 		try {
-			const moves = await Move.getAllFromCard(card.id);
+			await Move.getAllFromCard(card.id);
 			fail();
 		} catch (err) {
 			expect(err instanceof NotFoundError).toBeTruthy();
@@ -164,13 +161,13 @@ describe("removeFromCard", function() {
 
 describe("removeFromDb", function() {
 	test("works", async function() {
-		await Move.removeFromDb(testMoveIds[0]);
+		await Move.removeFromDb(testMoves[0]);
 
 		const result = await db.query(
-			`SELECT id
+			`SELECT name
 			 FROM moves
-			 WHERE id = $1`,
-			[ testMoveIds[0] ]
+			 WHERE name = $1`,
+			[ testMoves[0] ]
 		);
 
 		expect(result.rows.length).toEqual(0);
@@ -178,7 +175,7 @@ describe("removeFromDb", function() {
 
 	test("throws not found error if move does not exist", async function() {
 		try {
-			await Move.removeFromDb(9999);
+			await Move.removeFromDb("nopenopenope");
 			fail();
 		} catch (err) {
 			expect(err instanceof NotFoundError).toBeTruthy();

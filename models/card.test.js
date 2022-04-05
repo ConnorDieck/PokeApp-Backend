@@ -8,11 +8,10 @@ const {
 	commonBeforeEach,
 	commonAfterEach,
 	commonAfterAll,
-	testAbilityIds,
-	testItemIds,
-	testMoveIds,
-	testNatureIds,
-	testTeamIds,
+	testAbilities,
+	testItems,
+	testMoves,
+	testNatures,
 	testUsernames
 } = require("./_testCommon");
 
@@ -30,11 +29,11 @@ describe("getAll", function() {
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
-			natureId  : testNatureIds[0],
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 257,
-			itemId    : testItemIds[0],
-			moveIds   : testMoveIds.slice(0, 4)
+			item      : testItems[0],
+			moves     : testMoves.slice(0, 4)
 		};
 
 		const testCard2 = {
@@ -42,19 +41,19 @@ describe("getAll", function() {
 			gender    : false,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-			natureId  : testNatureIds[0],
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 25,
-			itemId    : testItemIds[0],
-			moveIds   : testMoveIds.slice(0, 4)
+			item      : testItems[0],
+			moves     : testMoves.slice(0, 4)
 		};
 
 		await Card.create(testCard1, testUsernames[0]);
 		await Card.create(testCard2, testUsernames[0]);
 
 		// Card.getAll() does not return move ids
-		delete testCard1.moveIds;
-		delete testCard2.moveIds;
+		delete testCard1.moves;
+		delete testCard2.moves;
 
 		const cards = await Card.getAll(testUsernames[0]);
 
@@ -89,11 +88,11 @@ describe("create", function() {
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
-			natureId  : testNatureIds[0],
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 257,
-			itemId    : testItemIds[0],
-			moveIds   : testMoveIds.slice(0, 4)
+			item      : testItems[0],
+			moves     : testMoves.slice(0, 4)
 		};
 
 		let card = await Card.create(testCard, testUsernames[0]);
@@ -104,7 +103,7 @@ describe("create", function() {
 		});
 
 		const result = await db.query(
-			`SELECT name, art, username, gender, nature_id AS "natureId", ability_id AS "abilityId", art, species_id AS "speciesId", item_id AS "itemId"
+			`SELECT name, art, username, gender, nature, ability, art, species_id AS "speciesId", item
              FROM cards
              WHERE name = 'Spicy'`
 		);
@@ -116,21 +115,21 @@ describe("create", function() {
 				username  : "user1",
 				art       :
 					"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
-				natureId  : testNatureIds[0],
-				abilityId : testAbilityIds[0],
+				nature    : testNatures[0],
+				ability   : testAbilities[0],
 				speciesId : 257,
-				itemId    : testItemIds[0]
+				item      : testItems[0]
 			}
 		]);
 
 		const moveResult = await db.query(
-			`SELECT move_id
+			`SELECT move
              FROM cards_moves
              WHERE card_id = $1`,
 			[ card.id ]
 		);
 
-		expect(moveResult.rows.map(r => r.move_id)).toEqual(testMoveIds.slice(0, 4));
+		expect(moveResult.rows.map(r => r.move)).toEqual(testMoves.slice(0, 4));
 	});
 
 	test("bad request with dupe for same user", async function() {
@@ -139,11 +138,11 @@ describe("create", function() {
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
-			natureId  : testNatureIds[0],
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 257,
-			itemId    : testItemIds[0],
-			moveIds   : testMoveIds.slice(0, 4)
+			item      : testItems[0],
+			moves     : testMoves.slice(0, 4)
 		};
 		try {
 			await Card.create(testCard, testUsernames[0]);
@@ -164,11 +163,11 @@ describe("get", function() {
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-			natureId  : testNatureIds[0],
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 257,
-			itemId    : testItemIds[0],
-			moveIds   : testMoveIds.slice(0, 4)
+			item      : testItems[0],
+			moves     : testMoves.slice(0, 4)
 		};
 
 		const newCard = await Card.create(testCard, testUsernames[0]);
@@ -201,11 +200,11 @@ describe("edit", function() {
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-			natureId  : testNatureIds[0],
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 257,
-			itemId    : testItemIds[0],
-			moveIds   : testMoveIds.slice(0, 4)
+			item      : testItems[0],
+			moves     : testMoves.slice(0, 4)
 		};
 
 		const newCard = await Card.create(testCard, testUsernames[0]);
@@ -215,11 +214,11 @@ describe("edit", function() {
 			gender    : false,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
-			natureId  : testNatureIds[1],
-			abilityId : testAbilityIds[1],
+			nature    : testNatures[1],
+			ability   : testAbilities[1],
 			speciesId : 257,
-			itemId    : testItemIds[1],
-			moveIds   : testMoveIds.slice(1, 5)
+			item      : testItems[1],
+			moves     : testMoves.slice(1, 5)
 		};
 
 		const card = await Card.edit(newCard.id, testUsernames[0], newData);
@@ -231,7 +230,7 @@ describe("edit", function() {
 		});
 
 		const result = await db.query(
-			`SELECT name, art, username, gender, nature_id AS "natureId", ability_id AS "abilityId", art, species_id AS "speciesId", item_id AS "itemId"
+			`SELECT name, art, username, gender, nature, ability, art, species_id AS "speciesId", item
              FROM cards
              WHERE name = 'New hotness'`
 		);
@@ -241,23 +240,23 @@ describe("edit", function() {
 			gender    : false,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
-			natureId  : testNatureIds[1],
-			abilityId : testAbilityIds[1],
+			nature    : testNatures[1],
+			ability   : testAbilities[1],
 			speciesId : 257,
-			itemId    : testItemIds[1],
+			item      : testItems[1],
 			username  : testUsernames[0]
 		});
 
 		const moveResults = await db.query(
-			`SELECT move_id
+			`SELECT move
              FROM cards_moves
              WHERE card_id = $1`,
 			[ card.id ]
 		);
 
-		const newMoveIds = moveResults.rows.map(r => r.move_id);
+		const newmoves = moveResults.rows.map(r => r.move);
 
-		expect(newMoveIds).toEqual(newData.moveIds);
+		expect(newmoves).toEqual(newData.moves);
 	});
 
 	test("Bad request error with no data", async function() {
@@ -266,11 +265,11 @@ describe("edit", function() {
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-			natureId  : testNatureIds[0],
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 257,
-			itemId    : testItemIds[0],
-			moveIds   : testMoveIds.slice(0, 4)
+			item      : testItems[0],
+			moves     : testMoves.slice(0, 4)
 		};
 
 		const newCard = await Card.create(testCard, testUsernames[0]);
@@ -292,11 +291,11 @@ describe("delete", function() {
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-			natureId  : testNatureIds[0],
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 257,
-			itemId    : testItemIds[0],
-			moveIds   : testMoveIds.slice(0, 4)
+			item      : testItems[0],
+			moves     : testMoves.slice(0, 4)
 		};
 
 		const card = await Card.create(testCard, testUsernames[0]);
@@ -319,11 +318,11 @@ describe("delete", function() {
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-			natureId  : testNatureIds[0],
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 257,
-			itemId    : testItemIds[0],
-			moveIds   : testMoveIds.slice(0, 4)
+			item      : testItems[0],
+			moves     : testMoves.slice(0, 4)
 		};
 
 		const card = await Card.create(testCard, testUsernames[0]);
@@ -331,7 +330,7 @@ describe("delete", function() {
 		await Card.delete(card.id, testUsernames[0]);
 
 		const results = await db.query(
-			`SELECT move_id
+			`SELECT move
                 FROM cards_moves
                 WHERE card_id = $1`,
 			[ card.id ]

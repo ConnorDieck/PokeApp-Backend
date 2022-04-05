@@ -28,8 +28,7 @@ CREATE TABLE IF NOT EXISTS teams (
 
 
 CREATE TABLE IF NOT EXISTS moves (
-    id SERIAL PRIMARY KEY,
-    name TEXT UNIQUE,
+    name TEXT PRIMARY KEY,
     type TEXT,
     url TEXT UNIQUE
 );
@@ -42,8 +41,7 @@ CREATE TABLE IF NOT EXISTS moves (
 -- );
 
 CREATE TABLE IF NOT EXISTS abilities (
-    id SERIAL PRIMARY KEY,
-    name TEXT UNIQUE,
+    name TEXT PRIMARY KEY,
     url TEXT UNIQUE
 );
 
@@ -59,14 +57,14 @@ CREATE TABLE IF NOT EXISTS cards (
     gender BOOLEAN NOT NULL DEFAULT TRUE,
     art TEXT,
     username VARCHAR(25) REFERENCES users ON DELETE CASCADE,
-    nature_id INTEGER 
-        REFERENCES natures (id) ON DELETE SET NULL,
-    ability_id INTEGER 
-        REFERENCES abilities (id) ON DELETE SET NULL,
+    nature TEXT 
+        REFERENCES natures ON DELETE SET NULL,
+    ability TEXT 
+        REFERENCES abilities ON DELETE SET NULL,
     species_id INTEGER 
         REFERENCES species (id) NOT NULL,
-    item_id INTEGER 
-        REFERENCES items (id) ON DELETE SET NULL
+    item TEXT 
+        REFERENCES items ON DELETE SET NULL
 );
 
 
@@ -92,6 +90,6 @@ CREATE TABLE IF NOT EXISTS teams_cards (
 CREATE TABLE IF NOT EXISTS cards_moves (
     id SERIAL PRIMARY KEY,
     card_id INTEGER REFERENCES cards (id) ON DELETE CASCADE,
-    move_id INTEGER REFERENCES moves (id) ON DELETE CASCADE
+    move TEXT REFERENCES moves ON DELETE CASCADE
     
 );

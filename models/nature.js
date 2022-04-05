@@ -8,7 +8,7 @@ class Nature {
 	/** Gets all natures */
 	static async getAll() {
 		const result = await db.query(
-			`SELECT id, name, url
+			`SELECT name, url
 				FROM natures`
 		);
 

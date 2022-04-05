@@ -21,7 +21,7 @@ class Ability {
 			`INSERT INTO abilities
             (name, url)
             VALUES ($1, $2)
-            RETURNING id, name, url`,
+            RETURNING name, url`,
 			[ name, url ]
 		);
 
@@ -30,17 +30,17 @@ class Ability {
 	}
 
 	/** Removes an ability from the db */
-	static async remove(id) {
+	static async remove(name) {
 		const result = await db.query(
 			`DELETE
              FROM abilities
-             WHERE id = $1
+             WHERE name = $1
              RETURNING name`,
-			[ id ]
+			[ name ]
 		);
 
 		const ability = result.rows[0];
-		if (!ability) throw new NotFoundError(`No such ability: ${ability}`);
+		if (!ability) throw new NotFoundError(`No such ability: ${name}`);
 		return ability;
 	}
 }

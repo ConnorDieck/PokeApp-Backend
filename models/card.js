@@ -15,10 +15,10 @@ class Card {
 	static async getAll(username) {
 		const cardsRes = await db.query(
 			`SELECT id, name, gender, art,
-					nature_id AS "natureId",
-					ability_id AS "abilityId",
+					nature,
+					ability,
 					species_id AS "speciesId",
-					item_id AS "itemId"
+					item
 				FROM cards 
 				WHERE username = $1`,
 			[ username ]
@@ -48,23 +48,23 @@ class Card {
 		 */
 
 		const cardQuery = `
-			INSERT INTO cards (name, gender, username, art, nature_id, ability_id, species_id, item_id)
+			INSERT INTO cards (name, gender, username, art, nature, ability, species_id, item)
 			VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-			RETURNING id, name, art, username, gender, nature_id AS "natureId", ability_id AS "abilityId", art, species_id AS "speciesId", item_id AS "itemId"`;
+			RETURNING id, name, art, username, gender, nature, ability, art, species_id AS "speciesId", item`;
 
 		const cardValues = [
 			cardData.name,
 			cardData.gender,
 			username,
 			cardData.art,
-			cardData.natureId,
-			cardData.abilityId,
+			cardData.nature,
+			cardData.ability,
 			cardData.speciesId,
-			cardData.itemId
+			cardData.item
 		];
 
 		const movesQuery = `
-			INSERT INTO cards_moves (card_id, move_id)
+			INSERT INTO cards_moves (card_id, move)
 			VALUES ($1, $2)`;
 
 		try {
@@ -73,18 +73,15 @@ class Card {
 			const cardRes = await db.query(cardQuery, cardValues);
 			const card = cardRes.rows[0];
 
-			for (let moveId of cardData.moveIds) {
-				await db.query(movesQuery, [ card.id, moveId ]);
+			for (let move of cardData.moves) {
+				await db.query(movesQuery, [ card.id, move ]);
 			}
-
-			// When testing, we don't want to commit our changes to the db so we can rollback with afterEach()
-			// if (process.env.NODE_ENV !== "test") await db.query("COMMIT");
 
 			await db.query("COMMIT");
 
 			const newCard = {
 				...card,
-				moveIds : cardData.moveIds
+				moves : cardData.moves
 			};
 
 			// console.log("new card:", newCard);
@@ -99,7 +96,7 @@ class Card {
 	/** Returns details of one card given card's id */
 	static async get(cardId) {
 		const res = await db.query(
-			`SELECT id, name, art, username, gender, nature_id AS "natureId", ability_id AS "abilityId", art, species_id AS "speciesId", item_id AS "itemId"
+			`SELECT id, name, art, username, gender, nature, ability, art, species_id AS "speciesId", item
 			 FROM cards
 			 WHERE id = $1`,
 			[ cardId ]
@@ -110,11 +107,11 @@ class Card {
 		const cardRes = res.rows[0];
 
 		/** Get associated moves and add to returned card object */
-		const moveIds = await Move.getAllFromCard(cardId);
+		const moves = await Move.getAllFromCard(cardId);
 
 		const card = {
 			...cardRes,
-			moveIds
+			moves
 		};
 
 		return card;
@@ -133,16 +130,16 @@ class Card {
 
 		if (!ownerCheck.rows[0]) throw new UnauthorizedError("No card owned with given id");
 
-		const { name, gender, art, natureId, abilityId, speciesId, itemId, moveIds } = data;
+		const { name, gender, art, nature, ability, speciesId, item, moves } = data;
 
 		const { setCols, values } = sqlForPartialUpdate(
-			{ name, gender, art, natureId, abilityId, speciesId, itemId },
+			{ name, gender, art, nature, ability, speciesId, item },
 			{
 				art       : "art",
-				natureId  : "nature_id",
+				nature    : "nature",
 				speciesId : "species_id",
-				abilityId : "ability_id",
-				itemId    : "item_id"
+				ability   : "ability",
+				item      : "item"
 			}
 		);
 		const cardIdIdx = "$" + (values.length + 1);
@@ -153,12 +150,12 @@ class Card {
 		const cardQuery = `UPDATE cards
 			 SET ${setCols}
 			 WHERE id = ${cardIdIdx}
-			 RETURNING id, name, art, username, gender, nature_id AS "natureId", ability_id AS "abilityId", art, species_id AS "speciesId", item_id AS "itemId"`;
+			 RETURNING id, name, art, username, gender, nature, ability, art, species_id AS "speciesId", item`;
 
 		const cardValues = [ ...values, cardId ];
 
 		const movesQuery = `
-			INSERT INTO cards_moves (card_id, move_id)
+			INSERT INTO cards_moves (card_id, move)
 			VALUES ($1, $2)`;
 
 		// Updating moves won't work – it will always update the same row in cards_moves. Instead, we need to delete all associated moves and add new ones
@@ -176,18 +173,15 @@ class Card {
 			const cardRes = await db.query(cardQuery, cardValues);
 			const card = cardRes.rows[0];
 
-			for (let moveId of moveIds) {
-				await db.query(movesQuery, [ cardId, moveId ]);
+			for (let move of moves) {
+				await db.query(movesQuery, [ cardId, move ]);
 			}
-
-			// When testing, we don't want to commit our changes to the db so we can rollback with afterEach()
-			// if (process.env.NODE_ENV !== "test") await db.query("COMMIT");
 
 			await db.query("COMMIT");
 
 			const newCard = {
 				...card,
-				moveIds
+				moves
 			};
 
 			return newCard;

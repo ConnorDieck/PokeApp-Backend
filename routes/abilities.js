@@ -8,12 +8,12 @@ const { BadRequestError } = require("../expressError");
 const { ensureLoggedIn } = require("../middleware/auth");
 const Ability = require("../models/ability");
 const jsonschema = require("jsonschema");
-const ianSchema = require("../schema/ianSchema.json");
+const abilitySchema = require("../schema/abilitySchema.json");
 
 const router = new express.Router();
 
 /** POST / =>
- *      { id, name, url }
+ *      { name, url }
  * 
  * Route to save an ability.
  * 
@@ -22,7 +22,7 @@ const router = new express.Router();
 
 router.post("/", ensureLoggedIn, async function(req, res, next) {
 	try {
-		const validator = jsonschema.validate(req.body, ianSchema);
+		const validator = jsonschema.validate(req.body, abilitySchema);
 
 		if (!validator.valid) {
 			let listOfErrors = validator.errors.map(e => e.stack);
@@ -37,16 +37,16 @@ router.post("/", ensureLoggedIn, async function(req, res, next) {
 });
 
 /** DELETE / =>
- *      { deleted: id }
+ *      { deleted: name }
  * 
  * Authorization required: logged in
  */
 
-router.delete("/:id", ensureLoggedIn, async function(req, res, next) {
+router.delete("/:name", ensureLoggedIn, async function(req, res, next) {
 	try {
-		const abilityId = req.params.id;
-		await Ability.remove(abilityId);
-		return res.json({ deleted: +abilityId });
+		const name = req.params.name;
+		await Ability.remove(name);
+		return res.json({ deleted: name });
 	} catch (e) {
 		return next(e);
 	}

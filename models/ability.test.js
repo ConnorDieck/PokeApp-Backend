@@ -3,7 +3,7 @@
 const db = require("../db.js");
 const { BadRequestError, NotFoundError } = require("../expressError");
 const Ability = require("./ability.js");
-const { commonBeforeAll, commonBeforeEach, commonAfterEach, commonAfterAll, testAbilityIds } = require("./_testCommon");
+const { commonBeforeAll, commonBeforeEach, commonAfterEach, commonAfterAll, testAbilities } = require("./_testCommon");
 
 beforeAll(commonBeforeAll);
 beforeEach(commonBeforeEach);
@@ -22,15 +22,14 @@ describe("addToDb", function() {
 		const ability = await Ability.addToDb(testAbility);
 
 		expect(ability).toEqual({
-			...testAbility,
-			id : expect.any(Number)
+			...testAbility
 		});
 
 		const result = await db.query(
-			`SELECT id
+			`SELECT name
              FROM abilities
-             WHERE id = $1`,
-			[ ability.id ]
+             WHERE name = $1`,
+			[ ability.name ]
 		);
 
 		expect(result.rows[0].length).not.toEqual(0);
@@ -56,13 +55,13 @@ describe("addToDb", function() {
 
 describe("remove", function() {
 	test("works", async function() {
-		await Ability.remove(testAbilityIds[0]);
+		await Ability.remove(testAbilities[0]);
 
 		const result = await db.query(
-			`SELECT id
+			`SELECT name
 			 FROM abilities
-			 WHERE id = $1`,
-			[ testAbilityIds[0] ]
+			 WHERE name = $1`,
+			[ testAbilities[0] ]
 		);
 
 		expect(result.rows.length).toEqual(0);

@@ -9,10 +9,10 @@ const {
 	commonBeforeEach,
 	commonAfterEach,
 	commonAfterAll,
-	testAbilityIds,
-	testItemIds,
-	testMoveIds,
-	testNatureIds,
+	testAbilities,
+	testItems,
+	testMoves,
+	testNatures,
 	testTeamIds,
 	testUsernames,
 	testCardIds
@@ -64,15 +64,15 @@ describe("get", function() {
 
 	test("correctly pulls card details if exist", async function() {
 		const testCard = {
-			nickname  : "Spicy",
+			name      : "Spicy",
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
-			natureId  : testNatureIds[0],
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 257,
-			itemId    : testItemIds[0],
-			moveIds   : testMoveIds.slice(0, 4)
+			item      : testItems[0],
+			moves     : testMoves.slice(0, 4)
 		};
 
 		const card = await Card.create(testCard);
@@ -92,9 +92,9 @@ describe("get", function() {
 			username : testUsernames[0],
 			cards    : [
 				{
-					id       : expect.any(Number),
-					nickname : "Spicy",
-					art      :
+					id   : expect.any(Number),
+					name : "Spicy",
+					art  :
 						"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png"
 				}
 			]
@@ -142,21 +142,19 @@ describe("create", function() {
 describe("addCard", function() {
 	test("works", async function() {
 		const testCard = {
-			nickname  : "Spicy",
+			name      : "Spicy",
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
-			natureId  : testNatureIds[0],
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 257,
-			itemId    : testItemIds[0],
-			moveIds   : testMoveIds.slice(0, 4)
+			item      : testItems[0],
+			moves     : testMoves.slice(0, 4)
 		};
 		const card = await Card.create(testCard, testUsernames[0]);
 
 		const teamCard = await Team.addCard(testTeamIds[0], card.id, testUsernames[0]);
-
-		console.log(teamCard);
 
 		expect(teamCard.teamId).toEqual(testTeamIds[0]);
 		expect(teamCard.cardId).toEqual(card.id);
@@ -186,15 +184,15 @@ describe("addCard", function() {
 describe("removeCard", function() {
 	test("works", async function() {
 		const testCard = {
-			nickname  : "Spicy",
+			name      : "Spicy",
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
-			natureId  : testNatureIds[0],
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 257,
-			itemId    : testItemIds[0],
-			moveIds   : testMoveIds.slice(0, 4)
+			item      : testItems[0],
+			moves     : testMoves.slice(0, 4)
 		};
 		const card = await Card.create(testCard, testUsernames[0]);
 
@@ -248,15 +246,15 @@ describe("remove", function() {
 
 	test("deletes associated cards from team", async function() {
 		const testCard = {
-			nickname  : "Spicy",
+			name      : "Spicy",
 			gender    : true,
 			art       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
-			natureId  : testNatureIds[0],
-			abilityId : testAbilityIds[0],
+			nature    : testNatures[0],
+			ability   : testAbilities[0],
 			speciesId : 257,
-			itemId    : testItemIds[0],
-			moveIds   : testMoveIds.slice(0, 4)
+			item      : testItems[0],
+			moves     : testMoves.slice(0, 4)
 		};
 		const card = await Card.create(testCard, testUsernames[0]);
 

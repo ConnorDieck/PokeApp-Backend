@@ -17,7 +17,7 @@ describe("getAll", function() {
 	test("works without filters", async function() {
 		const species = await Species.getAll();
 
-		expect(species.length).toEqual(950);
+		expect(species.length).toEqual(948);
 	});
 
 	test("works with type filter", async function() {

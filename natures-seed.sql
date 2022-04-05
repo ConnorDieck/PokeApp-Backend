@@ -1,6 +1,5 @@
 CREATE TABLE IF NOT EXISTS "natures" (
-    id SERIAL PRIMARY KEY,
-    name TEXT,
+    name TEXT PRIMARY KEY,
     url TEXT
 );
 INSERT INTO "natures" (name, url)

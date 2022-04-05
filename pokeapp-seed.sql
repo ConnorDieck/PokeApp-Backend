@@ -1,7 +1,7 @@
 INSERT INTO users (username, password, favorite_id)
-VALUES ('cooperdoon', '$2b$12$5glPdbzCW2QUV/bjgeXyfuG9lOttWWZth9h.pBU0MnmGjz83zMtU.', 257),
-       ('bigboynick', '$2b$12$23/HvzsxfpSZD5iK8RyC9uHOCbH0Yd5f.tqegE15HE3YipLVB8nby', 68),
-       ('chadmaster', '$2b$12$pR51w4evQVmFdoLCyABpFejcex7lxqQEB/54UYAqLVkMdKjBFdUku', 475);
+VALUES ('cooperdoon', '$2b$12$5glPdbzCW2QUV/bjgeXyfuG9lOttWWZth9h.pBU0MnmGjz83zMtU.', 288),
+       ('bigboynick', '$2b$12$23/HvzsxfpSZD5iK8RyC9uHOCbH0Yd5f.tqegE15HE3YipLVB8nby', 101),
+       ('chadmaster', '$2b$12$pR51w4evQVmFdoLCyABpFejcex7lxqQEB/54UYAqLVkMdKjBFdUku', 508);
 -- VALUES ('cooperdoon', 'letmein', 257),
 --        ('bigboynick', 'yum', 68),
 --        ('chadmaster', 'passwordle', 475);
@@ -29,11 +29,8 @@ VALUES  ('speed-boost', 'https://pokeapi.co/api/v2/ability/3/'),
         ('justified', 'https://pokeapi.co/api/v2/ability/154/'),
         ('guts', 'https://pokeapi.co/api/v2/ability/62/');
 
-INSERT INTO natures (name, url)
-VALUES  ('adamant', 'https://pokeapi.co/api/v2/nature/11/'),
-        ('jolly', 'https://pokeapi.co/api/v2/nature/16/');
 
-INSERT INTO cards (name, gender, art, username, nature_id, ability_id, species_id, item_id)
-VALUES ('c1', TRUE, 'art1', 'cooperdoon', 1, 1, 1, 1),
-	('c2', FALSE, 'art2', 'cooperdoon', 1, 1, 2, 1),
-	('c3', FALSE, 'art3', 'bigboynick', 2, 1, 3, 1)
+INSERT INTO cards (name, gender, art, username, nature, ability, species_id, item)
+VALUES ('c1', TRUE, 'art1', 'cooperdoon', 'bold', 'guts', 1, 'adrenaline-orb'),
+	('c2', FALSE, 'art2', 'cooperdoon', 'jolly', 'guts', 2, 'terrain-extender'),
+	('c3', FALSE, 'art3', 'bigboynick', 'adamant', 'guts', 3, 'room-service')
