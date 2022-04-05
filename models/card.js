@@ -105,9 +105,14 @@ class Card {
 		if (!res.rows[0]) throw new NotFoundError(`No card with given id: ${cardId}`);
 
 		const cardRes = res.rows[0];
+		let moves = [];
 
 		/** Get associated moves and add to returned card object */
-		const moves = await Move.getAllFromCard(cardId);
+		try {
+			moves = await Move.getAllFromCard(cardId);
+		} catch (err) {
+			moves = [];
+		}
 
 		const card = {
 			...cardRes,

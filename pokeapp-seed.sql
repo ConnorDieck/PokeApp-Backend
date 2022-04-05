@@ -31,6 +31,16 @@ VALUES  ('speed-boost', 'https://pokeapi.co/api/v2/ability/3/'),
 
 
 INSERT INTO cards (name, gender, art, username, nature, ability, species_id, item)
-VALUES ('c1', TRUE, 'art1', 'cooperdoon', 'bold', 'guts', 1, 'adrenaline-orb'),
-	('c2', FALSE, 'art2', 'cooperdoon', 'jolly', 'guts', 2, 'terrain-extender'),
-	('c3', FALSE, 'art3', 'bigboynick', 'adamant', 'guts', 3, 'room-service')
+VALUES ('c1', TRUE, "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png", 'cooperdoon', 'bold', 'guts', 1, 'adrenaline-orb'),
+	('c2', FALSE, "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png", 'cooperdoon', 'jolly', 'guts', 2, 'terrain-extender'),
+	('c3', FALSE, "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png", 'bigboynick', 'adamant', 'guts', 3, 'room-service');
+
+INSERT INTO cards_moves (card_id, move)
+VALUES (1, 'swords-dance'),
+	(1, 'mega-punch'),
+	(1, 'thunder-punch'),
+	(1, 'counter'),
+	(2, 'swords-dance'),
+	(2, 'mega-punch'),
+	(2, 'thunder-punch'),
+	(2, 'counter');
