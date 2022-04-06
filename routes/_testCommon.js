@@ -74,22 +74,18 @@ async function commonBeforeEach() {
 
 	testMoves[0] = (await Move.addToDb({
 		name : "move1",
-		type : "testtype",
 		url  : "www.move1test.org"
 	})).name;
 	testMoves[1] = (await Move.addToDb({
 		name : "move2",
-		type : "testtype",
 		url  : "www.move2test.org"
 	})).name;
 	testMoves[2] = (await Move.addToDb({
 		name : "move3",
-		type : "testtype",
 		url  : "www.move3test.org"
 	})).name;
 	testMoves[3] = (await Move.addToDb({
 		name : "move4",
-		type : "testtype",
 		url  : "www.move4test.org"
 	})).name;
 

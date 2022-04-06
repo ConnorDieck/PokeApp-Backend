@@ -7,7 +7,7 @@ const { BadRequestError, NotFoundError } = require("../expressError");
 
 class Move {
 	// Saves a move to the database
-	static async addToDb({ name, type, url }) {
+	static async addToDb({ name, url }) {
 		const duplicateCheck = await db.query(
 			`SELECT name
              FROM moves
@@ -19,10 +19,10 @@ class Move {
 
 		const result = await db.query(
 			`INSERT INTO moves
-             (name, type, url)
-             VALUES ($1, $2, $3)
-             RETURNING name, type, url`,
-			[ name, type, url ]
+             (name, url)
+             VALUES ($1, $2)
+             RETURNING name,  url`,
+			[ name, url ]
 		);
 
 		const move = result.rows[0];

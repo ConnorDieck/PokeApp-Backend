@@ -10,7 +10,7 @@ const {
 	commonBeforeEach,
 	commonAfterEach,
 	commonAfterAll,
-	testAbilities,
+	testMoves,
 	u1Token,
 	u2Token
 } = require("./_testCommon");
@@ -20,72 +20,70 @@ beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
-/************************************** POST /abilities */
+/************************************** POST /moves */
 
-describe("POST /abilities", function() {
+describe("POST /moves", function() {
 	test("works", async function() {
-		const testAbility = {
-			name : "testAbility",
+		const testMove = {
+			name : "testMove",
 			url  : "www.test1.com"
 		};
 
-		const resp = await request(app).post(`/abilities`).send(testAbility).set("authorization", `Bearer ${u1Token}`);
+		const resp = await request(app).post(`/moves`).send(testMove).set("authorization", `Bearer ${u1Token}`);
 
 		expect(resp.statusCode).toEqual(201);
 		expect(resp.body).toEqual({
-			...testAbility
+			...testMove
 		});
 	});
 
 	// test("unauthorized if user isn't logged in", async function() {
-	// 	const testAbility = {
-	// 		name : "testAbility",
+	// 	const testMove = {
+	// 		name : "testMove",
 	// 		url  : "www.test2.com"
 	// 	};
 
-	// 	const resp = await request(app).post(`/abilities`).send(testAbility);
+	// 	const resp = await request(app).post(`/moves`).send(testMove);
 
 	// 	expect(resp.statusCode).toEqual(401);
 	// });
 
 	test("bad request if duplicate", async function() {
-		const testAbility = {
-			name : "ability",
-			url  : "www.test3.com"
+		const testMove = {
+			name : "move3",
+			url  : "www.move3test.org"
 		};
 
-		const resp = await request(app).post(`/abilities`).send(testAbility).set("authorization", `Bearer ${u1Token}`);
+		const resp = await request(app).post(`/moves`).send(testMove).set("authorization", `Bearer ${u1Token}`);
 
 		expect(resp.statusCode).toEqual(400);
 	});
 
 	test("bad request if invalid data", async function() {
-		const testAbility = {
+		const testMove = {
 			name  : 699,
 			url   : 41,
 			other : "this is not allowed"
 		};
 
-		const resp = await request(app).post(`/abilities`).send(testAbility).set("authorization", `Bearer ${u1Token}`);
+		const resp = await request(app).post(`/moves`).send(testMove).set("authorization", `Bearer ${u1Token}`);
 
 		expect(resp.statusCode).toEqual(400);
 	});
 });
 
-/************************************** DELETE /abilities/:name */
+/************************************** DELETE /moves/:name */
 
 describe("DELETE /:name", function() {
-	test("successfully deletes abilities on the server", async function() {
-		const resp = await request(app)
-			.delete(`/abilities/${testAbilities[0]}`)
-			.set("authorization", `Bearer ${u1Token}`);
+	test("successfully deletes moves on the server", async function() {
+		const resp = await request(app).delete(`/moves/${testMoves[0]}`).set("authorization", `Bearer ${u1Token}`);
 		expect(resp.body).toEqual({
-			deleted : testAbilities[0]
+			deleted : testMoves[0]
 		});
 	});
 
 	test("unauthorized if not logged in", async function() {
-		const resp = await request(app).delete(`/abilities/${testAbilities[0]}`);
+		const resp = await request(app).delete(`/moves/${testMoves[0]}`);
 		expect(resp.statusCode).toEqual(401);
 	});
 });

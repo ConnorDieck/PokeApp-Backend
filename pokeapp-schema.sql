@@ -29,7 +29,6 @@ CREATE TABLE IF NOT EXISTS teams (
 
 CREATE TABLE IF NOT EXISTS moves (
     name TEXT PRIMARY KEY,
-    type TEXT,
     url TEXT UNIQUE
 );
 

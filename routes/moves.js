@@ -1,12 +1,12 @@
 "use strict";
 
-/** Routes for abilities. */
+/** Routes for moves. */
 
 const express = require("express");
 
 const { BadRequestError } = require("../expressError");
 const { ensureLoggedIn } = require("../middleware/auth");
-const Ability = require("../models/ability");
+const Move = require("../models/move");
 const jsonschema = require("jsonschema");
 const abilitySchema = require("../schema/abilitySchema.json");
 
@@ -29,7 +29,7 @@ router.post("/", async function(req, res, next) {
 			let error = new BadRequestError(listOfErrors, 400);
 			return next(error);
 		}
-		const response = await Ability.addToDb(req.body);
+		const response = await Move.addToDb(req.body);
 		return res.status(201).json(response);
 	} catch (e) {
 		return next(e);
@@ -45,7 +45,7 @@ router.post("/", async function(req, res, next) {
 router.delete("/:name", ensureLoggedIn, async function(req, res, next) {
 	try {
 		const name = req.params.name;
-		await Ability.remove(name);
+		await Move.removeFromDb(name);
 		return res.json({ deleted: name });
 	} catch (e) {
 		return next(e);

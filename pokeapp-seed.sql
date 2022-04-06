@@ -11,13 +11,13 @@ VALUES ('cooperteam', 'cooperdoon'),
         ('nickteam', 'bigboynick'),
         ('chadders', 'chadmaster');
 
-INSERT INTO moves (name, type, url)
-VALUES  ('swords-dance', 'Normal', 'https://pokeapi.co/api/v2/move/14/'),
-        ('mega-punch', 'Normal', 'https://pokeapi.co/api/v2/move/5/'),
-        ('thunder-punch', 'Electric', 'https://pokeapi.co/api/v2/move/9/'),
-        ('counter', 'Fighting', 'https://pokeapi.co/api/v2/move/68/'),
-        ('seismic-toss', 'Fighting', 'https://pokeapi.co/api/v2/move/69/'),
-        ('body-slam', 'Normal', 'https://pokeapi.co/api/v2/move/34/');
+INSERT INTO moves (name, url)
+VALUES  ('swords-dance', 'https://pokeapi.co/api/v2/move/14/'),
+        ('mega-punch', 'https://pokeapi.co/api/v2/move/5/'),
+        ('thunder-punch', 'https://pokeapi.co/api/v2/move/9/'),
+        ('counter', 'https://pokeapi.co/api/v2/move/68/'),
+        ('seismic-toss', 'https://pokeapi.co/api/v2/move/69/'),
+        ('body-slam', 'https://pokeapi.co/api/v2/move/34/');
 
 -- INSERT INTO items (name, url)
 -- VALUES  ('soda-pop', 'https://pokeapi.co/api/v2/item/31/'),
