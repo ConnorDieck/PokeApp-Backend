@@ -17,7 +17,7 @@
 			"moves": [ "thunder", "thundershock", "thunder-wave", "thunderbolt" ]
 		}
 	],
-	"required": [ "name", "gender", "art", "nature", "ability", "speciesId", "item", "moves" ],
+	"required": [ "name", "gender", "nature", "ability", "speciesId", "item", "moves" ],
 	"properties": {
 		"name": {
 			"$id": "#/properties/name",
