@@ -27,7 +27,7 @@ describe("getAll", function() {
 		const testCard1 = {
 			name      : "Spicy",
 			gender    : true,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
@@ -39,7 +39,7 @@ describe("getAll", function() {
 		const testCard2 = {
 			name      : "Zap",
 			gender    : false,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
@@ -86,7 +86,7 @@ describe("create", function() {
 		const testCard = {
 			name      : "Spicy",
 			gender    : true,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
@@ -103,7 +103,7 @@ describe("create", function() {
 		});
 
 		const result = await db.query(
-			`SELECT name, art, username, gender, nature, ability, art, species_id AS "speciesId", item
+			`SELECT name, url, username, gender, nature, ability, species_id AS "speciesId", item
              FROM cards
              WHERE name = 'Spicy'`
 		);
@@ -113,7 +113,7 @@ describe("create", function() {
 				name      : "Spicy",
 				gender    : true,
 				username  : "user1",
-				art       :
+				url       :
 					"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
 				nature    : testNatures[0],
 				ability   : testAbilities[0],
@@ -136,7 +136,7 @@ describe("create", function() {
 		const testCard = {
 			name      : "Spicy",
 			gender    : true,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
@@ -161,7 +161,7 @@ describe("get", function() {
 		const testCard = {
 			name      : "Spicy",
 			gender    : true,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
@@ -198,7 +198,7 @@ describe("edit", function() {
 		const testCard = {
 			name      : "Spicy",
 			gender    : true,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
@@ -212,7 +212,7 @@ describe("edit", function() {
 		const newData = {
 			name      : "New hotness",
 			gender    : false,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
 			nature    : testNatures[1],
 			ability   : testAbilities[1],
@@ -230,7 +230,7 @@ describe("edit", function() {
 		});
 
 		const result = await db.query(
-			`SELECT name, art, username, gender, nature, ability, art, species_id AS "speciesId", item
+			`SELECT name, url, username, gender, nature, ability, species_id AS "speciesId", item
              FROM cards
              WHERE name = 'New hotness'`
 		);
@@ -238,7 +238,7 @@ describe("edit", function() {
 		expect(result.rows[0]).toEqual({
 			name      : "New hotness",
 			gender    : false,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
 			nature    : testNatures[1],
 			ability   : testAbilities[1],
@@ -263,7 +263,7 @@ describe("edit", function() {
 		const testCard = {
 			name      : "Spicy",
 			gender    : true,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
@@ -289,7 +289,7 @@ describe("delete", function() {
 		const testCard = {
 			name      : "Spicy",
 			gender    : true,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
@@ -303,7 +303,7 @@ describe("delete", function() {
 		await Card.delete(card.id, testUsernames[0]);
 
 		const results = await db.query(
-			`SELECT name, gender, art
+			`SELECT name, gender, url
                 FROM cards
                 WHERE id = $1`,
 			[ card.id ]
@@ -316,7 +316,7 @@ describe("delete", function() {
 		const testCard = {
 			name      : "Spicy",
 			gender    : true,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],

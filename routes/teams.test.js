@@ -92,17 +92,17 @@ describe("GET /teams/:teamId", function() {
 				{
 					name : "c1",
 					id   : testCardIds[0],
-					art  : "www.test.org"
+					url  : "www.test.org"
 				},
 				{
 					name : "c2",
 					id   : testCardIds[1],
-					art  : "www.test.org"
+					url  : "www.test.org"
 				},
 				{
 					name : "c3",
 					id   : testCardIds[2],
-					art  : "www.test.org"
+					url  : "www.test.org"
 				}
 			]
 		});

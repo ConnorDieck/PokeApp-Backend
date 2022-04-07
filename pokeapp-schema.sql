@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS cards (
     id SERIAL PRIMARY KEY,
     name VARCHAR(15),
     gender BOOLEAN NOT NULL DEFAULT TRUE,
-    art TEXT,
+    url TEXT,
     username VARCHAR(25) REFERENCES users ON DELETE CASCADE,
     nature TEXT 
         REFERENCES natures ON DELETE SET NULL,

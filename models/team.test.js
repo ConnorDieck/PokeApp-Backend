@@ -66,7 +66,7 @@ describe("get", function() {
 		const testCard = {
 			name      : "Spicy",
 			gender    : true,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
@@ -94,7 +94,7 @@ describe("get", function() {
 				{
 					id   : expect.any(Number),
 					name : "Spicy",
-					art  :
+					url  :
 						"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png"
 				}
 			]
@@ -144,7 +144,7 @@ describe("addCard", function() {
 		const testCard = {
 			name      : "Spicy",
 			gender    : true,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
@@ -186,7 +186,7 @@ describe("removeCard", function() {
 		const testCard = {
 			name      : "Spicy",
 			gender    : true,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
@@ -248,7 +248,7 @@ describe("remove", function() {
 		const testCard = {
 			name      : "Spicy",
 			gender    : true,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],

@@ -14,7 +14,7 @@ class Card {
 	 */
 	static async getAll(username) {
 		const cardsRes = await db.query(
-			`SELECT id, name, gender, art,
+			`SELECT id, name, gender, url,
 					nature,
 					ability,
 					species_id AS "speciesId",
@@ -48,15 +48,15 @@ class Card {
 		 */
 
 		const cardQuery = `
-			INSERT INTO cards (name, gender, username, art, nature, ability, species_id, item)
+			INSERT INTO cards (name, gender, username, url, nature, ability, species_id, item)
 			VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-			RETURNING id, name, art, username, gender, nature, ability, art, species_id AS "speciesId", item`;
+			RETURNING id, name, url, username, gender, nature, ability, species_id AS "speciesId", item`;
 
 		const cardValues = [
 			cardData.name,
 			cardData.gender,
 			username,
-			cardData.art,
+			cardData.url,
 			cardData.nature,
 			cardData.ability,
 			cardData.speciesId,
@@ -96,7 +96,7 @@ class Card {
 	/** Returns details of one card given card's id */
 	static async get(cardId) {
 		const res = await db.query(
-			`SELECT id, name, art, username, gender, nature, ability, art, species_id AS "speciesId", item
+			`SELECT id, name, url, username, gender, nature, ability, species_id AS "speciesId", item
 			 FROM cards
 			 WHERE id = $1`,
 			[ cardId ]
@@ -135,12 +135,12 @@ class Card {
 
 		if (!ownerCheck.rows[0]) throw new UnauthorizedError("No card owned with given id");
 
-		const { name, gender, art, nature, ability, speciesId, item, moves } = data;
+		const { name, gender, url, nature, ability, speciesId, item, moves } = data;
 
 		const { setCols, values } = sqlForPartialUpdate(
-			{ name, gender, art, nature, ability, speciesId, item },
+			{ name, gender, url, nature, ability, speciesId, item },
 			{
-				art       : "art",
+				url       : "url",
 				nature    : "nature",
 				speciesId : "species_id",
 				ability   : "ability",
@@ -155,7 +155,7 @@ class Card {
 		const cardQuery = `UPDATE cards
 			 SET ${setCols}
 			 WHERE id = ${cardIdIdx}
-			 RETURNING id, name, art, username, gender, nature, ability, art, species_id AS "speciesId", item`;
+			 RETURNING id, name, url, username, gender, nature, ability, species_id AS "speciesId", item`;
 
 		const cardValues = [ ...values, cardId ];
 

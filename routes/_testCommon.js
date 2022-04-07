@@ -93,7 +93,7 @@ async function commonBeforeEach() {
 		{
 			name      : "c1",
 			gender    : true,
-			art       : "www.test.org",
+			url       : "www.test.org",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
 			speciesId : 1,
@@ -106,7 +106,7 @@ async function commonBeforeEach() {
 		{
 			name      : "c2",
 			gender    : false,
-			art       : "www.test.org",
+			url       : "www.test.org",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
 			speciesId : 2,
@@ -119,7 +119,7 @@ async function commonBeforeEach() {
 		{
 			name      : "c3",
 			gender    : false,
-			art       : "www.test.org",
+			url       : "www.test.org",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
 			speciesId : 3,

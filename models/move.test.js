@@ -26,7 +26,6 @@ describe("addToDb", function() {
 	test("works", async function() {
 		const testMove = {
 			name : "Thunderbolt",
-			type : "Electric",
 			url  : "https://pokeapi.co/api/v2/move/85/"
 		};
 
@@ -49,7 +48,6 @@ describe("addToDb", function() {
 	test("returns bad request error upon duplicate input", async function() {
 		const testMove = {
 			name : "Thunderbolt",
-			type : "Electric",
 			url  : "https://pokeapi.co/api/v2/move/85/"
 		};
 
@@ -70,7 +68,7 @@ describe("getAllFromCard", function() {
 		const testCard = {
 			nickname  : "Zap",
 			gender    : false,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
@@ -90,7 +88,7 @@ describe("getAllFromCard", function() {
 		const testCard = {
 			nickname  : "Zap",
 			gender    : false,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
@@ -117,7 +115,7 @@ describe("removeFromCard", function() {
 		const testCard = {
 			nickname  : "Zap",
 			gender    : false,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
@@ -137,7 +135,7 @@ describe("removeFromCard", function() {
 		const testCard = {
 			nickname  : "Zap",
 			gender    : false,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],

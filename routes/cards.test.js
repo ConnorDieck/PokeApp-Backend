@@ -31,7 +31,7 @@ describe("POST /cards", function() {
 		const testCard = {
 			name      : "Spicy",
 			gender    : true,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
@@ -54,7 +54,7 @@ describe("POST /cards", function() {
 		const testCard = {
 			name      : "Spicy",
 			gender    : true,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
@@ -72,7 +72,7 @@ describe("POST /cards", function() {
 		const testCard = {
 			name      : "Spicy",
 			gender    : true,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
@@ -99,7 +99,7 @@ describe("GET /cards", function() {
 				id        : testCardIds[0],
 				name      : "c1",
 				gender    : true,
-				art       : "www.test.org",
+				url       : "www.test.org",
 				nature    : testNatures[0],
 				ability   : testAbilities[0],
 				speciesId : 1,
@@ -126,7 +126,7 @@ describe("GET /cards/:cardId", function() {
 			username  : "u1",
 			name      : "c1",
 			gender    : true,
-			art       : "www.test.org",
+			url       : "www.test.org",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
 			speciesId : 1,
@@ -148,7 +148,7 @@ describe("PATCH /cards/:cardId", function() {
 		const testCard = {
 			name      : "Spicy",
 			gender    : true,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
@@ -174,7 +174,7 @@ describe("PATCH /cards/:cardId", function() {
 		const testCard = {
 			name      : 3,
 			gender    : true,
-			art       : "lol",
+			url       : "lol",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],
 			speciesId : "string",
@@ -199,7 +199,7 @@ describe("PATCH /cards/:cardId", function() {
 		const testCard = {
 			name      : "Spicy",
 			gender    : true,
-			art       :
+			url       :
 				"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
 			nature    : testNatures[0],
 			ability   : testAbilities[0],

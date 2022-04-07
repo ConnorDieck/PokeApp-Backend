@@ -60,7 +60,7 @@ async function commonBeforeEach() {
     VALUES  ('swords-dance', 'https://pokeapi.co/api/v2/move/14/'),
             ('mega-punch', 'https://pokeapi.co/api/v2/move/5/'),
             ('thunder-punch', 'https://pokeapi.co/api/v2/move/9/'),
-            ('counter', , 'https://pokeapi.co/api/v2/move/68/'),
+            ('counter', 'https://pokeapi.co/api/v2/move/68/'),
             ('seismic-toss', 'https://pokeapi.co/api/v2/move/69/'),
             ('body-slam', 'https://pokeapi.co/api/v2/move/34/')
     RETURNING name`);

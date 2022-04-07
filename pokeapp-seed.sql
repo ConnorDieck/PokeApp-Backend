@@ -30,10 +30,10 @@ VALUES  ('speed-boost', 'https://pokeapi.co/api/v2/ability/3/'),
         ('guts', 'https://pokeapi.co/api/v2/ability/62/');
 
 
-INSERT INTO cards (name, gender, art, username, nature, ability, species_id, item)
-VALUES ('c1', TRUE, 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png', 'cooperdoon', 'bold', 'guts', 1, 'adrenaline-orb'),
-	('c2', FALSE, 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png', 'cooperdoon', 'jolly', 'guts', 2, 'terrain-extender'),
-	('c3', FALSE, 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png', 'bigboynick', 'adamant', 'guts', 3, 'room-service');
+INSERT INTO cards (name, gender, url, username, nature, ability, species_id, item)
+VALUES ('Bulby', TRUE, 'https://pokeapi.co/api/v2/pokemon/1/', 'cooperdoon', 'bold', 'guts', 1, 'adrenaline-orb'),
+	('Ivy', FALSE, 'https://pokeapi.co/api/v2/pokemon/2/', 'cooperdoon', 'jolly', 'guts', 2, 'terrain-extender'),
+	('Veevee', FALSE, 'https://pokeapi.co/api/v2/pokemon/3/', 'bigboynick', 'adamant', 'guts', 3, 'room-service');
 
 INSERT INTO cards_moves (card_id, move)
 VALUES (1, 'swords-dance'),
