@@ -90,19 +90,22 @@ describe("GET /teams/:teamId", function() {
 			id       : testTeamIds[3],
 			cards    : [
 				{
-					name : "c1",
-					id   : testCardIds[0],
-					url  : "www.test.org"
+					name      : "c1",
+					id        : testCardIds[0],
+					url       : "www.test.org",
+					speciesId : 1
 				},
 				{
-					name : "c2",
-					id   : testCardIds[1],
-					url  : "www.test.org"
+					name      : "c2",
+					id        : testCardIds[1],
+					url       : "www.test.org",
+					speciesId : 2
 				},
 				{
-					name : "c3",
-					id   : testCardIds[2],
-					url  : "www.test.org"
+					name      : "c3",
+					id        : testCardIds[2],
+					url       : "www.test.org",
+					speciesId : 3
 				}
 			]
 		});
