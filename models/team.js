@@ -37,7 +37,7 @@ class Team {
 
 		/** Get associated card ids, names, and urls to load into return object */
 		const result = await db.query(
-			`SELECT tc.card_id AS "id", c.name, c.url
+			`SELECT tc.card_id AS "id", c.name, c.url, c.species_id AS "speciesId"
              FROM teams_cards tc
                 LEFT JOIN cards c ON tc.card_id = c.id
              WHERE tc.team_id = $1`,

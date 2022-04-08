@@ -92,10 +92,11 @@ describe("get", function() {
 			username : testUsernames[0],
 			cards    : [
 				{
-					id   : expect.any(Number),
-					name : "Spicy",
-					url  :
-						"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png"
+					id        : expect.any(Number),
+					name      : "Spicy",
+					url       :
+						"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
+					speciesId : 257
 				}
 			]
 		});
