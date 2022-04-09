@@ -9,7 +9,7 @@ CREATE DATABASE pokeapp;
 \i items-seed.sql
 \i natures-seed.sql
 \i pokeapp-schema.sql
-\i pokeapp-seed.sql
+-- \i pokeapp-seed.sql
 
 \echo 'Delete and recreate pokeapp_test db?'
 \prompt 'Return for yes or control-C to cancel > ' foo
