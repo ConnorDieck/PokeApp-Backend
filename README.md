@@ -18,7 +18,7 @@ In order to run tests, enter `npm test` into the terminal.
 
 Users may demo the Pokemon creation feature upon entering the site without the need to create an account. If users wish to access full site functionality, they may sign up to create an account. Doing so will redirect them to select their favorite Pokemon. Once finished, the user will land on the home page.
 
-![homepage](../homepage.png)
+![homepage](./homepage.png)
 
 From the home page, a registered user may select `CREATE NEW TEAM` to create and name a new empty team, or `LOAD TEAMS` to view existing teams. 
 On the teams page, users can edit the team name, or choose to add / remove Pokemon by clicking the options displayed on the cards. 
