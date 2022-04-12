@@ -29,12 +29,15 @@ On the teams page, users can edit the team name,  add / remove Pokemon by clicki
 Choosing to add a Pokemon will bring the user to their existing Pokemon not yet on the team. Pokemon can be added straight from this location, or the user can choose to create a new Pokemon. Doing so will redirect to the species menu, where they can select a Pokemon to begin building. Once selected, the user can choose the moves, abilities, etc. that they wish to add. 
 
 Existing Pokemon:
+
 ![pcpage](./pcpage.png)
 
 Species Menu:
+
 ![speciespage](./speciespage.png)
 
 New Pokemon Form:
+
 ![createpokemonpage](./createpokemonpage.png)
 
 ### APIs
