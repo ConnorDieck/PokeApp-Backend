@@ -49,6 +49,8 @@ This app uses the Pokemon API as well as a custom PokeApp api.
 
 The PokeApp API was created in order to quickly load information about species, items, and natures, as well as to save and authenticate users and their created cards / teams. It follows RESTful protocols with CRUD endpoints for authorization, users, teams, cards, abilities, items, and natures.
 
+![database structure](QuickDBD-PokéApp_DB_Structure.png)
+
 ### Technology Stack
 
 The backend uses Express.js within a Node environment to create the endpoints for the PokeApp API. 
