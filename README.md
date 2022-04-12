@@ -18,11 +18,36 @@ In order to run tests, enter `npm test` into the terminal.
 
 Users may demo the Pokemon creation feature upon entering the site without the need to create an account. If users wish to access full site functionality, they may sign up to create an account. Doing so will redirect them to select their favorite Pokemon. Once finished, the user will land on the home page.
 
+From the home page, a registered user may select `CREATE NEW TEAM` to create and name a new empty team, or `LOAD TEAMS` to view existing teams. 
+
 ![homepage](./homepage.png)
 
-From the home page, a registered user may select `CREATE NEW TEAM` to create and name a new empty team, or `LOAD TEAMS` to view existing teams. 
-On the teams page, users can edit the team name, or choose to add / remove Pokemon by clicking the options displayed on the cards. 
+On the teams page, users can edit the team name,  add / remove Pokemon by clicking the options displayed on the cards, or delete the team entirely. 
 
+![teampage](./teampage.png)
 
+Choosing to add a Pokemon will bring the user to their existing Pokemon not yet on the team. Pokemon can be added straight from this location, or the user can choose to create a new Pokemon. Doing so will redirect to the species menu, where they can select a Pokemon to begin building. Once selected, the user can choose the moves, abilities, etc. that they wish to add. 
 
-- API: https://pokeapi.co/docs/v2
+Existing Pokemon:
+![pcpage](./pcpage.png)
+
+Species Menu:
+![speciespage](./speciespage.png)
+
+New Pokemon Form:
+![createpokemonpage](./createpokemonpage.png)
+
+### APIs
+
+This app uses the Pokemon API as well as a custom PokeApp api.
+
+- Pokemon API: https://pokeapi.co/docs/v2
+- PokeApp API: https://pokeapp-cd.herokuapp.com/
+
+The PokeApp API was created in order to quickly load information about species, items, and natures, as well as to save and authenticate users and their created cards / teams. It follows RESTful protocols with CRUD endpoints for authorization, users, teams, cards, abilities, items, and natures.
+
+### Technology Stack
+
+The backend uses Express.js within a Node environment to create the endpoints for the PokeApp API. 
+
+The frontend uses React/Redux for component usage and state management. 
